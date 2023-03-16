@@ -1,0 +1,25 @@
+.
+├── Desktop -> /home/ad/home/r/rviljami/Desktop
+├── Documents -> /home/ad/home/r/rviljami/Documents
+├── Downloads -> /home/ad/home/r/rviljami/Downloads
+├── komentorivi.txt
+├── kurssit
+│   └── ot2022
+│       └── viikko1
+│           └── unicafe
+│               ├── poetry.lock
+│               ├── pyproject.toml
+│               └── src
+│                   ├── index.py
+│                   ├── kassapaate.py
+│                   ├── maksukortti.py
+│                   └── tests
+│                       ├── __init__.py
+│                       └── maksukortti_test.py
+├── Music
+├── Pictures
+├── Public
+├── Templates
+└── Videos
+
+14 directories, 8 files
