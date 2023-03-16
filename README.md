@@ -1,6 +1,6 @@
 # Ohjelmistotekniikka - Harjoitustyö
 
-**Ohjelmistotekniikka**-kurssin ratkaisut by *Viljami Ranta*!
+**Ohjelmistotekniikka**-kurssin ratkaisut by *Viljami Ranta*
 
 ## Tehtävät
 
