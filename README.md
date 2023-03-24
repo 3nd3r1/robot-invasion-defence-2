@@ -1,6 +1,6 @@
 # Ohjelmistotekniikka - Harjoitustyö
 
-**Ohjelmistotekniikka**-kurssin ratkaisut by *Viljami Ranta*
+**Ohjelmistotekniikka**-kurssin ratkaisut by _Viljami Ranta_
 
 ## Tehtävät
 
@@ -17,3 +17,7 @@
 [unicafe](./laskarit/viikko2/unicafe/)
 
 [unicafe_coverage_report.png](./laskarit/viikko2/unicafe_coverage_report.png)
+
+[vaatimusmaarittely.md](./robot-tower-defence-2/dokumentaatio/vaatimusmaarittely.md)
+
+[tuntikirjanpito.md](./robot-tower-defence-2/dokumentaatio/tuntikirjanpito.md)
