@@ -6,13 +6,13 @@
         Pelilauta "*" -- "40" Ruutu
         Pelaaja "*" -- "1" Pelinappula
         Pelinappula "*" -- "1" Ruutu
-        Ruutu <-- Aloitus
-        Ruutu <-- Vankila
-        Ruutu <-- Katu
-        Ruutu <-- Asema
-        Ruutu <-- Laitos
-        Ruutu <-- Sattuma
-        Ruutu <-- Yhteismaa
+        Ruutu <|-- Aloitus
+        Ruutu <|-- Vankila
+        Ruutu <|-- Katu
+        Ruutu <|-- Asema
+        Ruutu <|-- Laitos
+        Ruutu <|-- Sattuma
+        Ruutu <|-- Yhteismaa
         Katu "*" -- "0..4" Talo
         Katu "*" -- "0..1" Hotelli
         Katu "*" -- "0..1" Pelaaja
