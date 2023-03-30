@@ -21,3 +21,11 @@
 [vaatimusmaarittely.md](./robot-tower-defence-2/dokumentaatio/vaatimusmaarittely.md)
 
 [tuntikirjanpito.md](./robot-tower-defence-2/dokumentaatio/tuntikirjanpito.md)
+
+### Viikko 3
+
+[monopoli-luokkakaavio.md](./laskarit/viikko3/monopoli-luokkakaavio.md)
+
+[bensatankki-sekvenssikaavio.md](./laskarit/viikko3/bensatankki-sekvenssikaavio.md)
+
+[hsl-sekvenssikaavio.md](./laskarit/viikko3/hsl-sekvenssikaavio.md)
