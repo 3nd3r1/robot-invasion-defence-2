@@ -7,4 +7,5 @@
 | 30.03. | 2    | Tyhjien luokkien koodaaminen ja docstringit                          |
 | 30.03. | 1    | Pylintin kanssa tappeleminen                                         |
 | 30.03. | 1    | Tiled Map Editoriin tutustuminen ja ensimmäisen areenan taustan teko |
-|  yht   | 7    |                                                                      |
+| 31.03. | 1    | Tiled Map Editoriin tutustuminen jatkuu...                           |
+|  yht   | 8    |                                                                      |
