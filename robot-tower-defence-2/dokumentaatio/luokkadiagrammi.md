@@ -16,8 +16,8 @@ classDiagram
         -bool paused
         -bool loading
         -string arena
-        -List<Tower> towers
-        -List<Robot> robots
+        -Group towers
+        -Group robots
         -List<dict> rounds
         -initializeRounds(): None
         +nextRound(): None
@@ -36,12 +36,16 @@ classDiagram
         +loseHp(amount): None
     }
     class Map {
-        +loadMap()
+        -int height
+        -int width
+        -tmx
+        +render()
     }
     class Tower {
         -int damage
         -int range
         -bool placing
+        -Group projectiles
     }
     class Robot {
         -int health
@@ -50,9 +54,9 @@ classDiagram
 
     }
     class Ui {
-        +draw(): None
+        +render(): None
     }
     class Sidebar {
-        +loadMenu(): None
+        +render(): None
     }
 ```

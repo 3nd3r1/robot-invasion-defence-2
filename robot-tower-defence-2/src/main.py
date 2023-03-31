@@ -1,4 +1,5 @@
-import pygame
+""" Main file """
+from game.game import Game
 
 
 DISPLAY_WIDTH = 1024
@@ -6,16 +7,8 @@ DISPLAY_HEIGHT = 576
 
 
 def main():
-    display = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-    pygame.display.set_caption("Robot Invasion Defence II")
-
-    pygame.init()
-
-    running = True
-    while running:
-        pygame.display().update()
-
-    pygame.quit()
+    game = Game("grass_fields")
+    game.run()
 
 
 if __name__ == "__main__":
