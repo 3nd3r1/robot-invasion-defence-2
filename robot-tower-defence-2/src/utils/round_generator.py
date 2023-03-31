@@ -2,7 +2,7 @@
 This module generates rounds
 """
 from random import uniform
-from game.arenas.arenas import arenas
+from game.arenas import arenas
 
 
 def generate_rounds(arena: str) -> list:
