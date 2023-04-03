@@ -5,6 +5,7 @@ from utils.round_generator import generate_rounds
 from utils.logger import logger
 from utils import SETTINGS
 from game.map.map import Map
+from game.ui.ui import Ui
 
 
 class Game:
@@ -18,6 +19,7 @@ class Game:
         self.__round = 1
         self.__arena = arena
 
+        self.__ui = Ui()
         self.__map = Map(arena)
 
         self.__towers = pygame.sprite.Group()
@@ -39,6 +41,7 @@ class Game:
         self.__robots.update()
 
     def draw(self, screen) -> None:
+        self.__ui.draw(screen)
         self.__map.draw(screen)
         self.__towers.draw(screen)
         self.__robots.draw(screen)
