@@ -1,4 +1,4 @@
-""" Main file """
+""" src/main.py """
 from game.game import Game
 
 

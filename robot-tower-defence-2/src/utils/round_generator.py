@@ -2,7 +2,7 @@
 This module generates rounds
 """
 from random import randint
-from game.arenas.arenas import arenas
+from utils.config import arenas
 
 
 def generate_rounds(arena: str) -> list:

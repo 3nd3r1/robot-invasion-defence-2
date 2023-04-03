@@ -1,9 +1,12 @@
-from tower import Tower
+from game.tower import Tower
+
+properties = 
+
+
 class Turret(Tower):
     def __init__(self) -> None:
-        super().__init__()
-    
+        pass
+
     def __shoot(self) -> None:
         """ Shoots a turret projectile """
         pass
-        

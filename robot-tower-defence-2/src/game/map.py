@@ -1,9 +1,8 @@
-""" File containing Map Class """
-import os
+""" src/game/map.py """
 import pytmx
 import pygame
-import __main__
-from game.arenas.arenas import arenas
+from utils.config import arenas
+from utils.file_reader import get_tmx
 
 
 class Map:
@@ -13,11 +12,9 @@ class Map:
     """
 
     def __init__(self, arena: str) -> None:
-        main_folder = os.path.dirname(__main__.__file__)
-        arena_folder = os.path.join(main_folder, "data/arenas")
 
-        self.__tmx = pytmx.load_pygame(os.path.join(
-            arena_folder, arenas[arena]["map_file"]))
+        self.__tmx = pytmx.load_pygame(
+            get_tmx(arenas[arena]["map_file"]))
 
         self.__width = self.__tmx.width * self.__tmx.tilewidth
         self.__height = self.__tmx.height * self.__tmx.tileheight
@@ -44,4 +41,4 @@ class Map:
 
     def draw(self, surface) -> None:
         """ Draws the image of the map to the main surface """
-        surface.blit(self.__map, (10, 10))
+        surface.blit(self.__map, (188, 105))

@@ -1,11 +1,10 @@
-""" Main game file """
+""" src/game/game.py """
 import pygame
-import pygame.constants
 from utils.round_generator import generate_rounds
 from utils.logger import logger
-from utils import SETTINGS
-from game.map.map import Map
-from game.ui.ui import Ui
+from utils.config import general
+from game.map import Map
+from game.ui import Ui
 
 
 class Game:
@@ -15,7 +14,7 @@ class Game:
         self.__loading = True
         self.__paused = False
         self.__screen = pygame.display.set_mode(
-            (SETTINGS.DISPLAY_WIDTH, SETTINGS.DISPLAY_HEIGHT))
+            (general["display_width"], general["display_height"]))
         self.__round = 1
         self.__arena = arena
 
