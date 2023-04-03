@@ -41,8 +41,8 @@ class Game:
         self.__robots.update()
 
     def draw(self, screen) -> None:
-        self.__ui.draw(screen)
         self.__map.draw(screen)
+        self.__ui.draw(screen)
         self.__towers.draw(screen)
         self.__robots.draw(screen)
 

@@ -44,4 +44,4 @@ class Map:
 
     def draw(self, surface) -> None:
         """ Draws the image of the map to the main surface """
-        surface.blit(self.__map)
+        surface.blit(self.__map, (10, 10))

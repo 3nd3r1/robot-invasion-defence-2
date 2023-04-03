@@ -2,14 +2,13 @@ import os
 import __main__
 import pygame
 from utils.IMAGES import GAME_BACKGROUND
+from utils.file_reader import get_image
 
 
 class Hud:
     def __init__(self) -> None:
-        pass
+        self.__image = pygame.image.load(get_image(GAME_BACKGROUND))
+        self.__image = pygame.transform.scale(self.__image, (960, 640))
 
     def draw(self, surface) -> None:
-        main_dir = os.path.dirname(__main__.__file__)
-        game_background_file = os.path.join(main_dir, GAME_BACKGROUND)
-        image = pygame.image.load(game_background_file)
-        surface.blit(GAME_BACKGROUND, (0, 0))
+        surface.blit(self.__image, (0, 0))
