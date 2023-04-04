@@ -8,7 +8,6 @@ general = {
 arenas = {
     "grass_fields": {
         "num_rounds": 100,
-        "spawn_location": (0, 0),
         "robot_num_multiplier": 1,
         "wave_num_multiplier": 1,
         "map_file": "grass_fields.tmx"

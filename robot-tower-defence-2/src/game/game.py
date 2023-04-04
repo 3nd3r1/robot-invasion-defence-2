@@ -1,8 +1,9 @@
 """ src/game/game.py """
 import pygame
 from utils.round_generator import generate_rounds
-from utils.config import general
+from utils.config import general, arenas
 from utils.logger import logger
+from game.robot import Robot
 from game.map import Map
 from game.ui import Ui
 from game.towers.turret import Turret
@@ -35,6 +36,10 @@ class Game:
 
     def next_round(self) -> None:
         self.__round += 1
+
+    def spawn_robot(self, robot: dict) -> None:
+        self.__robots.add(
+            Robot(robot["health"], self.__map))
 
     def place_tower(self) -> None:
         """ Place a tower on the map """
@@ -89,6 +94,9 @@ class Game:
                     return
                 if evt.type == pygame.constants.MOUSEBUTTONDOWN:
                     self.__on_click(evt.pos)
+                if evt.type == pygame.constants.KEYDOWN:
+                    self.spawn_robot(
+                        {"health": 2})
             self.update()
             self.draw(self.__screen)
             pygame.display.flip()

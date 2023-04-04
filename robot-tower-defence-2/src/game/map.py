@@ -61,6 +61,9 @@ class Map:
                 return True
         return False
 
+    def get_path(self) -> list:
+        return self.__path
+
     def draw(self, surface) -> None:
         """ Draws the image of the map to the main surface """
         surface.blit(self.__map, (188, 105))
