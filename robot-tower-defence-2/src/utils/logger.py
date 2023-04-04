@@ -1,4 +1,4 @@
-from utils.config import DEBUG
+from utils.config import general
 
 
 class Logger:
@@ -16,4 +16,4 @@ class Logger:
         print("[INFO]: {}".format(message))
 
 
-logger = Logger(DEBUG)
+logger = Logger(general["debug"])

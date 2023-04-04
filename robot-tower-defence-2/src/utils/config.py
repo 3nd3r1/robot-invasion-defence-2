@@ -1,3 +1,4 @@
+""" src/utils/config.py """
 general = {
     "debug": True,
     "display_width": 1220,
@@ -15,13 +16,16 @@ arenas = {
 }
 
 towers = {
+    "base": "towers/base.png",
     "turret": {
         "name": "Turret",
         "price": 200,
-        "model_1": "turret/1.png",
-        "model_2": "turret/2.png",
-        "model_3": "turret/3.png",
-        "projectile": "turret/projectile.png"
+        "range": 100,
+        "can_be_in_water": False,
+        "model_1": "towers/turret/1.png",
+        "model_2": "towers/turret/2.png",
+        "model_3": "towers/turret/3.png",
+        "projectile": "towers/turret/projectile.png"
     }
 }
 

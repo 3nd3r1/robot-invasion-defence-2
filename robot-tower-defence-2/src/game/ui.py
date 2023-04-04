@@ -2,7 +2,7 @@
 import pygame
 from game.ui_components.tower_button import TowerButton
 from utils.file_reader import get_image
-from utils.images import GAME_BACKGROUND
+from utils.config import images
 
 
 class Ui:
@@ -11,13 +11,24 @@ class Ui:
       It has methods for displaying information about the game, such as the player's score and the number of lives remaining. 
     """
 
-    def __init__(self) -> None:
-        self.__image = pygame.image.load(get_image(GAME_BACKGROUND))
+    def __init__(self, game: "Game") -> None:
+        self.__image = pygame.image.load(get_image(images["game_background"]))
         self.__tower_buttons = pygame.sprite.Group()
+        self.__game = game
+
+        self.__load_tower_buttons()
 
     def draw(self, surface) -> None:
         """ Draws all components to the screen """
         surface.blit(self.__image, (0, 0))
+        self.__tower_buttons.draw(surface)
 
-    def __draw_tower_buttons(self) -> None:
-        self.__tower_buttons.add(TowerButton(""))
+    def on_click(self, pos) -> None:
+        """ Checks if a tower button was clicked """
+        for button in self.__tower_buttons:
+            if button.rect.collidepoint(pos):
+                button.on_click()
+                self.__game.create_tower(button.tower_name)
+
+    def __load_tower_buttons(self) -> None:
+        self.__tower_buttons.add(TowerButton("turret", (70, 166)))

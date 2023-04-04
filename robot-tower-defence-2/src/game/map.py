@@ -20,6 +20,7 @@ class Map:
         self.__height = self.__tmx.height * self.__tmx.tileheight
         self.__map = pygame.Surface((self.__width, self.__height))
         self.__obstacles = []
+        self.__path = []
         self.__water = []
 
         self.render_map()
@@ -38,6 +39,27 @@ class Map:
                             pygame.Rect(x*tw, y*th, tw, th))
                     if layer.name == "water":
                         self.__water.append(pygame.Rect(x*tw, y*th, tw, th))
+                    if layer.name == "path":
+                        self.__path.append(pygame.Rect(x*tw, y*th, tw, th))
+
+    def is_in_obstacle(self, rect: pygame.Rect) -> bool:
+        """ Checks if a rectangle is in an obstacle """
+        for obstacle in self.__obstacles:
+            if obstacle.collidepoint(rect.center):
+                return True
+
+        for path in self.__path:
+            if path.collidepoint(rect.center):
+                return True
+
+        return False
+
+    def is_in_water(self, rect: pygame.Rect) -> bool:
+        """ Checks if a rectangle is in water """
+        for water in self.__water:
+            if water.collidepoint(rect.center):
+                return True
+        return False
 
     def draw(self, surface) -> None:
         """ Draws the image of the map to the main surface """
