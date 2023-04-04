@@ -1,10 +1,10 @@
 # Changelog
 
-Robot Invasion Defence II peling changelog.
+Robot Invasion Defence II-pelin changelog.
 
 ## Viikko 3
 
--   Käyttäjä voi asettaa torneja kentälle
+-   Käyttäjä voi asettaa yhden tyyppisen tornin kentälle
 -   Lisätty Game-luokka, joka vastaa pelilogiikan koodista.
 -   Lisätty Map-luokka, joka vastaa areenan luonnin koodista.
 -   Lisätty Player-luokka, joka vastaa pelaajan koodista.

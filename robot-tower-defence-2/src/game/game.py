@@ -47,15 +47,10 @@ class Game:
             if tower.rect.collidepoint(self.__new_tower.rect.center):
                 logger.debug("Tower collides with another tower")
                 return
-        if self.__map.is_in_obstacle(self.__new_tower.rect):
-            logger.debug("Tower collides with obstacle")
-            return
-        if not self.__new_tower.can_be_in_water() and self.__map.is_in_water(self.__new_tower.rect):
-            logger.debug("Tower cannot be in water")
-            return
-        self.__new_tower.place()
-        self.__towers.add(self.__new_tower)
-        self.__new_tower = None
+        if self.__map.is_valid_tower_position(self.__new_tower):
+            self.__new_tower.place()
+            self.__towers.add(self.__new_tower)
+            self.__new_tower = None
 
     def create_tower(self, tower_name: str) -> None:
         """ Create a new tower """
@@ -70,9 +65,9 @@ class Game:
 
     def draw(self, screen) -> None:
         self.__map.draw(screen)
-        self.__ui.draw(screen)
-        self.__towers.draw(screen)
         self.__robots.draw(screen)
+        self.__towers.draw(screen)
+        self.__ui.draw(screen)
 
         if self.__new_tower:
             self.__new_tower.draw(screen)

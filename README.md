@@ -1,31 +1,21 @@
-# Ohjelmistotekniikka - Harjoitustyö
+# Robot Invasion Defence II
 
-**Ohjelmistotekniikka**-kurssin ratkaisut by _Viljami Ranta_
+Robot Invasion Defence II on klassinen tower defence peli, jossa pelaajan täytyy suojautua robottien hyökkäykseltä käytämällä torneja. Pelin ensimmäinen osa: [Robot Invasion Defence](https://github.com/3nd3r1/robot-invasion-defence)
 
-## Tehtävät
+## Dokumentaatio
 
-### Viikko 1
+-   [Vaatimusmäärittely](./robot-tower-defence-2/dokumentaatio/vaatimusmaarittely.md)
+-   [Tuntikirjanpito](./robot-tower-defence-2/dokumentaatio/tuntikirjanpito.md)
+-   [Changelog](./robot-tower-defence-2/dokumentaatio/changelog.md)
+-   [Luokkadiagrammi](./robot-tower-defence-2/dokumentaatio/luokkadiagrammi.md)
+-   [Credits](./robot-tower-defence-2/dokumentaatio/credits.md)
 
-[gitlog.txt](./laskarit/viikko1/gitlog.txt)
+## Taskit
 
-[komentorivi.txt](./laskarit/viikko1/komentorivi.txt)
+### Pelinsuoritus
 
-### Viikko 2
+`poetry run invoke start`
 
-[maksukortti](./laskarit/viikko2/maksukortti/)
+### Testit
 
-[unicafe](./laskarit/viikko2/unicafe/)
-
-[unicafe_coverage_report.png](./laskarit/viikko2/unicafe_coverage_report.png)
-
-[vaatimusmaarittely.md](./robot-tower-defence-2/dokumentaatio/vaatimusmaarittely.md)
-
-[tuntikirjanpito.md](./robot-tower-defence-2/dokumentaatio/tuntikirjanpito.md)
-
-### Viikko 3
-
-[monopoli-luokkakaavio.md](./laskarit/viikko3/monopoli-luokkakaavio.md)
-
-[bensatankki-sekvenssikaavio.md](./laskarit/viikko3/bensatankki-sekvenssikaavio.md)
-
-[hsl-sekvenssikaavio.md](./laskarit/viikko3/hsl-sekvenssikaavio.md)
+`poetry run invoke test`

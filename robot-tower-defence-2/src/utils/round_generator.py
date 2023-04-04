@@ -8,7 +8,6 @@ from utils.config import arenas
 def generate_rounds(arena: str) -> list:
     """ This function generates randomized rounds for the given arena """
     num_rounds = arenas[arena]["num_rounds"]
-    spawn_location = arenas[arena]["spawn_location"]
     robot_num_multiplier = arenas[arena]["robot_num_multiplier"]
     wave_num_multiplier = arenas[arena]["wave_num_multiplier"]
 
@@ -17,8 +16,7 @@ def generate_rounds(arena: str) -> list:
         robots_in_wave = int(10 * num_round * robot_num_multiplier)
         robot_max_health = int(num_round)
         for _ in range(robots_in_wave):
-            robot = {"health": randint(1, robot_max_health
-                                       ), "spawn_location": spawn_location}
+            robot = {"health": randint(1, robot_max_health)}
             wave.append(robot)
 
         return wave
