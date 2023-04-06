@@ -11,3 +11,11 @@ Robot Invasion Defence II-pelin changelog.
 -   Lisätty Tower-luokka, joka vastaa tornien koodista.
 -   Lisätty Robot-luokka, joka vastaa robottien koodista.
 -   Lisätty Ui-luokka, joka vastaa peli-näkymän käyttöliittymästä
+-   Lisätty Turret-luokka, joka on Tower-alaluokka
+
+## Viikko 4
+
+-   Kentälle voi synnyttää robotteja painamalla mitä vain näppäintä.
+-   Tornit voivat kääntyä ja ampua robotteja
+-   Lisätty Mech-luokka, joka on Robot-alaluokka.
+-   Lisätty Projectile-luokka, joka vastaa tornien ampumista ammuksista.

@@ -3,21 +3,21 @@ class Player:
 
     def __init__(self) -> None:
         self.__money = 0
-        self.__hp = 100
+        self.__health = 100
         self.lost = False
 
-    def getMoney(self) -> int:
+    def get_money(self) -> int:
         return self.__money
 
-    def spendMoney(self, amount) -> None:
+    def spend_money(self, amount) -> None:
         if self.__money >= amount:
             self.__money -= amount
 
-    def getHp(self) -> int:
-        return self.__hp
+    def get_health(self) -> int:
+        return self.__health
 
-    def loseHp(self, amount) -> None:
-        if self.__hp >= amount:
-            self.__hp -= amount
-        if self.__hp <= 0:
+    def lose_health(self, amount) -> None:
+        if self.__health >= amount:
+            self.__health -= amount
+        if self.__health <= 0:
             self.lost = True

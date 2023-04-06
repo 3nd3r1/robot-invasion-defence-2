@@ -11,7 +11,7 @@ class Map:
       It has methods for loading and displaying the map.
     """
 
-    def __init__(self, arena: str) -> None:
+    def __init__(self, arena: str, offsetx: int, offsety: int) -> None:
 
         self.__tmx = pytmx.load_pygame(
             get_tmx(arenas[arena]["map_file"]))
@@ -19,6 +19,9 @@ class Map:
         self.__width = self.__tmx.width * self.__tmx.tilewidth
         self.__height = self.__tmx.height * self.__tmx.tileheight
         self.__map = pygame.Surface((self.__width, self.__height))
+
+        self.__screen_offsetx = offsetx
+        self.__screen_offsety = offsety
 
         self.__obstacles = []
         self.__path = []
@@ -101,12 +104,12 @@ class Map:
 
     def __is_in_map(self, rect: pygame.Rect) -> bool:
         """ Checks if a rectangle is in the map """
-        return 188 < rect.centerx < self.__width+188 and 105 < rect.centery < self.__height+105
+        return self.__screen_offsetx < rect.centerx < self.__width+self.__screen_offsetx and self.__screen_offsety < rect.centery < self.__height+self.__screen_offsety
 
     def __to_screen_coords(self, x: int, y: int) -> tuple:
         """ Converts map coordinates to screen coordinates """
-        return (x + 188, y + 105)
+        return (x + self.__screen_offsetx, y + self.__screen_offsety)
 
     def draw(self, screen) -> None:
         """ Draws the image of the map to the main surface """
-        screen.blit(self.__map, (188, 105))
+        screen.blit(self.__map, (self.__screen_offsetx, self.__screen_offsety))
