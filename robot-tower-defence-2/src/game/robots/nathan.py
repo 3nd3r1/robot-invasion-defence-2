@@ -1,0 +1,62 @@
+import pygame
+
+from game.robot import Robot
+
+from utils.config import robots
+from utils.sheet_reader import get_robot_walk_images
+
+
+class Nathan(Robot):
+    """ NATHAN - Neural Autonomous Tactical Hunter Assassin Networked """
+    images = {}
+
+    def __init__(self, game: "Game") -> None:
+        health = robots["nathan"]["health"]
+        self.__speed = robots["nathan"]["speed"]
+        self.__base_damage = robots["nathan"]["base_damage"]
+        self.__base_bounty = robots["nathan"]["base_bounty"]
+
+        self.__animation_frame = 0
+        self.__animation_timer = 0
+        self.__animation_interval = robots["nathan"]["animation_interval"]
+
+        super().__init__(game, health)
+
+    @staticmethod
+    def load_images():
+        Nathan.images["walking"] = get_robot_walk_images("nathan")
+
+    @staticmethod
+    def render_robot(frame: int) -> pygame.Surface:
+        return Nathan.images["walking"][frame].copy()
+
+    def _draw_robot(self) -> None:
+
+        velocity = self.get_velocity()
+        offset = 0
+
+        if velocity[0] < 0 and velocity[1] == 0:
+            offset = 8
+        elif velocity[0] > 0 and velocity[1] == 0:
+            offset = 24
+        elif velocity[0] == 0 and velocity[1] < 0:
+            offset = 0
+        else:
+            offset = 16
+
+        if self.__animation_timer >= self.__animation_interval:
+            self.__animation_frame = ((
+                self.__animation_frame + 1) % 8) + offset
+            self.__animation_timer = 0
+        self.__animation_timer += 1
+
+        self.image = Nathan.render_robot(self.__animation_frame)
+
+    def get_speed(self) -> int:
+        return self.__speed
+
+    def get_damage(self) -> int:
+        return self.__base_damage
+
+    def get_bounty(self) -> int:
+        return self.__base_bounty

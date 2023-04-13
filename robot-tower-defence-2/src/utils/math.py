@@ -6,4 +6,4 @@ def distance_between_points(p1, p2):
 
 
 def get_angle(x, y):
-    return math.degrees(math.atan2(y, x))+90
+    return math.degrees(math.atan2(y, x))

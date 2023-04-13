@@ -9,9 +9,30 @@ general = {
 arenas = {
     "grass_fields": {
         "num_rounds": 100,
-        "robot_num_multiplier": 1,
-        "wave_num_multiplier": 1,
-        "map_file": "grass_fields.tmx"
+        "starting_money": 250,
+        "map_file": "grass_fields.tmx",
+        # The following rates are calculated with the formula: (final/base)**(1/num_rounds)
+
+        # The base number of robots in a wave
+        "robot_num_base": 10,
+        # The rate at which the number of robots in a wave increases
+        "robot_num_rate":  1.071519,
+        # The base number of waves in a round
+        "wave_num_base": 2,
+        # The rate at which the number of waves in a round increases
+        "wave_num_rate": 1.02035,
+        # The base spawn interval of a wave
+        "spawn_interval_base": 1000,
+        # The rate at which the spawn interval of a wave increases
+        "spawn_interval_rate": 0.63095,
+        # The base wave interval of a round
+        "wave_interval_base": 1000,
+        # The rate at which the wave interval of a round increases
+        "wave_interval_rate": 0.977237,
+        # The base round delay
+        "round_delay_base": 10000,
+        # The rate at which the round delay increases
+        "round_delay_rate": 0.977237,
     }
 }
 
@@ -21,8 +42,8 @@ towers = {
         "name": "Turret",
         "price": 200,
         "range": 200,
-        "shoot_interval": 10,
-        "projectile_start_offset": (20, -70),
+        "shoot_interval": 500,
+        "projectile_start_offset": (0, -20),
         "projectile_speed": 10,
         "projectile_damage": 1,
         "can_be_in_water": False,
@@ -34,13 +55,35 @@ towers = {
 }
 
 robots = {
-    "mech": {
-        "name": "Mech",
+    "minx": {
+        "name": "MINX",
+        "health": 1,
         "speed": 1,
-        "damage": 1,
-        "walk_sheet": "robots/mech/walk.png",
-        "walk_rects": [(0, 0, 64, 64), (64, 0, 64, 64), (128, 0, 64, 64), (192, 0, 64, 64), (256, 0, 64, 64), (320, 0, 64, 64), (384, 0, 64, 64), (448, 0, 64, 64), (0, 64, 64, 64), (64, 64, 64, 64), (128, 64, 64, 64), (192, 64, 64, 64), (256, 64, 64, 64), (320, 64, 64, 64), (384, 64, 64, 64), (448, 64, 64, 64), (0, 128, 64, 64), (64, 128, 64, 64), (128, 128, 64, 64), (192, 128, 64, 64), (256, 128, 64, 64), (320, 128, 64, 64), (384, 128, 64, 64), (448, 128, 64, 64), (0, 192, 64, 64), (64, 192, 64, 64), (128, 192, 64, 64), (192, 192, 64, 64), (256, 192, 64, 64), (320, 192, 64, 64), (384, 192, 64, 64), (448, 192, 64, 64)],
-        "animation_interval": 10,
+        "base_damage": 1,
+        "base_bounty": 1,
+        "walk_sheet": "robots/minx/walk.png",
+        "walk_sheet_size": (9, 4),  # (columns, rows)
+        "animation_interval": 100,
+    },
+    "nathan": {
+        "name": "NATHAN",
+        "health": 1,
+        "speed": 1,
+        "base_damage": 1,
+        "base_bounty": 1,
+        "walk_sheet": "robots/nathan/walk.png",
+        "walk_sheet_size": (8, 4),  # (columns, rows)
+        "animation_interval": 100,
+    },
+    "archie": {
+        "name": "ARCHIE",
+        "health": 1,
+        "speed": 1,
+        "base_damage": 1,
+        "base_bounty": 1,
+        "walk_sheet": "robots/archie/walk.png",
+        "walk_sheet_size": (8, 4),  # (columns, rows)
+        "animation_interval": 100,
     }
 }
 

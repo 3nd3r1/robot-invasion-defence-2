@@ -1,80 +1,87 @@
+from abc import ABC, abstractmethod
 import pygame
+
 from utils.logger import logger
 
 
-class Robot(pygame.sprite.Sprite):
+class Robot(pygame.sprite.Sprite, ABC):
     """This class represents a robot that moves along the map. It has properties such as speed, health, and type, and methods for moving and being damaged."""
 
-    def __init__(self, health: int, game: "Game") -> None:
+    def __init__(self, game: "Game", health: int) -> None:
         super().__init__()
         self.image = pygame.Surface((64, 64))
         self.rect = self.image.get_rect()
 
-        self._walking_images = []
-        self._walking_frame = 0
-        self._animation_timer = 0
-        self._animation_interval = 0
-
-        self._speed = 1
-        self._damage = 1
-
-        self.__game = game
-        self.__waypoints = self.__game.get_map().get_waypoints()
-        self.__current_waypoint = 0
         self.__velocity = (0, 0)
-
         self.__health = health
 
-        self.rect.center = self.__waypoints[self.__current_waypoint]
+        self.__game = game
+        self.__waypoints = iter(self.__game.get_map().get_waypoints())
+        self.__current_waypoint = next(self.__waypoints)
+
+        self.rect.center = self.__current_waypoint
+
+        logger.debug(f"Robot ({id(self)}) created with {self.get_health()} HP")
 
     def update(self) -> None:
-        if self.__health <= 0 or self.__current_waypoint >= len(self.__waypoints):
-            self.__game.get_player().lose_health(self._damage)
+        if self.get_health() <= 0:
+            self.__game.get_player().earn_money(self.get_bounty())
+            logger.debug(f"Robot ({id(self)}) died")
             self.kill()
             return
 
-        self.animate()
-        tx = int(self.__waypoints[self.__current_waypoint][0])
-        ty = int(self.__waypoints[self.__current_waypoint][1])
-        self.__velocity = (min(max(tx-self.rect.centerx, -self._speed), self._speed),
-                           min(max(ty-self.rect.centery, -self._speed), self._speed))
-        self.rect.move_ip(self.__velocity)
-        if self.__velocity == (0, 0):
-            self.__current_waypoint += 1
-
-    def animate(self) -> None:
-        """This method animates the robot's walking. It can be overridden by subclasses to add more animations."""
-        if self._animation_timer < self._animation_interval:
-            self._animation_timer += 1
+        if not self.__current_waypoint:
+            self.__game.get_player().lose_health(self.get_damage())
+            logger.debug(f"Robot ({id(self)}) reached the end of the map")
+            self.kill()
             return
 
-        self._animation_timer = 0
+        tx = self.__current_waypoint[0]
+        ty = self.__current_waypoint[1]
 
-        if self.__velocity[0] == 0 and self.__velocity[1] < 0:
-            if self._walking_frame > 6:
-                self._walking_frame = 0
-            else:
-                self._walking_frame += 1
-        elif self.__velocity[0] < 0 and self.__velocity[1] == 0:
-            if self._walking_frame > 14 or self._walking_frame < 8:
-                self._walking_frame = 8
-            else:
-                self._walking_frame += 1
-        elif self.__velocity[0] == 0 and self.__velocity[1] > 0:
-            if self._walking_frame > 22 or self._walking_frame < 16:
-                self._walking_frame = 16
-            else:
-                self._walking_frame += 1
-        else:
-            if self._walking_frame > 30 or self._walking_frame < 24:
-                self._walking_frame = 24
-            else:
-                self._walking_frame += 1
+        self.__velocity = (min(max(tx-self.rect.centerx, -self.get_speed()), self.get_speed()),
+                           min(max(ty-self.rect.centery, -self.get_speed()), self.get_speed()))
+        self.rect.move_ip(self.get_velocity())
 
-        self.image = self._walking_images[self._walking_frame].copy()
+        self._draw_robot()
+
+        if self.get_velocity() == (0, 0):
+            self.__current_waypoint = next(self.__waypoints, None)
 
     def lose_health(self, amount: int) -> None:
         """This method decreases the robot's health by the given amount."""
-        self.__health -= amount
-        if self.__health <= 0:
-            self.kill()
+        self.__health = self.__health - amount
+
+    def get_health(self) -> int:
+        """This method returns the robot's health."""
+        return self.__health
+
+    def get_velocity(self) -> tuple:
+        """This method returns the robot's velocity."""
+        return self.__velocity
+
+    @staticmethod
+    @abstractmethod
+    def load_images():
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def render_robot(frame: int) -> pygame.Surface:
+        pass
+
+    @abstractmethod
+    def _draw_robot(self) -> None:
+        pass
+
+    @abstractmethod
+    def get_damage(self) -> int:
+        pass
+
+    @abstractmethod
+    def get_bounty(self) -> int:
+        pass
+
+    @abstractmethod
+    def get_speed(self) -> int:
+        pass

@@ -1,0 +1,61 @@
+import pygame
+
+from game.robot import Robot
+from utils.sheet_reader import get_robot_walk_images
+from utils.config import robots
+
+
+class Archie(Robot):
+    """ ARCHIE - Advanced Robust Combat Heavy Intelligent Exterminator """
+    images = {}
+
+    def __init__(self, game: "Game") -> None:
+        health = robots["archie"]["health"]
+        self.__speed = robots["archie"]["speed"]
+        self.__base_damage = robots["archie"]["base_damage"]
+        self.__base_bounty = robots["archie"]["base_bounty"]
+
+        self.__animation_frame = 0
+        self.__animation_timer = 0
+        self.__animation_interval = robots["archie"]["animation_interval"]
+
+        super().__init__(game, health)
+
+    @staticmethod
+    def load_images():
+        Archie.images["walking"] = get_robot_walk_images("archie")
+
+    @staticmethod
+    def render_robot(frame: int) -> pygame.Surface:
+        return Archie.images["walking"][frame].copy()
+
+    def _draw_robot(self) -> None:
+
+        velocity = self.get_velocity()
+        offset = 0
+
+        if velocity[0] < 0 and velocity[1] == 0:
+            offset = 8
+        elif velocity[0] > 0 and velocity[1] == 0:
+            offset = 24
+        elif velocity[0] == 0 and velocity[1] < 0:
+            offset = 0
+        else:
+            offset = 16
+
+        if self.__animation_timer >= self.__animation_interval:
+            self.__animation_frame = ((
+                self.__animation_frame + 1) % 8) + offset
+            self.__animation_timer = 0
+        self.__animation_timer += 1
+
+        self.image = Archie.render_robot(self.__animation_frame)
+
+    def get_bounty(self) -> int:
+        return self.__base_bounty
+
+    def get_damage(self) -> int:
+        return self.__base_damage
+
+    def get_speed(self) -> int:
+        return self.__speed

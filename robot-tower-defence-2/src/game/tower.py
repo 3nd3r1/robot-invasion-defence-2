@@ -1,83 +1,101 @@
 import pygame
+
+from abc import ABC, abstractmethod
+
 from utils.logger import logger
 from utils.math import get_angle
 
 
-class Tower(pygame.sprite.Sprite):
+class Tower(pygame.sprite.Sprite, ABC):
     """ This class represents a tower that can be placed on the map. It has properties such as cost, range, and damage, and methods for upgrading and selling the tower. """
 
-    def __init__(self) -> None:
+    def __init__(self, game: "Game") -> None:
         super().__init__()
         self.image = pygame.Surface((150, 150), pygame.constants.SRCALPHA, 32)
         self.rect = self.image.get_rect()
 
-        self._game = None
-
+        self.__game = game
         self.__placing = True
-        self._target = None
+        self.__target = None
 
-        self.__shoot_timer = 0
+        self.__last_shot = 0
 
     def place(self) -> None:
         """ Place the tower on the map """
         self.__placing = False
 
-    def _render_tower(self) -> None:
-        """ Renders the tower can be overwritten by child class"""
-        self.image = pygame.Surface((150, 150), pygame.constants.SRCALPHA, 32)
-        base = self._images[0]
-        model_1 = self._images[1]
-
-        tower_offset = pygame.math.Vector2(-10, -15)
-
-        if self._target:
-            dx = self._target.rect.centerx - self.rect.centerx
-            dy = self._target.rect.centery - self.rect.centery
-            model_1 = pygame.transform.rotate(
-                model_1, -get_angle(dx, dy))
-            tower_offset = tower_offset.rotate(get_angle(dx, dy))
-
-        base_rect = base.get_rect(
-            center=self.image.get_rect().center)
-        tower_rect = model_1.get_rect(
-            center=base_rect.center).move(tower_offset)
-
-        self.image.blit(base, base_rect)
-        self.image.blit(model_1, tower_rect)
-
     def draw(self, screen) -> None:
-        """ Draws the tower to the screen """
+        """ Blits the tower to the screen """
         if self.__placing:
             pygame.draw.circle(screen, (50, 50, 50), self.rect.center,
-                               self._range,  1)
+                               self.get_range(),  1)
         screen.blit(self.image, self.rect)
 
     def update(self) -> None:
-        self._render_tower()
+        self._draw_tower()
+
         if self.__placing:
             self.rect.center = pygame.mouse.get_pos()
             return
 
-        self._target = self._game.get_closest_robot_in_range(self)
-        if self._target and self.__shoot_timer >= self._shoot_interval:
-            self.__shoot_timer = 0
-            self._shoot()
+        self.__target = self.get_game().get_closest_robot_in_range(self)
+        now = pygame.time.get_ticks()
 
-        self.__shoot_timer += 1
+        if self.get_target() and now - self.__last_shot >= self.get_shoot_interval():
+            self.__last_shot = now
+            self._shoot()
 
     def on_click(self) -> None:
         """ This is called when the tower is clicked """
         pass
 
-    def can_be_in_water(self) -> bool:
-        """ Returns if the tower can be placed in water """
-        return self._can_be_in_water
+    def get_target_angle(self) -> float:
+        """ Returns the angle to the target """
+        if not self.get_target():
+            return 0
 
+        dx = self.get_target().rect.centerx - self.rect.centerx
+        dy = self.get_target().rect.centery - self.rect.centery
+        return get_angle(dx, dy)+90
+
+    def get_target(self) -> "Robot":
+        """ Returns the target """
+        return self.__target
+
+    def get_game(self) -> "Game":
+        """ Returns the game """
+        return self.__game
+
+    @staticmethod
+    @abstractmethod
+    def load_images() -> None:
+        pass
+
+    @staticmethod
+    @abstractmethod
+    def render_tower(angle: float) -> pygame.Surface:
+        pass
+
+    @abstractmethod
+    def _draw_tower(self) -> None:
+        pass
+
+    @abstractmethod
+    def _shoot(self) -> None:
+        pass
+
+    @abstractmethod
     def get_range(self) -> int:
-        """ Returns the range of the tower """
-        return self._range
+        pass
 
+    @abstractmethod
     def get_hitbox(self) -> pygame.Rect:
-        """ Returns the hitbox of the tower """
-        self._hitbox.center = self.rect.center
-        return self._hitbox
+        pass
+
+    @abstractmethod
+    def can_be_in_water(self) -> bool:
+        pass
+
+    @abstractmethod
+    def get_shoot_interval(self) -> int:
+        pass
