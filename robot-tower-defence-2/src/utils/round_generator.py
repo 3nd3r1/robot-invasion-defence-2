@@ -11,14 +11,16 @@ def generate_rounds(arena: str) -> list:
 
     robot_num_base = arenas[arena]["robot_num_base"]
     wave_num_base = arenas[arena]["wave_num_base"]
-    spawn_interval_base = arenas[arena]["spawn_interval_base"]
-    wave_interval_base = arenas[arena]["wave_interval_base"]
+    spawn_delay_base = arenas[arena]["spawn_delay_base"]
+    wave_delay_base = arenas[arena]["wave_delay_base"]
     round_delay_base = arenas[arena]["round_delay_base"]
+
+    spawn_delay_min = arenas[arena]["spawn_delay_min"]
 
     robot_num_rate = arenas[arena]["robot_num_rate"]
     wave_num_rate = arenas[arena]["wave_num_rate"]
-    spawn_interval_rate = arenas[arena]["spawn_interval_rate"]
-    wave_interval_rate = arenas[arena]["wave_interval_rate"]
+    spawn_delay_rate = arenas[arena]["spawn_delay_rate"]
+    wave_delay_rate = arenas[arena]["wave_delay_rate"]
     round_delay_rate = arenas[arena]["round_delay_rate"]
 
     def generate_wave(num_round: int) -> list:
@@ -28,10 +30,9 @@ def generate_rounds(arena: str) -> list:
         nathan_num = 0
         archie_num = 0
 
-        spawn_interval = round(spawn_interval_base *
-                               spawn_interval_rate**(num_round-1))
+        wave_delay = wave_delay_base * wave_delay_rate**(num_round-1)
 
-        wave = {"robots": [], "spawn_interval": spawn_interval}
+        wave = {"robots": [], "wave_delay": wave_delay}
 
         if robot_num > 100:
             archie_num = robot_num // 100
@@ -43,25 +44,31 @@ def generate_rounds(arena: str) -> list:
 
         minx_num = robot_num
 
+        spawn_delay_minx = max(spawn_delay_min, round(spawn_delay_base *
+                                                      spawn_delay_rate**(num_round-1)))
+        spawn_delay_nathan = max(spawn_delay_min, round(spawn_delay_base *
+                                                        spawn_delay_rate**(max(1, num_round-1-20))))
+        spawn_delay_archie = max(spawn_delay_min, round(spawn_delay_base *
+                                                        spawn_delay_rate**(max(1, num_round-1-40))))
+
         for _ in range(minx_num):
-            robot = {"type": "minx"}
+            robot = {"type": "minx", "spawn_delay": spawn_delay_minx}
             wave["robots"].append(robot)
 
         for _ in range(nathan_num):
-            robot = {"type": "nathan"}
+            robot = {"type": "nathan", "spawn_delay": spawn_delay_nathan}
             wave["robots"].append(robot)
 
         for _ in range(archie_num):
-            robot = {"type": "archie"}
+            robot = {"type": "archie", "spawn_delay": spawn_delay_archie}
             wave["robots"].append(robot)
 
         return wave
 
     def generate_round(num_round: int) -> list:
         wave_num = round(wave_num_base * wave_num_rate**(num_round-1))
-        wave_interval = wave_interval_base * wave_interval_rate**(num_round-1)
         round_delay = round_delay_base * round_delay_rate**(num_round-1)
 
-        return {"waves": [generate_wave(num_round) for _ in range(1, wave_num+1)], "wave_interval": wave_interval, "round_delay": round_delay}
+        return {"waves": [generate_wave(num_round) for _ in range(1, wave_num+1)], "round_delay": round_delay}
 
     return [generate_round(i) for i in range(1, num_rounds+1)]

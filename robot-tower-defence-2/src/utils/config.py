@@ -22,13 +22,15 @@ arenas = {
         # The rate at which the number of waves in a round increases
         "wave_num_rate": 1.02035,
         # The base spawn interval of a wave
-        "spawn_interval_base": 1000,
+        "spawn_delay_base": 1000,
+        # The minimum value of the spawn interval
+        "spawn_delay_min": 100,
         # The rate at which the spawn interval of a wave increases
-        "spawn_interval_rate": 0.63095,
+        "spawn_delay_rate": 0.63095,
         # The base wave interval of a round
-        "wave_interval_base": 1000,
+        "wave_delay_base": 1000,
         # The rate at which the wave interval of a round increases
-        "wave_interval_rate": 0.977237,
+        "wave_delay_rate": 0.977237,
         # The base round delay
         "round_delay_base": 10000,
         # The rate at which the round delay increases
@@ -74,8 +76,8 @@ robots = {
         "base_bounty": 1,
         "walk_sheet": "robots/nathan/walk.png",
         "walk_sheet_size": (8, 4),  # (columns, rows)
-        "path_offset": (-5, 0),
-        "animation_interval": 50,
+        "path_offset": (0, 0),
+        "animation_interval": 10,
     },
     "archie": {
         "name": "ARCHIE",

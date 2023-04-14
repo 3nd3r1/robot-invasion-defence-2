@@ -18,23 +18,26 @@ class Robot(pygame.sprite.Sprite, ABC):
 
         self.__game = game
 
-        self.__waypoints = self.__get_waypoints()
+        self.__waypoints = iter(self.__get_waypoints())
         self.__current_waypoint = next(self.__waypoints)
 
         self.rect.center = self.__current_waypoint
 
         logger.debug(f"Robot ({id(self)}) created with {self.get_health()} HP")
 
-    def __get_waypoints(self):
+    def __get_waypoints(self) -> list:
         waypoints = self.__game.get_map().get_waypoints()
+        offset_waypoints = []
 
         for i, waypoint in enumerate(waypoints[:-1]):
             dx = waypoints[i+1][0] - waypoint[0]
             dy = waypoints[i+1][1] - waypoint[1]
 
             path_offset = self.get_path_offset().rotate(get_angle(dx, dy))
-            yield (round(waypoint[0]+path_offset[0]),
-                   round(waypoint[1]+path_offset[1]))
+            offset_waypoints.append((round(waypoint[0]+path_offset[0]),
+                                    round(waypoint[1]+path_offset[1])))
+
+        return offset_waypoints
 
     def update(self) -> None:
         if self.get_health() <= 0:
@@ -52,11 +55,9 @@ class Robot(pygame.sprite.Sprite, ABC):
         tx = self.__current_waypoint[0]
         ty = self.__current_waypoint[1]
 
-        self.__velocity = (min(max(tx-self.rect.centerx, -self.get_speed()), self.get_speed()),
-                           min(max(ty-self.rect.centery, -self.get_speed()), self.get_speed()))
+        self.__velocity = (min(max(tx-self.rect.move(self.rect.width//2+self.get_path_offset()[0], 0).left, -self.get_speed()), self.get_speed()),
+                           min(max(ty-self.rect.move(0, self.rect.height+self.get_path_offset()[1]).top, -self.get_speed()), self.get_speed()))
         self.rect.move_ip(self.get_velocity())
-
-        logger.debug(f"{self.get_velocity()} and {self.__current_waypoint}")
 
         self._draw_robot()
 

@@ -36,10 +36,10 @@ class RoundManager:
         if time_now-self.__last_round < current_round["round_delay"]:
             return
 
-        if time_now-self.__last_wave < current_round["wave_interval"]:
+        if time_now-self.__last_wave < current_wave["wave_delay"]:
             return
 
-        if time_now-self.__last_spawn < current_wave["spawn_interval"]:
+        if time_now-self.__last_spawn < current_robot["spawn_delay"]:
             return
 
         self.__game.spawn_robot(current_robot["type"])
