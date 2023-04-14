@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 import pygame
 
 from utils.logger import logger
+from utils.math import get_angle
 
 
 class Robot(pygame.sprite.Sprite, ABC):
@@ -36,8 +37,13 @@ class Robot(pygame.sprite.Sprite, ABC):
             self.kill()
             return
 
-        tx = self.__current_waypoint[0]
-        ty = self.__current_waypoint[1]
+        dx = self.__current_waypoint[0] - self.rect.centerx
+        dy = self.__current_waypoint[1] - self.rect.centery
+
+        path_offset = self.get_path_offset().rotate(get_angle(dx, dy))
+
+        tx = self.__current_waypoint[0]+path_offset[0]
+        ty = self.__current_waypoint[1]+path_offset[1]
 
         self.__velocity = (min(max(tx-self.rect.centerx, -self.get_speed()), self.get_speed()),
                            min(max(ty-self.rect.centery, -self.get_speed()), self.get_speed()))
@@ -84,4 +90,8 @@ class Robot(pygame.sprite.Sprite, ABC):
 
     @abstractmethod
     def get_speed(self) -> int:
+        pass
+
+    @abstractmethod
+    def get_path_offset(self) -> pygame.math.Vector2:
         pass

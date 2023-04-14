@@ -14,6 +14,7 @@ class Minx(Robot):
         self.__speed = robots["minx"]["speed"]
         self.__base_damage = robots["minx"]["base_damage"]
         self.__base_bounty = robots["minx"]["base_bounty"]
+        self.__path_offset = pygame.math.Vector2(robots["minx"]["path_offset"])
 
         self.__animation_frame = 0
         self.__last_animation = 0
@@ -60,3 +61,6 @@ class Minx(Robot):
 
     def get_speed(self) -> int:
         return self.__speed
+
+    def get_path_offset(self) -> pygame.math.Vector2:
+        return self.__path_offset

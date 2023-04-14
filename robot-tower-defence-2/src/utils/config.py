@@ -58,31 +58,34 @@ robots = {
     "minx": {
         "name": "MINX",
         "health": 1,
-        "speed": 1,
+        "speed": 2,
         "base_damage": 1,
         "base_bounty": 1,
         "walk_sheet": "robots/minx/walk.png",
         "walk_sheet_size": (9, 4),  # (columns, rows)
+        "path_offset": (0, 0),
         "animation_interval": 100,
     },
     "nathan": {
         "name": "NATHAN",
-        "health": 1,
+        "health": 5,
         "speed": 1,
         "base_damage": 1,
         "base_bounty": 1,
         "walk_sheet": "robots/nathan/walk.png",
         "walk_sheet_size": (8, 4),  # (columns, rows)
-        "animation_interval": 100,
+        "path_offset": (-5, 0),
+        "animation_interval": 50,
     },
     "archie": {
         "name": "ARCHIE",
-        "health": 1,
+        "health": 100,
         "speed": 1,
         "base_damage": 1,
         "base_bounty": 1,
         "walk_sheet": "robots/archie/walk.png",
         "walk_sheet_size": (8, 4),  # (columns, rows)
+        "path_offset": (0, 0),
         "animation_interval": 100,
     }
 }

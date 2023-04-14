@@ -14,6 +14,8 @@ class Archie(Robot):
         self.__speed = robots["archie"]["speed"]
         self.__base_damage = robots["archie"]["base_damage"]
         self.__base_bounty = robots["archie"]["base_bounty"]
+        self.__path_offset = pygame.math.Vector2(
+            robots["archie"]["path_offset"])
 
         self.__animation_frame = 0
         self.__animation_timer = 0
@@ -59,3 +61,6 @@ class Archie(Robot):
 
     def get_speed(self) -> int:
         return self.__speed
+
+    def get_path_offset(self) -> pygame.math.Vector2:
+        return self.__path_offset
