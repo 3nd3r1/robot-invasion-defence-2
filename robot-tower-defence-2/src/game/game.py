@@ -11,7 +11,6 @@ from game.round_manager import RoundManager
 from game.ui import Ui
 from game.player import Player
 from game.tower import Tower
-from game.projectile import Projectile
 from game.robot import Robot
 
 from game.towers.turret import Turret
@@ -27,7 +26,6 @@ class Game:
     def __init__(self, arena: str) -> None:
         self.__loading = True
         self.__running = True
-        self.__paused = False
 
         self.__screen = pygame.display.set_mode(
             (general["display_width"], general["display_height"]))
@@ -35,7 +33,7 @@ class Game:
 
         self.__arena = arena
         self.__ui = Ui(self)
-        self.__map = Map(arena, 188, 105)
+        self.__map = Map(arena, (188, 105))
         self.__player = Player(arenas[arena]["starting_money"])
 
         self.__round_manager = RoundManager(self)
@@ -70,24 +68,17 @@ class Game:
         elif robot_type == "archie":
             self.__robots.add(Archie(self))
 
-    def place_tower(self) -> None:
-        """ Place a tower on the map """
-        for tower in self.__towers:
-            if tower.rect.collidepoint(self.__new_tower.rect.center):
-                logger.debug("Tower collides with another tower")
-                return
-        if self.__map.is_valid_tower_position(self.__new_tower):
-            self.__new_tower.place()
-            self.__towers.add(self.__new_tower)
-            self.__new_tower = None
-
-    def create_tower(self, tower_name: str) -> None:
+    def create_tower(self, tower_name) -> Tower:
         """ Create a new tower """
         if tower_name == "turret":
             self.__new_tower = Turret(self)
+        return self.__new_tower
 
-    def add_projectile(self, projectile: "Projectile") -> None:
+    def add_projectile(self, projectile):
         self.__projectiles.add(projectile)
+
+    def add_tower(self, tower):
+        self.__towers.add(tower)
 
     def update(self) -> None:
         """ Update all game objects """
@@ -96,6 +87,7 @@ class Game:
 
         if self.__new_tower:
             self.__new_tower.update()
+
         self.__round_manager.update()
 
         self.__projectiles.update()
@@ -104,6 +96,7 @@ class Game:
 
     def draw(self, screen) -> None:
         """ Draw all game objects """
+        screen.fill((0, 0, 0))
         self.__map.draw(screen)
         self.__projectiles.draw(screen)
         self.__towers.draw(screen)
@@ -117,8 +110,10 @@ class Game:
         """ Handle click events """
         logger.debug(f"Click at {pos}")
         if self.__new_tower:
-            self.place_tower()
+            if self.__new_tower.place(pos):
+                self.__new_tower = None
             return
+
         self.__ui.on_click(pos)
         for tower in self.__towers:
             if tower.rect.collidepoint(pos):
@@ -146,7 +141,7 @@ class Game:
         self.__projectiles.empty()
         self.__robots.empty()
 
-    def get_closest_robot_in_range(self, tower: "Tower") -> "Robot" or None:
+    def get_closest_robot_in_range(self, tower):
         """ Get the closest robot to the tower """
         closest_robot = None
         for robot in self.__robots:
@@ -167,3 +162,6 @@ class Game:
 
     def get_player(self) -> Player:
         return self.__player
+
+    def get_towers(self) -> list:
+        return self.__towers.sprites()

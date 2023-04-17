@@ -1,20 +1,16 @@
 """ src/tests/map_test.py  """
 import unittest
-import pygame
-from game.map import Map
-from game.towers.turret import Turret
+from game.game import Game
 
 
 class TestMap(unittest.TestCase):
     """ Tests the Map class"""
 
     def setUp(self) -> None:
-        pygame.display.set_mode((1280, 720))
-        self.test_map = Map("grass_fields", 0, 0)
+        self.test_game = Game("grass_fields")
 
     def test_tower_placement_valid(self):
-        valid_tower = Turret()
-        valid_tower.rect.center = (500, 500)
+        self.test_game.create_tower("turret")
         self.assertTrue(self.test_map.is_valid_tower_position(valid_tower))
 
     def test_tower_placement_invalid(self):

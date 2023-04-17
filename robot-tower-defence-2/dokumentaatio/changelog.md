@@ -15,7 +15,7 @@ Robot Invasion Defence II-pelin changelog.
 
 ## Viikko 4
 
--   Kentälle voi synnyttää robotteja painamalla mitä vain näppäintä.
+-   Kentälle syntyy robotteja kierrosten mukaan.
 -   Tornit voivat kääntyä ja ampua robotteja
--   Lisätty Mech-luokka, joka on Robot-alaluokka.
+-   Lisätty 3 eri robotti-tyyppiä: ARCHIE, NATHAN ja MINX
 -   Lisätty Projectile-luokka, joka vastaa tornien ampumista ammuksista.

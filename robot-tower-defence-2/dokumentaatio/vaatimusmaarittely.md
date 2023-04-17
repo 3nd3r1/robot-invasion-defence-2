@@ -32,19 +32,19 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 
 ### Peli
 
--   Käyttäjällä on peli kohtaiset elämät (HP)
+-   Käyttäjällä on peli kohtaiset elämät **(tehty)**
     -   Elämät näkyvät näkymässä
-    -   Elämät vähenevät robottien päästessä läpi.
--   Käyttäjällä on peli kohtainen valuutta (rahaa)
+    -   Elämät vähenevät robottien päästessä läpi. **(tehty)**
+-   Käyttäjällä on peli kohtainen valuutta **(tehty)**
     -   Valuutta näkyy näkymässä
-    -   Valuutta kasvaa tuhotessa robotteja
+    -   Valuutta kasvaa tuhotessa robotteja **(tehty)**
 -   Käyttäjä voi laittaa pelin tauolle
     -   Tauko näkymässä pelin voi lopettaa
 -   Käyttäjä voi voittaa ja hävitä pelin
-    -   Käyttäjä häviää, kun elämät tippuvat nollaan
-    -   Käyttäjä voittaa, kun pääsee tasolle 100
--   Käyttäjä voi asettaa torneja (tehty)
-    -   Tornit toimivat
+    -   Käyttäjä häviää, kun elämät tippuvat nollaan **(tehty)**
+    -   Käyttäjä voittaa, kun pääsee tietylle tasolle
+-   Käyttäjä voi asettaa torneja **(tehty)**
+    -   Tornit toimivat **(tehty)**
 -   Käyttäjä voi poistaa/myydä torneja
 
 ## Jatkokehitysideoita

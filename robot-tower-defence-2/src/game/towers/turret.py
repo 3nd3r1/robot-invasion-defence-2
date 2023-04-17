@@ -6,7 +6,6 @@ from game.projectile import Projectile
 
 from utils.config import towers
 from utils.file_reader import get_image
-from utils.logger import logger
 
 
 class Turret(Tower):
@@ -14,11 +13,11 @@ class Turret(Tower):
 
     images = {}
 
-    def __init__(self, game: "Game") -> None:
+    def __init__(self, game) -> None:
         self.__can_be_in_water = towers["turret"]["can_be_in_water"]
         self.__range = towers["turret"]["range"]
         self.__shoot_interval = towers["turret"]["shoot_interval"]
-        self.__hitbox = pygame.Rect(0, 0, 100, 100)
+        self.__hitbox = pygame.Rect(0, 0, 60, 60)
 
         super().__init__(game)
 
@@ -61,11 +60,11 @@ class Turret(Tower):
         screen.blit(model_1, tower_rect)
         return screen
 
-    def _draw_tower(self) -> None:
+    def _draw_tower(self):
         """ Draws the tower to the sprite image """
         self.image = Turret.render_tower(self.get_target_angle())
 
-    def _shoot(self) -> None:
+    def _shoot(self):
         """ Shoots a turret projectile """
         if not self.get_target():
             return
@@ -83,14 +82,15 @@ class Turret(Tower):
     def get_shoot_interval(self) -> int:
         return self.__shoot_interval
 
-    def get_hitbox(self) -> pygame.Rect:
+    def get_hitbox(self):
+        self.__hitbox.center = self.rect.center
         return self.__hitbox
 
 
 class TurretProjectile(Projectile):
     images = {}
 
-    def __init__(self, target: "Robot", starting_pos) -> None:
+    def __init__(self, target, starting_pos) -> None:
         self.__speed = towers["turret"]["projectile_speed"]
         self.__damage = towers["turret"]["projectile_damage"]
 
@@ -99,14 +99,14 @@ class TurretProjectile(Projectile):
         super().__init__(target, starting_pos, start_offset)
 
     @staticmethod
-    def load_images() -> None:
+    def load_images():
         projectile = pygame.image.load(
             get_image(towers["turret"]["projectile"]))
         projectile = pygame.transform.scale_by(projectile, 0.75)
         TurretProjectile.images["projectile"] = projectile
 
     @staticmethod
-    def render_projectile(angle: float) -> pygame.Surface:
+    def render_projectile(angle):
         """ Renders the projectile """
         screen = pygame.Surface((50, 50), pygame.constants.SRCALPHA, 32)
 
@@ -119,7 +119,7 @@ class TurretProjectile(Projectile):
         screen.blit(projectile, projectile_rect)
         return screen
 
-    def _draw_projectile(self) -> None:
+    def _draw_projectile(self):
         self.image = TurretProjectile.render_projectile(
             self.get_target_angle())
 

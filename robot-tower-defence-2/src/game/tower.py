@@ -1,15 +1,19 @@
+from abc import ABC, abstractmethod
 import pygame
 
-from abc import ABC, abstractmethod
-
-from utils.logger import logger
 from utils.math import get_angle
+from utils.logger import logger
+from utils.config import colors
 
 
 class Tower(pygame.sprite.Sprite, ABC):
-    """ This class represents a tower that can be placed on the map. It has properties such as cost, range, and damage, and methods for upgrading and selling the tower. """
+    """
+      This class represents a tower that can be placed on the map.
+      It has properties such as cost, range, and damage,
+      and methods for upgrading and selling the tower. 
+    """
 
-    def __init__(self, game: "Game") -> None:
+    def __init__(self, game):
         super().__init__()
         self.image = pygame.Surface((150, 150), pygame.constants.SRCALPHA, 32)
         self.rect = self.image.get_rect()
@@ -20,18 +24,37 @@ class Tower(pygame.sprite.Sprite, ABC):
 
         self.__last_shot = 0
 
-    def place(self) -> None:
+    def place(self, pos) -> bool:
         """ Place the tower on the map """
-        self.__placing = False
+        if not self.__placing:
+            return False
 
-    def draw(self, screen) -> None:
+        self.rect.center = pos
+        if self.is_valid_position():
+            self.__placing = False
+            self.get_game().add_tower(self)
+            logger.debug(f"Placing tower at {pos}")
+            return True
+
+        return False
+
+    def draw(self, screen):
         """ Blits the tower to the screen """
         if self.__placing:
-            pygame.draw.circle(screen, (50, 50, 50), self.rect.center,
-                               self.get_range(),  1)
+            range_color = colors["valid_tower_range"]
+            if not self.is_valid_position():
+                range_color = colors["invalid_tower_range"]
+
+            range_circle = pygame.Surface(
+                (self.get_range()*2, self.get_range()*2), pygame.constants.SRCALPHA, 32)
+            pygame.draw.circle(range_circle, range_color,
+                               (self.get_range(), self.get_range()), self.get_range())
+            screen.blit(range_circle, (self.rect.centerx-self.get_range(),
+                        self.rect.centery-self.get_range()))
+
         screen.blit(self.image, self.rect)
 
-    def update(self) -> None:
+    def update(self):
         self._draw_tower()
 
         if self.__placing:
@@ -45,26 +68,46 @@ class Tower(pygame.sprite.Sprite, ABC):
             self.__last_shot = now
             self._shoot()
 
-    def on_click(self) -> None:
+    def on_click(self):
         """ This is called when the tower is clicked """
-        pass
+        return
 
     def get_target_angle(self) -> float:
         """ Returns the angle to the target """
         if not self.get_target():
             return 0
 
-        dx = self.get_target().rect.centerx - self.rect.centerx
-        dy = self.get_target().rect.centery - self.rect.centery
-        return get_angle(dx, dy)+90
+        difference_x = self.get_target().rect.centerx - self.rect.centerx
+        difference_y = self.get_target().rect.centery - self.rect.centery
+        return get_angle(difference_x, difference_y)+90
 
-    def get_target(self) -> "Robot":
+    def get_target(self):
         """ Returns the target """
         return self.__target
 
-    def get_game(self) -> "Game":
+    def get_game(self):
         """ Returns the game """
         return self.__game
+
+    def is_valid_position(self) -> bool:
+        """ Returns true if the tower is a valid position """
+        for tower in self.get_game().get_towers():
+            if tower.get_hitbox().colliderect(self.get_hitbox()):
+                return False
+
+        if self.get_game().get_map().is_in_obstacle(self.get_hitbox()):
+            return False
+
+        if self.get_game().get_map().is_in_path(self.get_hitbox()):
+            return False
+
+        if self.get_game().get_map().is_in_water(self.get_hitbox()) and not self.can_be_in_water():
+            return False
+
+        if not self.get_game().get_map().is_in_map(self.get_hitbox()):
+            return False
+
+        return True
 
     @staticmethod
     @abstractmethod

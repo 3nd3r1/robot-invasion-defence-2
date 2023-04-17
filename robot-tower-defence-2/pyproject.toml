@@ -19,6 +19,9 @@ autopep8 = "^2.0.2"
 pytest = "^7.2.2"
 coverage = "^7.2.2"
 
+[tool.autopep8]
+max_line_length = 100
+
 [build-system]
 requires = ["poetry-core>=1.2.0"]
 build-backend = "poetry.core.masonry.api"

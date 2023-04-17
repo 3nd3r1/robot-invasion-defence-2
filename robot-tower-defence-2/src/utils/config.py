@@ -95,3 +95,8 @@ robots = {
 images = {
     "game_background": "ui/game_background.png"
 }
+
+colors = {
+    "invalid_tower_range": (255, 0, 0, 100),
+    "valid_tower_range": (0, 255, 0, 100),
+}
