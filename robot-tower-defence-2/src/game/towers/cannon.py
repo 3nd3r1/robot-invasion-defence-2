@@ -1,4 +1,4 @@
-""" src/game/towers/turret.py """
+""" src/game/towers/cannon.py """
 import pygame
 
 from game.tower import Tower
@@ -8,16 +8,16 @@ from utils.config import towers
 from utils.file_reader import get_image
 
 
-class Turret(Tower):
-    """ Turret tower class """
+class Cannon(Tower):
+    """ Cannon tower class """
 
     images = {}
 
     def __init__(self, game) -> None:
-        self.__can_be_in_water = towers["turret"]["can_be_in_water"]
-        self.__range = towers["turret"]["range"]
-        self.__shoot_interval = towers["turret"]["shoot_interval"]
-        self.__cost = towers["turret"]["cost"]
+        self.__can_be_in_water = towers["cannon"]["can_be_in_water"]
+        self.__range = towers["cannon"]["range"]
+        self.__shoot_interval = towers["cannon"]["shoot_interval"]
+        self.__cost = towers["cannon"]["cost"]
         self.__hitbox = pygame.Rect(0, 0, 60, 60)
 
         super().__init__(game)
@@ -25,30 +25,30 @@ class Turret(Tower):
     @staticmethod
     def load_images() -> None:
         base = pygame.image.load(get_image(towers["base"]))
-        model_1 = pygame.image.load(get_image(towers["turret"]["model_1"]))
-        model_2 = pygame.image.load(get_image(towers["turret"]["model_2"]))
-        model_3 = pygame.image.load(get_image(towers["turret"]["model_3"]))
+        model_1 = pygame.image.load(get_image(towers["cannon"]["model_1"]))
+        model_2 = pygame.image.load(get_image(towers["cannon"]["model_2"]))
+        model_3 = pygame.image.load(get_image(towers["cannon"]["model_3"]))
 
         base = pygame.transform.scale_by(base, 0.25)
-        model_1 = pygame.transform.scale_by(model_1, 0.40)
-        model_2 = pygame.transform.scale_by(model_2, 0.40)
-        model_3 = pygame.transform.scale_by(model_3, 0.40)
+        model_1 = pygame.transform.scale_by(model_1, 0.30)
+        model_2 = pygame.transform.scale_by(model_2, 0.30)
+        model_3 = pygame.transform.scale_by(model_3, 0.30)
 
-        Turret.images["base"] = base
-        Turret.images["model_1"] = model_1
-        Turret.images["model_2"] = model_2
-        Turret.images["model_3"] = model_3
+        Cannon.images["base"] = base
+        Cannon.images["model_1"] = model_1
+        Cannon.images["model_2"] = model_2
+        Cannon.images["model_3"] = model_3
 
-        TurretProjectile.load_images()
+        CannonProjectile.load_images()
 
     @staticmethod
     def render_tower(angle: float) -> pygame.Surface:
         """ Renders the tower """
         screen = pygame.Surface((150, 150), pygame.constants.SRCALPHA, 32)
-        base = Turret.images["base"]
-        model_1 = Turret.images["model_1"]
+        base = Cannon.images["base"]
+        model_1 = Cannon.images["model_1"]
 
-        tower_offset = pygame.math.Vector2(-10, -15)
+        tower_offset = pygame.math.Vector2(0, -16)
 
         model_1 = pygame.transform.rotate(model_1, -angle)
         tower_offset = tower_offset.rotate(angle)
@@ -63,14 +63,14 @@ class Turret(Tower):
 
     def _draw_tower(self):
         """ Draws the tower to the sprite image """
-        self.image = Turret.render_tower(self.get_target_angle())
+        self.image = Cannon.render_tower(self.get_target_angle())
 
     def _shoot(self):
         """ Shoots a turret projectile """
         if not self.get_target():
             return
         self.get_game().add_projectile(
-            TurretProjectile(self.get_target(), self.rect.center))
+            CannonProjectile(self.get_target(), self.rect.center))
 
     def can_be_in_water(self) -> bool:
         """ Returns if the tower can be in water """
@@ -91,30 +91,30 @@ class Turret(Tower):
         return self.__cost
 
 
-class TurretProjectile(Projectile):
+class CannonProjectile(Projectile):
     images = {}
 
     def __init__(self, target, starting_pos) -> None:
-        self.__speed = towers["turret"]["projectile_speed"]
-        self.__damage = towers["turret"]["projectile_damage"]
+        self.__speed = towers["cannon"]["projectile_speed"]
+        self.__damage = towers["cannon"]["projectile_damage"]
 
-        start_offset = towers["turret"]["projectile_start_offset"]
+        start_offset = towers["cannon"]["projectile_start_offset"]
 
         super().__init__(target, starting_pos, start_offset)
 
     @staticmethod
     def load_images():
         projectile = pygame.image.load(
-            get_image(towers["turret"]["projectile"]))
+            get_image(towers["cannon"]["projectile"]))
         projectile = pygame.transform.scale_by(projectile, 0.75)
-        TurretProjectile.images["projectile"] = projectile
+        CannonProjectile.images["projectile"] = projectile
 
     @staticmethod
     def render_projectile(angle):
         """ Renders the projectile """
         screen = pygame.Surface((50, 50), pygame.constants.SRCALPHA, 32)
 
-        projectile = TurretProjectile.images["projectile"]
+        projectile = CannonProjectile.images["projectile"]
         projectile = pygame.transform.rotate(projectile, -angle)
 
         projectile_rect = projectile.get_rect(
@@ -124,7 +124,7 @@ class TurretProjectile(Projectile):
         return screen
 
     def _draw_projectile(self):
-        self.image = TurretProjectile.render_projectile(
+        self.image = CannonProjectile.render_projectile(
             self.get_target_angle())
 
     def get_speed(self) -> float:

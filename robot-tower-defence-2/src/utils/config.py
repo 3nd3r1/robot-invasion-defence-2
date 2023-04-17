@@ -42,7 +42,7 @@ towers = {
     "base": "towers/base.png",
     "turret": {
         "name": "Turret",
-        "price": 200,
+        "cost": 200,
         "range": 200,
         "shoot_interval": 500,
         "projectile_start_offset": (0, -20),
@@ -53,6 +53,34 @@ towers = {
         "model_2": "towers/turret/2.png",
         "model_3": "towers/turret/3.png",
         "projectile": "towers/turret/projectile.png"
+    },
+    "missile_launcher": {
+        "name": "Missile Launcher",
+        "cost": 200,
+        "range": 200,
+        "shoot_interval": 500,
+        "projectile_start_offset": (0, -20),
+        "projectile_speed": 10,
+        "projectile_damage": 1,
+        "can_be_in_water": False,
+        "model_1": "towers/missile_launcher/1.png",
+        "model_2": "towers/missile_launcher/2.png",
+        "model_3": "towers/missile_launcher/3.png",
+        "projectile": "towers/missile_launcher/projectile.png"
+    },
+    "cannon": {
+        "name": "cannon",
+        "cost": 200,
+        "range": 200,
+        "shoot_interval": 500,
+        "projectile_start_offset": (0, -20),
+        "projectile_speed": 10,
+        "projectile_damage": 1,
+        "can_be_in_water": False,
+        "model_1": "towers/cannon/1.png",
+        "model_2": "towers/cannon/2.png",
+        "model_3": "towers/cannon/3.png",
+        "projectile": "towers/cannon/projectile.png"
     }
 }
 
@@ -98,5 +126,5 @@ images = {
 
 colors = {
     "invalid_tower_range": (255, 0, 0, 100),
-    "valid_tower_range": (0, 255, 0, 100),
+    "valid_tower_range": (50, 50, 50, 50),
 }

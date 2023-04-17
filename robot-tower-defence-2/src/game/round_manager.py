@@ -42,7 +42,7 @@ class RoundManager:
         if time_now-self.__last_spawn < current_robot["spawn_delay"]:
             return
 
-        self.__game.spawn_robot(current_robot["type"])
+        self.__game.create_robot(current_robot["type"])
         self.__robot += 1
         self.__last_spawn = time_now
 

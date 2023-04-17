@@ -89,6 +89,10 @@ class Tower(pygame.sprite.Sprite, ABC):
         """ Returns the game """
         return self.__game
 
+    def get_last_shot(self):
+        """ Returns the time of the last shot """
+        return self.__last_shot
+
     def is_valid_position(self) -> bool:
         """ Returns true if the tower is a valid position """
         for tower in self.get_game().get_towers():
@@ -136,9 +140,13 @@ class Tower(pygame.sprite.Sprite, ABC):
         pass
 
     @abstractmethod
-    def can_be_in_water(self) -> bool:
+    def get_cost(self) -> int:
         pass
 
     @abstractmethod
     def get_shoot_interval(self) -> int:
+        pass
+
+    @abstractmethod
+    def can_be_in_water(self) -> bool:
         pass

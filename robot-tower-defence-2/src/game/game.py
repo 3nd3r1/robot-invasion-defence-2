@@ -13,11 +13,8 @@ from game.player import Player
 from game.tower import Tower
 from game.robot import Robot
 
-from game.towers.turret import Turret
-
-from game.robots.archie import Archie
-from game.robots.nathan import Nathan
-from game.robots.minx import Minx
+from game.towers import Turret, MissileLauncher, Cannon
+from game.robots import Minx, Nathan, Archie
 
 
 class Game:
@@ -27,9 +24,15 @@ class Game:
         self.__loading = True
         self.__running = True
 
+        flags = pygame.constants.NOFRAME
+        if general["debug"]:
+            flags = 0
+
         self.__screen = pygame.display.set_mode(
-            (general["display_width"], general["display_height"]))
+            (general["display_width"], general["display_height"]), flags)
         self.__clock = pygame.time.Clock()
+
+        self.__load_images()
 
         self.__arena = arena
         self.__ui = Ui(self)
@@ -44,34 +47,46 @@ class Game:
         self.__robots = pygame.sprite.Group()
         self.__projectiles = pygame.sprite.Group()
 
-        self.__load_images()
-
         self.__loading = False
 
     def __load_images(self) -> None:
         """ Load all images """
         # Load towers
         Turret.load_images()
+        MissileLauncher.load_images()
+        Cannon.load_images()
 
         # Load robots
         Minx.load_images()
         Nathan.load_images()
         Archie.load_images()
 
-    def spawn_robot(self, robot_type: str) -> None:
-        logger.debug(f"Spawning {robot_type} ")
+    def create_robot(self, robot_name) -> Robot:
+        """ Create a new robot """
 
-        if robot_type == "minx":
-            self.__robots.add(Minx(self))
-        elif robot_type == "nathan":
-            self.__robots.add(Nathan(self))
-        elif robot_type == "archie":
-            self.__robots.add(Archie(self))
+        new_robot = None
+
+        if robot_name == "minx":
+            new_robot = Minx(self)
+        elif robot_name == "nathan":
+            new_robot = Nathan(self)
+        elif robot_name == "archie":
+            new_robot = Archie(self)
+
+        if new_robot:
+            self.__robots.add(new_robot)
+
+        return new_robot
 
     def create_tower(self, tower_name) -> Tower:
         """ Create a new tower """
         if tower_name == "turret":
             self.__new_tower = Turret(self)
+        elif tower_name == "missile_launcher":
+            self.__new_tower = MissileLauncher(self)
+        elif tower_name == "cannon":
+            self.__new_tower = Cannon(self)
+
         return self.__new_tower
 
     def add_projectile(self, projectile):
@@ -106,15 +121,19 @@ class Game:
         if self.__new_tower:
             self.__new_tower.draw(screen)
 
-    def __on_click(self, pos) -> None:
+    def __on_click(self, pos, button) -> None:
         """ Handle click events """
         logger.debug(f"Click at {pos}")
-        if self.__new_tower:
-            if self.__new_tower.place(pos):
-                self.__new_tower = None
+
+        if self.__new_tower and button == 1:
+            self.__place_tower(pos)
             return
 
+        if self.__new_tower and button == 3:
+            self.__new_tower = None
+
         self.__ui.on_click(pos)
+
         for tower in self.__towers:
             if tower.rect.collidepoint(pos):
                 tower.on_click()
@@ -123,13 +142,13 @@ class Game:
         logger.debug("Game won!")
         self.kill()
 
-    def run(self) -> None:
+    def run(self):
         while self.__running:
             for evt in pygame.event.get():
                 if evt.type == pygame.constants.QUIT:
                     return
                 if evt.type == pygame.constants.MOUSEBUTTONDOWN:
-                    self.__on_click(evt.pos)
+                    self.__on_click(evt.pos, evt.button)
             self.update()
             self.draw(self.__screen)
             pygame.display.flip()
@@ -154,6 +173,17 @@ class Game:
 
         return closest_robot
 
+    def __place_tower(self, pos):
+        if not self.__new_tower:
+            return
+
+        if self.get_player().get_money() < self.__new_tower.get_cost():
+            return
+
+        if self.__new_tower.place(pos):
+            self.get_player().spend_money(self.__new_tower.get_cost())
+            self.__new_tower = None
+
     def get_map(self) -> Map:
         return self.__map
 
@@ -165,3 +195,9 @@ class Game:
 
     def get_towers(self) -> list:
         return self.__towers.sprites()
+
+    def get_projectiles(self) -> list:
+        return self.__projectiles.sprites()
+
+    def get_robots(self) -> list:
+        return self.__robots.sprites()
