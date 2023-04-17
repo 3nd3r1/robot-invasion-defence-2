@@ -72,14 +72,14 @@ class Map():
     def is_in_water(self, rect) -> bool:
         """ Checks if a rectangle is in water """
         for water in self.__water:
-            if water.colliderect(rect):
+            if water.collidepoint(rect.center):
                 return True
         return False
 
     def is_in_path(self, rect) -> bool:
         """ Checks if a rectangle is in the path """
         for path in self.__path:
-            if path.colliderect(rect):
+            if path.collidepoint(rect.center):
                 return True
         return False
 
