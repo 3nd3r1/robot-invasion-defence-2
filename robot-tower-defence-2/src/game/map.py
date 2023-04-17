@@ -65,7 +65,7 @@ class Map():
     def is_in_obstacle(self, rect) -> bool:
         """ Checks if a rectangle is in an obstacle """
         for obstacle in self.__obstacles:
-            if obstacle.colliderect(rect):
+            if obstacle.collidepoint(rect.center):
                 return True
         return False
 
