@@ -3,7 +3,12 @@ from utils.logger import logger
 
 
 class Player:
-    """" This class represents the player of the game. It has properties such as money and lives, and methods for earning and spending money, as well as for losing lives. """
+    """"
+        This class represents the player of the game.
+        It has properties such as money and lives,
+        and methods for earning and spending money,
+        as well as for losing lives.
+    """
 
     def __init__(self, money: int) -> None:
         self.__money = money

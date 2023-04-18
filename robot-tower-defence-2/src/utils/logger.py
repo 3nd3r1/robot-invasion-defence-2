@@ -7,13 +7,13 @@ class Logger:
 
     def debug(self, message: str) -> None:
         if self.__debug:
-            print("[DEBUG]: {}".format(message))
+            print(f"[DEBUG]: {message}")
 
     def error(self, message: str) -> None:
-        print("[ERROR]: {}".format(message))
+        print(f"[ERROR]: {message}")
 
     def info(self, message: str) -> None:
-        print("[INFO]: {}".format(message))
+        print(f"[INFO]: {message}")
 
 
 logger = Logger(general["debug"])

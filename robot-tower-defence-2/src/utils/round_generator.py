@@ -1,7 +1,6 @@
 """
 This module generates rounds
 """
-from random import randint
 from utils.config import arenas
 
 
@@ -69,6 +68,8 @@ def generate_rounds(arena: str) -> list:
         wave_num = round(wave_num_base * wave_num_rate**(num_round-1))
         round_delay = round_delay_base * round_delay_rate**(num_round-1)
 
-        return {"waves": [generate_wave(num_round) for _ in range(1, wave_num+1)], "round_delay": round_delay}
+        waves = [generate_wave(num_round) for _ in range(1, wave_num+1)]
+
+        return {"waves": waves, "round_delay": round_delay}
 
     return [generate_round(i) for i in range(1, num_rounds+1)]

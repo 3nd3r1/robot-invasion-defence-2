@@ -9,6 +9,7 @@ from utils.config import towers, images
 from utils.math import distance_between_points
 from utils.file_reader import get_image
 from utils.sheet_reader import get_sheet_images
+from utils.logger import logger
 
 
 class MissileLauncher(Tower):
@@ -143,10 +144,13 @@ class MissileLauncherProjectile(Projectile):
             self.get_target_angle())
 
     def _target_hit(self):
+        logger.debug(self.get_target().rect)
         if not self.get_target().rect.collidepoint(self.rect.center):
             return
 
-        self.get_tower().get_game().add_particle(MissileLauncherParticle(self.get_target().rect.center))
+        explosion = MissileLauncherParticle(self.get_target().rect.center)
+        self.get_tower().get_game().add_particle(explosion)
+
         for robot in self.get_tower().get_game().get_robots():
             distance = distance_between_points(robot.rect.center, self.rect.center)
             if distance <= self.__explosion_radius:
@@ -189,5 +193,6 @@ class MissileLauncherParticle(Particle):
             return
 
         self.image = MissileLauncherParticle.render_particle(self.__animation_frame)
+        self.rect = self.image.get_rect(center=self.rect.center)
         self.__animation_frame += 1
         self.__animation_timer = time_now

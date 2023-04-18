@@ -1,9 +1,9 @@
 import math
 
 
-def distance_between_points(p1, p2):
-    return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)
+def distance_between_points(point_1, point_2):
+    return math.sqrt((point_1[0] - point_2[0])**2 + (point_1[1] - point_2[1])**2)
 
 
-def get_angle(x, y):
-    return math.degrees(math.atan2(y, x))
+def get_angle(coord_x, coord_y):
+    return math.degrees(math.atan2(coord_y, coord_x))

@@ -1,10 +1,10 @@
 """ src/game/projectile.py """
+from abc import ABC, abstractmethod
 import math
 import pygame
 
-from abc import ABC, abstractmethod
-
 from utils.math import get_angle
+from utils.logger import logger
 
 
 class Projectile(pygame.sprite.Sprite, ABC):
@@ -23,12 +23,24 @@ class Projectile(pygame.sprite.Sprite, ABC):
         self.rect.move_ip(pygame.math.Vector2(
             start_offset).rotate(self.get_target_angle()))
 
-    def update(self) -> None:
+    def update(self):
         """ Updates the projectile """
         if not self.get_target() or not self.get_target().alive():
             self.kill()
             return
 
+        self.__calculate_velocity()
+
+        self.rect.move_ip(self.__velocity)
+        self._draw_projectile()
+
+        if self.get_target().rect.collidepoint(self.rect.center):
+            logger.debug(self.get_target().rect)
+            self._target_hit()
+            self.get_target().lose_health(self.get_damage())
+            self.kill()
+
+    def __calculate_velocity(self):
         if self.get_target().rect.centerx-self.rect.centerx == 0:
             alph = math.pi/2
         else:
@@ -43,15 +55,8 @@ class Projectile(pygame.sprite.Sprite, ABC):
             self.rect.centerx - self.get_target().rect.centerx))
         velocity_y = min(math.sin(alph)*self.get_speed(), abs(
             self.rect.centery - self.get_target().rect.centery))
+
         self.__velocity = (velocity_x, velocity_y)
-
-        self.rect.move_ip(self.__velocity)
-        self._draw_projectile()
-
-        if self.get_target().rect.collidepoint(self.rect.center):
-            self._target_hit()
-            self.get_target().lose_health(self.get_damage())
-            self.kill()
 
     def get_target_angle(self) -> float:
         """ Returns the angle to the target """

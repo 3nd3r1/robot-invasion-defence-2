@@ -15,7 +15,9 @@ Robot Invasion Defence II-pelin changelog.
 
 ## Viikko 4
 
--   Kentälle syntyy robotteja kierrosten mukaan.
+-   Kentälle syntyy robotteja kierrosten mukaan. (Määritelty config tiedostossa)
 -   Tornit voivat kääntyä ja ampua robotteja
 -   Lisätty 3 eri robotti-tyyppiä: ARCHIE, NATHAN ja MINX
+-   Lisätty 3 eri torni-tyyppiä: Turret, Cannon ja Missile Launcher
 -   Lisätty Projectile-luokka, joka vastaa tornien ampumista ammuksista.
+-   Lisätty Particle-luokka, joka vastaa eri partikkeleista
