@@ -3,9 +3,12 @@ import pygame
 
 from game.tower import Tower
 from game.projectile import Projectile
+from game.particle import Particle
 
-from utils.config import towers
+from utils.config import towers, images
+from utils.math import distance_between_points
 from utils.file_reader import get_image
+from utils.sheet_reader import get_sheet_images
 
 
 class MissileLauncher(Tower):
@@ -24,10 +27,10 @@ class MissileLauncher(Tower):
 
     @staticmethod
     def load_images() -> None:
-        base = pygame.image.load(get_image(towers["base"]))
-        model_1 = pygame.image.load(get_image(towers["missile_launcher"]["model_1"]))
-        model_2 = pygame.image.load(get_image(towers["missile_launcher"]["model_2"]))
-        model_3 = pygame.image.load(get_image(towers["missile_launcher"]["model_3"]))
+        base = pygame.image.load(get_image(images["towers"]["base"]))
+        model_1 = pygame.image.load(get_image(images["towers"]["missile_launcher"]["model_1"]))
+        model_2 = pygame.image.load(get_image(images["towers"]["missile_launcher"]["model_2"]))
+        model_3 = pygame.image.load(get_image(images["towers"]["missile_launcher"]["model_3"]))
 
         base = pygame.transform.scale_by(base, 0.25)
         model_1 = pygame.transform.scale_by(model_1, 0.35)
@@ -70,8 +73,8 @@ class MissileLauncher(Tower):
         time_now = pygame.time.get_ticks()
         if time_now-self.get_last_shot() >= self.get_shoot_interval():
             projectile_image = MissileLauncherProjectile.render_projectile(target_angle)
-            projectile_rect = projectile_image.get_rect(
-                center=(self.rect.width//2, self.rect.height//2-25))
+            projectile_rect = projectile_image.get_rect(center=self.image.get_rect().center)
+            projectile_rect.move_ip(pygame.math.Vector2(0, -30).rotate(target_angle))
             self.image.blit(projectile_image, projectile_rect)
 
     def _shoot(self):
@@ -79,7 +82,7 @@ class MissileLauncher(Tower):
         if not self.get_target():
             return
         self.get_game().add_projectile(
-            MissileLauncherProjectile(self.get_target(), self.rect.center))
+            MissileLauncherProjectile(self, self.get_target(), self.rect.center))
 
     def can_be_in_water(self) -> bool:
         """ Returns if the tower can be in water """
@@ -103,18 +106,20 @@ class MissileLauncher(Tower):
 class MissileLauncherProjectile(Projectile):
     images = {}
 
-    def __init__(self, target, starting_pos) -> None:
+    def __init__(self, tower, target, starting_pos) -> None:
         self.__speed = towers["missile_launcher"]["projectile_speed"]
         self.__damage = towers["missile_launcher"]["projectile_damage"]
+        self.__explosion_radius = towers["missile_launcher"]["projectile_explosion_radius"]
+        self.__explosion_damage = towers["missile_launcher"]["projectile_explosion_damage"]
 
         start_offset = towers["missile_launcher"]["projectile_start_offset"]
 
-        super().__init__(target, starting_pos, start_offset)
+        super().__init__(tower, target, starting_pos, start_offset)
 
     @staticmethod
     def load_images():
         projectile = pygame.image.load(
-            get_image(towers["missile_launcher"]["projectile"]))
+            get_image(images["projectiles"]["missile"]))
         projectile = pygame.transform.scale_by(projectile, 0.50)
         MissileLauncherProjectile.images["projectile"] = projectile
 
@@ -136,8 +141,30 @@ class MissileLauncherProjectile(Projectile):
         self.image = MissileLauncherProjectile.render_projectile(
             self.get_target_angle())
 
+    def _target_hit(self):
+        if not self.get_target().rect.collidepoint(self.rect.center):
+            return
+
+        for robot in self.get_tower().get_game().get_robots():
+            distance = distance_between_points(robot.rect.center, self.rect.center)
+            if distance <= self.__explosion_radius:
+                robot.lose_health(self.__explosion_damage)
+
     def get_speed(self) -> float:
         return self.__speed
 
     def get_damage(self) -> int:
         return self.__damage
+
+
+class MissileLauncherParticle(Particle):
+    images = {}
+
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod
+    def load_images():
+        sheet_file = images["particles"]["explosion"]["sheet"]
+        sheet_size = images["particles"]["explosion"]["sheet_size"]
+        MissileLauncherParticle.images["animation"] = get_sheet_images(sheet_file, sheet_size)

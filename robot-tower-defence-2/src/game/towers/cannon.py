@@ -4,7 +4,7 @@ import pygame
 from game.tower import Tower
 from game.projectile import Projectile
 
-from utils.config import towers
+from utils.config import towers, images
 from utils.file_reader import get_image
 
 
@@ -24,10 +24,10 @@ class Cannon(Tower):
 
     @staticmethod
     def load_images() -> None:
-        base = pygame.image.load(get_image(towers["base"]))
-        model_1 = pygame.image.load(get_image(towers["cannon"]["model_1"]))
-        model_2 = pygame.image.load(get_image(towers["cannon"]["model_2"]))
-        model_3 = pygame.image.load(get_image(towers["cannon"]["model_3"]))
+        base = pygame.image.load(get_image(images["towers"]["base"]))
+        model_1 = pygame.image.load(get_image(images["towers"]["cannon"]["model_1"]))
+        model_2 = pygame.image.load(get_image(images["towers"]["cannon"]["model_2"]))
+        model_3 = pygame.image.load(get_image(images["towers"]["cannon"]["model_3"]))
 
         base = pygame.transform.scale_by(base, 0.25)
         model_1 = pygame.transform.scale_by(model_1, 0.30)
@@ -70,7 +70,7 @@ class Cannon(Tower):
         if not self.get_target():
             return
         self.get_game().add_projectile(
-            CannonProjectile(self.get_target(), self.rect.center))
+            CannonProjectile(self, self.get_target(), self.rect.center))
 
     def can_be_in_water(self) -> bool:
         """ Returns if the tower can be in water """
@@ -94,18 +94,18 @@ class Cannon(Tower):
 class CannonProjectile(Projectile):
     images = {}
 
-    def __init__(self, target, starting_pos) -> None:
+    def __init__(self, tower, target, starting_pos) -> None:
         self.__speed = towers["cannon"]["projectile_speed"]
         self.__damage = towers["cannon"]["projectile_damage"]
 
         start_offset = towers["cannon"]["projectile_start_offset"]
 
-        super().__init__(target, starting_pos, start_offset)
+        super().__init__(tower, target, starting_pos, start_offset)
 
     @staticmethod
     def load_images():
         projectile = pygame.image.load(
-            get_image(towers["cannon"]["projectile"]))
+            get_image(images["projectiles"]["shell"]))
         projectile = pygame.transform.scale_by(projectile, 0.75)
         CannonProjectile.images["projectile"] = projectile
 
@@ -126,6 +126,9 @@ class CannonProjectile(Projectile):
     def _draw_projectile(self):
         self.image = CannonProjectile.render_projectile(
             self.get_target_angle())
+
+    def _target_hit(self):
+        return
 
     def get_speed(self) -> float:
         return self.__speed

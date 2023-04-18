@@ -1,15 +1,15 @@
 import pygame
 
 from game.robot import Robot
-from utils.sheet_reader import get_robot_walk_images
-from utils.config import robots
+from utils.sheet_reader import get_sheet_images
+from utils.config import robots, images
 
 
 class Archie(Robot):
     """ ARCHIE - Advanced Robust Combat Heavy Intelligent Exterminator """
     images = {}
 
-    def __init__(self, game: "Game") -> None:
+    def __init__(self, game) -> None:
         health = robots["archie"]["health"]
         self.__speed = robots["archie"]["speed"]
         self.__base_damage = robots["archie"]["base_damage"]
@@ -25,7 +25,9 @@ class Archie(Robot):
 
     @staticmethod
     def load_images():
-        Archie.images["walking"] = get_robot_walk_images("archie")
+        sheet_image = images["robots"]["archie"]["walk_sheet"]
+        sheet_size = images["robots"]["archie"]["walk_sheet_size"]
+        Archie.images["walking"] = get_sheet_images(sheet_image, sheet_size)
 
     @staticmethod
     def render_robot(frame: int) -> pygame.Surface:

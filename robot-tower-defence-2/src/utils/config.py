@@ -48,25 +48,21 @@ towers = {
         "projectile_start_offset": (0, -20),
         "projectile_speed": 10,
         "projectile_damage": 1,
+        "projectile_explosion_radius": 0,
+        "projectile_explosion_damage": 0,
         "can_be_in_water": False,
-        "model_1": "towers/turret/1.png",
-        "model_2": "towers/turret/2.png",
-        "model_3": "towers/turret/3.png",
-        "projectile": "towers/turret/projectile.png"
     },
     "missile_launcher": {
         "name": "Missile Launcher",
-        "cost": 200,
-        "range": 200,
-        "shoot_interval": 500,
+        "cost": 400,
+        "range": 400,
+        "shoot_interval": 2000,
         "projectile_start_offset": (0, -20),
-        "projectile_speed": 10,
-        "projectile_damage": 1,
+        "projectile_speed": 20,
+        "projectile_damage": 5,
+        "projectile_explosion_radius": 50,
+        "projectile_explosion_damage": 10,
         "can_be_in_water": False,
-        "model_1": "towers/missile_launcher/1.png",
-        "model_2": "towers/missile_launcher/2.png",
-        "model_3": "towers/missile_launcher/3.png",
-        "projectile": "towers/missile_launcher/projectile.png"
     },
     "cannon": {
         "name": "cannon",
@@ -76,11 +72,9 @@ towers = {
         "projectile_start_offset": (0, -20),
         "projectile_speed": 10,
         "projectile_damage": 1,
+        "projectile_explosion_radius": 0,
+        "projectile_explosion_damage": 0,
         "can_be_in_water": False,
-        "model_1": "towers/cannon/1.png",
-        "model_2": "towers/cannon/2.png",
-        "model_3": "towers/cannon/3.png",
-        "projectile": "towers/cannon/projectile.png"
     }
 }
 
@@ -91,8 +85,6 @@ robots = {
         "speed": 2,
         "base_damage": 1,
         "base_bounty": 1,
-        "walk_sheet": "robots/minx/walk.png",
-        "walk_sheet_size": (9, 4),  # (columns, rows)
         "path_offset": (0, 0),
         "animation_interval": 100,
     },
@@ -102,8 +94,6 @@ robots = {
         "speed": 1,
         "base_damage": 1,
         "base_bounty": 1,
-        "walk_sheet": "robots/nathan/walk.png",
-        "walk_sheet_size": (8, 4),  # (columns, rows)
         "path_offset": (0, 0),
         "animation_interval": 10,
     },
@@ -113,15 +103,58 @@ robots = {
         "speed": 1,
         "base_damage": 1,
         "base_bounty": 1,
-        "walk_sheet": "robots/archie/walk.png",
-        "walk_sheet_size": (8, 4),  # (columns, rows)
         "path_offset": (0, 0),
         "animation_interval": 100,
     }
 }
 
 images = {
-    "game_background": "ui/game_background.png"
+    "ui": {
+        "game_background": "ui/game_background.png",
+    },
+    "particles": {
+        "explosion": {
+            "sheet": "particles/explosion.png",
+            "sheet_size": (8, 8),  # (columns, rows)
+        }
+    },
+    "robots": {
+        "minx": {
+            "walk_sheet": "robots/minx/walk.png",
+            "walk_sheet_size": (9, 4),  # (columns, rows)
+        },
+        "nathan": {
+            "walk_sheet": "robots/nathan/walk.png",
+            "walk_sheet_size": (8, 4),  # (columns, rows)
+        },
+        "archie": {
+            "walk_sheet": "robots/archie/walk.png",
+            "walk_sheet_size": (8, 4),  # (columns, rows)
+        }
+    },
+    "towers": {
+        "base": "towers/base.png",
+        "turret": {
+            "model_1": "towers/turret/1.png",
+            "model_2": "towers/turret/2.png",
+            "model_3": "towers/turret/3.png",
+        },
+        "missile_launcher": {
+            "model_1": "towers/missile_launcher/1.png",
+            "model_2": "towers/missile_launcher/2.png",
+            "model_3": "towers/missile_launcher/3.png",
+        },
+        "cannon": {
+            "model_1": "towers/cannon/1.png",
+            "model_2": "towers/cannon/2.png",
+            "model_3": "towers/cannon/3.png",
+        }
+    },
+    "projectiles": {
+        "bullet": "projectiles/bullet.png",
+        "missile": "projectiles/missile.png",
+        "shell": "projectiles/shell.png"
+    }
 }
 
 colors = {

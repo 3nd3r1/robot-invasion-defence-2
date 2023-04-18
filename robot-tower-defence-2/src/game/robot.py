@@ -8,7 +8,7 @@ from utils.math import get_angle
 class Robot(pygame.sprite.Sprite, ABC):
     """This class represents a robot that moves along the map. It has properties such as speed, health, and type, and methods for moving and being damaged."""
 
-    def __init__(self, game: "Game", health: int) -> None:
+    def __init__(self, game, health: int) -> None:
         super().__init__()
         self.image = pygame.Surface((64, 64))
         self.rect = self.image.get_rect()

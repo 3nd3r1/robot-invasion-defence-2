@@ -25,8 +25,11 @@ class Game:
         self.__running = True
 
         flags = pygame.constants.NOFRAME
+        starting_money = arenas[arena]["starting_money"]
+
         if general["debug"]:
             flags = 0
+            starting_money = 100000
 
         self.__screen = pygame.display.set_mode(
             (general["display_width"], general["display_height"]), flags)
@@ -37,7 +40,7 @@ class Game:
         self.__arena = arena
         self.__ui = Ui(self)
         self.__map = Map(arena, (188, 105))
-        self.__player = Player(arenas[arena]["starting_money"])
+        self.__player = Player(starting_money)
 
         self.__round_manager = RoundManager(self)
 

@@ -20,7 +20,9 @@ class Tower(pygame.sprite.Sprite, ABC):
 
         self.__game = game
         self.__placing = True
+
         self.__target = None
+        self.__target_angle = 0
 
         self.__last_shot = 0
 
@@ -55,6 +57,7 @@ class Tower(pygame.sprite.Sprite, ABC):
         screen.blit(self.image, self.rect)
 
     def update(self):
+
         self._draw_tower()
 
         if self.__placing:
@@ -74,12 +77,13 @@ class Tower(pygame.sprite.Sprite, ABC):
 
     def get_target_angle(self) -> float:
         """ Returns the angle to the target """
-        if not self.get_target():
-            return 0
 
-        difference_x = self.get_target().rect.centerx - self.rect.centerx
-        difference_y = self.get_target().rect.centery - self.rect.centery
-        return get_angle(difference_x, difference_y)+90
+        if self.get_target():
+            difference_x = self.get_target().rect.centerx - self.rect.centerx
+            difference_y = self.get_target().rect.centery - self.rect.centery
+            self.__target_angle = get_angle(difference_x, difference_y)+90
+
+        return self.__target_angle
 
     def get_target(self):
         """ Returns the target """

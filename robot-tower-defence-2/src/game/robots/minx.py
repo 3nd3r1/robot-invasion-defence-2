@@ -1,15 +1,15 @@
 """ src/game/robots/minx.py """
 import pygame
 from game.robot import Robot
-from utils.config import robots
-from utils.sheet_reader import get_robot_walk_images
+from utils.config import robots, images
+from utils.sheet_reader import get_sheet_images
 
 
 class Minx(Robot):
     """ MINX - Miniature Infiltrating Nimble Exterminator"""
     images = {}
 
-    def __init__(self, game: "Game") -> None:
+    def __init__(self, game) -> None:
         health = robots["minx"]["health"]
         self.__speed = robots["minx"]["speed"]
         self.__base_damage = robots["minx"]["base_damage"]
@@ -24,7 +24,10 @@ class Minx(Robot):
 
     @staticmethod
     def load_images():
-        Minx.images["walking"] = get_robot_walk_images("minx")
+        sheet_image = images["robots"]["minx"]["walk_sheet"]
+        sheet_size = images["robots"]["minx"]["walk_sheet_size"]
+
+        Minx.images["walking"] = get_sheet_images(sheet_image, sheet_size)
 
     @staticmethod
     def render_robot(frame: int) -> pygame.Surface:

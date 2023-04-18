@@ -2,15 +2,15 @@ import pygame
 
 from game.robot import Robot
 
-from utils.config import robots
-from utils.sheet_reader import get_robot_walk_images
+from utils.config import robots, images
+from utils.sheet_reader import get_sheet_images
 
 
 class Nathan(Robot):
     """ NATHAN - Neural Autonomous Tactical Hunter Assassin Networked """
     images = {}
 
-    def __init__(self, game: "Game") -> None:
+    def __init__(self, game) -> None:
         health = robots["nathan"]["health"]
         self.__speed = robots["nathan"]["speed"]
         self.__base_damage = robots["nathan"]["base_damage"]
@@ -26,7 +26,10 @@ class Nathan(Robot):
 
     @staticmethod
     def load_images():
-        Nathan.images["walking"] = get_robot_walk_images("nathan")
+        sheet_image = images["robots"]["nathan"]["walk_sheet"]
+        sheet_size = images["robots"]["nathan"]["walk_sheet_size"]
+
+        Nathan.images["walking"] = get_sheet_images(sheet_image, sheet_size)
 
     @staticmethod
     def render_robot(frame: int) -> pygame.Surface:
