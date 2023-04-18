@@ -52,8 +52,6 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 Perusversioita täydennetään seuraavilla toiminnallisuuksilla
 
 -   Lisää eri torneja:
-    -   Liekinheitin
-    -   Tykki
 -   Lisää eri areenoita
 -   Lisää eri robotteja
 -   Torneille voi ostaa eri asuja (skin)

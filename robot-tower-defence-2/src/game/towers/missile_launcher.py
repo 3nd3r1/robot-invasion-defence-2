@@ -160,11 +160,18 @@ class MissileLauncherProjectile(Projectile):
 class MissileLauncherParticle(Particle):
     images = {}
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, position):
+        super().__init__(position)
 
     @staticmethod
     def load_images():
         sheet_file = images["particles"]["explosion"]["sheet"]
         sheet_size = images["particles"]["explosion"]["sheet_size"]
         MissileLauncherParticle.images["animation"] = get_sheet_images(sheet_file, sheet_size)
+
+    @staticmethod
+    def render_particle():
+        return
+
+    def _draw_particle(self):
+        return

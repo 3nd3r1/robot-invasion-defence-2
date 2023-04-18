@@ -1,62 +1,64 @@
 ```mermaid
 classDiagram
     Game ..> Util
-    Game "*" -- "*" Tower
-    Game "*" -- "*" Robot
-    Game "*" -- "1" Player
     Game "*" -- "1" Map
     Game "*" -- "1" Ui
-    Tower "*" -- "*" Projectile
+    Game "*" -- "1" RoundManager
+    Game "*" -- "1" Player
+    Game "*" -- "*" Sprite
+    Sprite <-- Tower
+    Sprite <-- Robot
+    Sprite <-- Projectile
+    Sprite <-- Particle
+    Tower <-- Turret
+    Tower <-- Cannon
+    Tower <-- MissileLauncher
+    Robot <-- Minx
+    Robot <-- Nathan
+    Robot <-- Archie
+    Projectile <-- TurretProjectile
+    Projectile <-- CannonProjectile
+    Projectile <-- MissileLauncherProjectile
+    Particle <-- MissileLauncherParticle
     Ui "*" -- "1" Sidebar
     class Util {
-        +generate_rounds()
     }
     class Game {
-        -int round
-        -bool paused
-        -bool loading
-        -string arena
-        -Group towers
-        -Group robots
-        -List<dict> rounds
-        -initializeRounds(): None
-        +nextRound(): None
-        +getCurrentRound(): dict
-        +pause(): None
-        +continue(): None
-        +placeTower(tower_type)
     }
     class Player {
-        -int money
-        -int health
-        -bool lost
-        +getMoney(): int
-        +spendMoney(amount): None
-        +getHp(): int
-        +loseHp(amount): None
+        int money
+        int health
+
     }
     class Map {
-        -int height
-        -int width
-        -tmx
-        +render()
+    }
+    class Sprite {
     }
     class Tower {
-        -int damage
-        -int range
-        -bool placing
-        -Group projectiles
+        int health
+        int damage
+        int shoot_interval
+        Robot target
+
     }
     class Robot {
-        -int health
+        int health
+        int speed
+        int bounty
+
     }
     class Projectile {
+        Robot target
+        Tower tower
+    }
+    class Particle {
 
     }
     class Ui {
-        +render(): None
     }
     class Sidebar {
-        +render(): None
+    }
+    class RoundManager {
+        int round
     }
 ```
