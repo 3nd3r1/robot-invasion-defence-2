@@ -43,6 +43,7 @@ class MissileLauncher(Tower):
         MissileLauncher.images["model_3"] = model_3
 
         MissileLauncherProjectile.load_images()
+        MissileLauncherParticle.load_images()
 
     @staticmethod
     def render_tower(angle: float) -> pygame.Surface:
@@ -145,6 +146,7 @@ class MissileLauncherProjectile(Projectile):
         if not self.get_target().rect.collidepoint(self.rect.center):
             return
 
+        self.get_tower().get_game().add_particle(MissileLauncherParticle(self.get_target().rect.center))
         for robot in self.get_tower().get_game().get_robots():
             distance = distance_between_points(robot.rect.center, self.rect.center)
             if distance <= self.__explosion_radius:
@@ -161,6 +163,9 @@ class MissileLauncherParticle(Particle):
     images = {}
 
     def __init__(self, position):
+        self.__animation_frame = 0
+        self.__animation_timer = 0
+        self.__animation_interval = 10
         super().__init__(position)
 
     @staticmethod
@@ -170,8 +175,19 @@ class MissileLauncherParticle(Particle):
         MissileLauncherParticle.images["animation"] = get_sheet_images(sheet_file, sheet_size)
 
     @staticmethod
-    def render_particle():
-        return
+    def render_particle(frame):
+        return MissileLauncherParticle.images["animation"][frame]
 
     def _draw_particle(self):
-        return
+        time_now = pygame.time.get_ticks()
+
+        if self.__animation_frame >= len(MissileLauncherParticle.images["animation"]):
+            self.kill()
+            return
+
+        if time_now-self.__animation_timer < self.__animation_interval:
+            return
+
+        self.image = MissileLauncherParticle.render_particle(self.__animation_frame)
+        self.__animation_frame += 1
+        self.__animation_timer = time_now

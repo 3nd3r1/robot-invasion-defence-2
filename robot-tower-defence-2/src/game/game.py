@@ -49,6 +49,7 @@ class Game:
         self.__towers = pygame.sprite.Group()
         self.__robots = pygame.sprite.Group()
         self.__projectiles = pygame.sprite.Group()
+        self.__particles = pygame.sprite.Group()
 
         self.__loading = False
 
@@ -92,6 +93,9 @@ class Game:
 
         return self.__new_tower
 
+    def add_particle(self, particle):
+        self.__particles.add(particle)
+
     def add_projectile(self, projectile):
         self.__projectiles.add(projectile)
 
@@ -109,6 +113,7 @@ class Game:
         self.__round_manager.update()
 
         self.__projectiles.update()
+        self.__particles.update()
         self.__towers.update()
         self.__robots.update()
 
@@ -119,8 +124,8 @@ class Game:
         self.__projectiles.draw(screen)
         self.__towers.draw(screen)
         self.__robots.draw(screen)
+        self.__particles.draw(screen)
         self.__ui.draw(screen)
-
         if self.__new_tower:
             self.__new_tower.draw(screen)
 
@@ -161,6 +166,7 @@ class Game:
         self.__running = False
         self.__towers.empty()
         self.__projectiles.empty()
+        self.__particles.empty()
         self.__robots.empty()
 
     def get_closest_robot_in_range(self, tower):

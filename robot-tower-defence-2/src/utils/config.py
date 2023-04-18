@@ -115,7 +115,7 @@ images = {
     "particles": {
         "explosion": {
             "sheet": "particles/explosion.png",
-            "sheet_size": (8, 8),  # (columns, rows)
+            "sheet_size": (4, 5),  # (columns, rows)
         }
     },
     "robots": {

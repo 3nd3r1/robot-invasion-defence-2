@@ -8,6 +8,7 @@ class Particle(pygame.sprite.Sprite, ABC):
         self.rect = self.image.get_rect()
 
         self.rect.center = position
+        super().__init__()
 
     def update(self):
         self._draw_particle()
@@ -19,7 +20,7 @@ class Particle(pygame.sprite.Sprite, ABC):
 
     @staticmethod
     @abstractmethod
-    def render_projectile():
+    def render_particle():
         pass
 
     @abstractmethod

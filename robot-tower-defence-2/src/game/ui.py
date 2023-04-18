@@ -13,7 +13,7 @@ class Ui:
     """
 
     def __init__(self, game):
-        self.__image = pygame.image.load(get_image(images["game_background"]))
+        self.__image = pygame.image.load(get_image(images["ui"]["game_background"]))
         self.__tower_buttons = pygame.sprite.Group()
         self.__game = game
 

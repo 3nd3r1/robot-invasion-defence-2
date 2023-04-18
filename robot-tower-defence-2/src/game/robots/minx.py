@@ -36,7 +36,7 @@ class Minx(Robot):
     def _draw_robot(self) -> None:
 
         velocity = self.get_velocity()
-        tile_width = robots["minx"]["walk_sheet_size"][0]
+        tile_width = images["robots"]["minx"]["walk_sheet_size"][0]
         offset = 0
 
         if velocity[0] < 0 and velocity[1] == 0:
