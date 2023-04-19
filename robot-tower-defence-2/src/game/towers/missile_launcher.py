@@ -176,7 +176,11 @@ class MissileLauncherParticle(Particle):
     def load_images():
         sheet_file = images["particles"]["explosion"]["sheet"]
         sheet_size = images["particles"]["explosion"]["sheet_size"]
-        MissileLauncherParticle.images["animation"] = get_sheet_images(sheet_file, sheet_size)
+        MissileLauncherParticle.images["animation"] = []
+
+        for image in get_sheet_images(sheet_file, sheet_size):
+            resized_image = pygame.transform.scale_by(image, 2.5)
+            MissileLauncherParticle.images["animation"].append(resized_image)
 
     @staticmethod
     def render_particle(frame):

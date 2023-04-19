@@ -60,7 +60,7 @@ towers = {
         "projectile_start_offset": (0, -20),
         "projectile_speed": 20,
         "projectile_damage": 5,
-        "projectile_explosion_radius": 50,
+        "projectile_explosion_radius": 160,
         "projectile_explosion_damage": 10,
         "can_be_in_water": False,
     },
