@@ -56,7 +56,7 @@ class Archie(Robot):
         self.image = Archie.render_robot(self.__animation_frame)
 
     def get_bounty(self) -> int:
-        return self.__base_bounty
+        return self.__base_bounty + self.get_health()
 
     def get_damage(self) -> int:
         return self.__base_damage

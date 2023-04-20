@@ -40,6 +40,7 @@ class Robot(pygame.sprite.Sprite, ABC):
             path_offset = self.get_path_offset().rotate(get_angle(difference_x, difference_y))
             offset_waypoints.append((round(waypoint[0]+path_offset[0]),
                                     round(waypoint[1]+path_offset[1])))
+        offset_waypoints.append(waypoints[-1])
 
         return offset_waypoints
 

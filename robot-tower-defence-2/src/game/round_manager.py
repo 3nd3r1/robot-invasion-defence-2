@@ -6,12 +6,12 @@ from utils.logger import logger
 
 class RoundManager:
 
-    def __init__(self, game: "Game"):
+    def __init__(self, game):
         self.__game = game
 
-        self.__last_spawn = 0
-        self.__last_wave = 0
-        self.__last_round = 0
+        self.__last_robot = {"start_time": 0, "delay": 0}
+        self.__last_wave = {"start_time": 0, "delay": 0}
+        self.__last_round = {"start_time": 0, "delay": 0}
 
         self.__rounds = []
 
@@ -33,27 +33,30 @@ class RoundManager:
         current_robot = current_wave["robots"][self.__robot-1]
         time_now = pygame.time.get_ticks()
 
-        if time_now-self.__last_round < current_round["round_delay"]:
+        if time_now-self.__last_round["start_time"] < self.__last_round["delay"]:
             return
 
-        if time_now-self.__last_wave < current_wave["wave_delay"]:
+        if time_now-self.__last_wave["start_time"] < self.__last_wave["delay"]:
             return
 
-        if time_now-self.__last_spawn < current_robot["spawn_delay"]:
+        if time_now-self.__last_robot["start_time"] < self.__last_robot["delay"]:
             return
 
         self.__game.create_robot(current_robot["type"])
         self.__robot += 1
-        self.__last_spawn = time_now
+        self.__last_robot = {"start_time": time_now, "delay": current_robot["spawn_delay"]}
 
         if self.__robot > len(current_wave["robots"]):
             self.__robot = 1
-            self.__last_wave = time_now
             self.__wave += 1
+            self.__last_wave = {"start_time": time_now, "delay": current_wave["wave_delay"]}
 
         if self.__wave > len(current_round["waves"]):
             self.__wave = 1
-            self.__last_round = time_now
             self.__round += 1
+            self.__last_round = {"start_time": time_now, "delay": current_round["round_delay"]}
             logger.debug(
                 f"Round {self.__round-1} finished new round: {self.__round}")
+
+    def get_round(self) -> int:
+        return self.__round

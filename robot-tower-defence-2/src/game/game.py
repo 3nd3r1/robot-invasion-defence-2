@@ -55,6 +55,9 @@ class Game:
 
     def __load_images(self) -> None:
         """ Load all images """
+        # Load ui
+        Ui.load_assets()
+
         # Load towers
         Turret.load_images()
         MissileLauncher.load_images()
@@ -210,3 +213,6 @@ class Game:
 
     def get_robots(self) -> list:
         return self.__robots.sprites()
+
+    def get_round_manager(self) -> RoundManager:
+        return self.__round_manager

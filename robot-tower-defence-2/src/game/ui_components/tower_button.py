@@ -16,6 +16,7 @@ class TowerButton(pygame.sprite.Sprite):
         self.tower_name = tower
 
         self.__render_icon()
+        self.__render_price()
 
     def __render_icon(self):
         """ Render the towers icon """
@@ -29,5 +30,9 @@ class TowerButton(pygame.sprite.Sprite):
         icon_rect = icon_image.get_rect(center=(50, 60))
         self.image.blit(icon_image, icon_rect)
 
+    def __render_price(self):
+        """ Render the towers name and price"""
+        return
+
     def on_click(self):
-        pass
+        return

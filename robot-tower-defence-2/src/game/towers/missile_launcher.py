@@ -144,7 +144,6 @@ class MissileLauncherProjectile(Projectile):
             self.get_target_angle())
 
     def _target_hit(self):
-        logger.debug(self.get_target().rect)
         if not self.get_target().rect.collidepoint(self.rect.center):
             return
 

@@ -64,7 +64,7 @@ class Nathan(Robot):
         return self.__base_damage
 
     def get_bounty(self) -> int:
-        return self.__base_bounty
+        return self.__base_bounty + self.get_health()
 
     def get_path_offset(self) -> pygame.math.Vector2:
         return self.__path_offset
