@@ -8,7 +8,6 @@ from utils.math import distance_between_points
 from game.map import Map
 from game.round_manager import RoundManager
 
-from game.ui import Ui
 from game.player import Player
 from game.tower import Tower
 from game.robot import Robot
@@ -24,21 +23,16 @@ class Game:
         self.__loading = True
         self.__running = True
 
-        flags = pygame.constants.NOFRAME
         starting_money = arenas[arena]["starting_money"]
 
         if general["debug"]:
-            flags = 0
             starting_money = 100000
 
-        self.__screen = pygame.display.set_mode(
-            (general["display_width"], general["display_height"]), flags)
         self.__clock = pygame.time.Clock()
 
         self.__load_images()
 
         self.__arena = arena
-        self.__ui = Ui(self)
         self.__map = Map(arena, (188, 105))
         self.__player = Player(starting_money)
 
