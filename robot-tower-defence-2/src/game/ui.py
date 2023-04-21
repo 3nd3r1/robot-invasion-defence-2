@@ -2,6 +2,7 @@
 import pygame
 from game.ui_components.tower_button import TowerButton
 from utils.file_reader import get_image, get_font
+
 from utils.config import images, fonts, colors
 
 
@@ -25,6 +26,7 @@ class Ui:
         """ Loads all assets """
         Ui.images["background"] = pygame.image.load(get_image(images["ui"]["game_background"]))
         Ui.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 60)
+        TowerButton.load_assets()
 
     def draw(self, screen):
         """ Draws all components to the screen """
@@ -39,7 +41,10 @@ class Ui:
         # Draws texts
         self.__draw_text(screen, f"HP {self.__game.get_player().get_health()}", (200, 20))
         self.__draw_text(screen, f"${self.__game.get_player().get_money()}", (320, 20))
-        self.__draw_text(screen, f"ROUND: {self.__game.get_round_manager().get_round()}", (850, 20))
+
+        round_num = self.__game.get_round_manager().get_round()
+        max_round = self.__game.get_round_manager().get_rounds_amount()
+        self.__draw_text(screen, f"ROUND: {round_num}/{max_round}", (750, 20))
 
     def on_click(self, pos):
         """ Checks if a tower button was clicked """

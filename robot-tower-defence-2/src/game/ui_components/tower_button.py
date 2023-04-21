@@ -1,38 +1,52 @@
 """ src/game/ui_components/tower_button.py """
 import pygame
 from game.towers import Turret, MissileLauncher, Cannon
+from utils.config import fonts, colors, towers
+from utils.file_reader import get_font
 
 
 class TowerButton(pygame.sprite.Sprite):
     """ Tower button class """
+    fonts = {}
 
     def __init__(self, tower, pos):
         super().__init__()
         self.image = pygame.Surface((100, 100), pygame.constants.SRCALPHA, 32)
-        self.image = self.image.convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = pos
+        self.rect = self.image.get_rect(center=pos)
 
         self.tower_name = tower
+        self.__cost = towers[tower]["cost"]
 
         self.__render_icon()
         self.__render_price()
 
+    @staticmethod
+    def load_assets():
+        TowerButton.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 30)
+
     def __render_icon(self):
         """ Render the towers icon """
         if self.tower_name == "turret":
-            icon_image = Turret.render_tower(0)
+            icon_image = Turret.render_tower(90)
         elif self.tower_name == "missile_launcher":
-            icon_image = MissileLauncher.render_tower(0)
+            icon_image = MissileLauncher.render_tower(90)
         elif self.tower_name == "cannon":
-            icon_image = Cannon.render_tower(0)
+            icon_image = Cannon.render_tower(90)
 
-        icon_rect = icon_image.get_rect(center=(50, 60))
+        icon_rect = icon_image.get_rect(center=(40, 40))
         self.image.blit(icon_image, icon_rect)
 
     def __render_price(self):
         """ Render the towers name and price"""
-        return
+        self.__draw_text(self.image, f"${self.__cost}", (50, 77))
+
+    def __draw_text(self, screen, text, pos):
+        font = TowerButton.fonts["default"]
+        font_color = colors["default_font_color"]
+
+        text = font.render(text, True, font_color)
+        text_rect = text.get_rect(center=pos)
+        screen.blit(text, text_rect)
 
     def on_click(self):
         return

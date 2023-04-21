@@ -60,3 +60,6 @@ class RoundManager:
 
     def get_round(self) -> int:
         return self.__round
+
+    def get_rounds_amount(self) -> int:
+        return len(self.__rounds)

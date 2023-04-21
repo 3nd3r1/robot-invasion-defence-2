@@ -106,7 +106,7 @@ class CannonProjectile(Projectile):
     def load_images():
         projectile = pygame.image.load(
             get_image(images["projectiles"]["shell"]))
-        projectile = pygame.transform.scale_by(projectile, 0.75)
+        projectile = pygame.transform.scale_by(projectile, 0.50)
         CannonProjectile.images["projectile"] = projectile
 
     @staticmethod
