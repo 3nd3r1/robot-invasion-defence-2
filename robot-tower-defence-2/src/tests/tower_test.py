@@ -8,6 +8,7 @@ class TestTower(unittest.TestCase):
     """ Tests for the Towers """
 
     def setUp(self) -> None:
+        pygame.init()
         self.test_game = Game("grass_fields")
         self.test_tower = self.test_game.create_tower("turret")
         self.test_robot = self.test_game.create_robot("minx")
@@ -70,7 +71,6 @@ class TestTower(unittest.TestCase):
 
         # There should be no projectiles
         self.assertEqual(len(self.test_game.get_projectiles()), 0)
-        self.test_game.update()
 
         # Does tower shoot at robot?
         pygame.time.wait(1000)
