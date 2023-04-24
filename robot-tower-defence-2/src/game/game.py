@@ -5,6 +5,8 @@ from utils.config import general, arenas
 from utils.logger import logger
 from utils.math import distance_between_points
 
+from ui.game_ui import GameUi
+
 from game.map import Map
 from game.round_manager import RoundManager
 
@@ -19,7 +21,7 @@ from game.robots import Minx, Nathan, Archie
 class Game:
     """" This class represents the game itself and contains all other classes. """
 
-    def __init__(self, arena: str) -> None:
+    def __init__(self, arena) -> None:
         self.__loading = True
         self.__running = True
 
@@ -29,8 +31,11 @@ class Game:
             starting_money = 100000
 
         self.__clock = pygame.time.Clock()
+        self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
 
         self.__load_images()
+
+        self.__game_ui = GameUi(self)
 
         self.__arena = arena
         self.__map = Map(arena, (188, 105))
@@ -49,8 +54,9 @@ class Game:
 
     def __load_images(self) -> None:
         """ Load all images """
+
         # Load ui
-        Ui.load_assets()
+        GameUi.load_assets()
 
         # Load towers
         Turret.load_images()
@@ -122,7 +128,8 @@ class Game:
         self.__towers.draw(screen)
         self.__robots.draw(screen)
         self.__particles.draw(screen)
-        self.__ui.draw(screen)
+        self.__game_ui.draw(screen)
+
         if self.__new_tower:
             self.__new_tower.draw(screen)
 
@@ -137,7 +144,7 @@ class Game:
         if self.__new_tower and button == 3:
             self.__new_tower = None
 
-        self.__ui.on_click(pos)
+        self.__game_ui.on_click(pos)
 
         for tower in self.__towers:
             if tower.rect.collidepoint(pos):
@@ -151,7 +158,7 @@ class Game:
         while self.__running:
             for evt in pygame.event.get():
                 if evt.type == pygame.constants.QUIT:
-                    return
+                    pygame.quit()
                 if evt.type == pygame.constants.MOUSEBUTTONDOWN:
                     self.__on_click(evt.pos, evt.button)
             self.update()
@@ -210,3 +217,6 @@ class Game:
 
     def get_round_manager(self) -> RoundManager:
         return self.__round_manager
+
+    def is_running(self) -> bool:
+        return self.__running

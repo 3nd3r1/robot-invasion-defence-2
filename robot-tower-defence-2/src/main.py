@@ -1,12 +1,10 @@
 """ src/main.py """
-import pygame
-from game.game import Game
+from ui.menu import Menu
 
 
 def main():
-    pygame.init()
-    game = Game("grass_fields")
-    game.run()
+    menu = Menu()
+    menu.run()
 
 
 if __name__ == "__main__":
