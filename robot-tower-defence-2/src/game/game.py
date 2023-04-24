@@ -39,7 +39,7 @@ class Game:
         self.__game_ui = GameUi(self)
 
         self.__arena = arena
-        self.__map = Map(arena, (188, 105))
+        self.__map = Map(arena, (188, 120))
         self.__player = Player(starting_money)
 
         self.__round_manager = RoundManager(self)

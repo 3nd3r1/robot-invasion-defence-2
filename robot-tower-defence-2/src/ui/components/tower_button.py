@@ -33,6 +33,7 @@ class TowerButton(pygame.sprite.Sprite):
         elif self.tower_name == "cannon":
             icon_image = Cannon.render_tower(90)
 
+        icon_image = pygame.transform.scale_by(icon_image, 0.90)
         icon_rect = icon_image.get_rect(center=(40, 40))
         self.image.blit(icon_image, icon_rect)
 

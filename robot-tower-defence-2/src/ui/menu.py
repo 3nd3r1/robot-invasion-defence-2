@@ -1,12 +1,11 @@
 import pygame
 
-from ui.components.menu_button import MenuButton, MenuButtonGroup
+from ui.menus import StartGameMenu, MainMenu
 
 from game.game import Game
 
 from utils.logger import logger
-from utils.file_reader import get_font
-from utils.config import general, fonts, colors
+from utils.config import general
 
 
 class Menu:
@@ -17,26 +16,29 @@ class Menu:
         self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
         self.__running = True
 
+        self.__state = "main_menu"
+
         self.__load_assets()
-        self.__load_main_menu()
+        self.__load_menus()
 
     def __load_assets(self):
-        Menu.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 100)
-        MenuButton.load_assets()
+        MainMenu.load_assets()
+        StartGameMenu.load_assets()
 
-    def __load_main_menu(self):
-        self.__main_menu = MenuButtonGroup()
-
-        start_pos = (self.__screen.get_width() / 2, self.__screen.get_height() / 2 - 100)
-        quit_pos = (start_pos[0], start_pos[1] + 100)
-
-        self.__main_menu.add(MenuButton("Start Game", start_pos, self.start_game, "grass_fields"))
-        self.__main_menu.add(MenuButton("Quit", quit_pos, self.quit_game))
+    def __load_menus(self):
+        MainMenu.load_menu(self.__screen, self.set_state, self.quit_game)
+        StartGameMenu.load_menu(self.__screen, self.start_game)
 
     def draw(self):
-        self.__screen.fill((0, 0, 0))
-        self.__draw_text("Robot Invasion Defence II", (self.__screen.get_width() / 2, 100))
-        self.__main_menu.draw(self.__screen)
+
+        screen = self.__screen
+        screen.fill((0, 0, 0))
+
+        if self.__state == "main_menu":
+            MainMenu.draw(screen)
+        elif self.__state == "start_game_menu":
+            StartGameMenu.draw(screen)
+
         pygame.display.flip()
 
     def run(self):
@@ -49,16 +51,12 @@ class Menu:
             self.draw()
 
     def __on_click(self, pos, button):
-        self.__main_menu.on_click(pos)
+        if self.__state == "main_menu":
+            MainMenu.on_click(pos)
+        elif self.__state == "start_game_menu":
+            StartGameMenu.on_click(pos)
+
         logger.debug(f"Clicked on {pos} with {button}")
-
-    def __draw_text(self, text, pos):
-        font = Menu.fonts["default"]
-        font_color = colors["default_font_color"]
-        text_img = font.render(text, True, font_color)
-        text_rect = text_img.get_rect(center=pos)
-
-        self.__screen.blit(text_img, text_rect)
 
     def start_game(self, arena="grass_fields"):
         game = Game(arena)
@@ -66,3 +64,6 @@ class Menu:
 
     def quit_game(self):
         self.__running = False
+
+    def set_state(self, state):
+        self.__state = state

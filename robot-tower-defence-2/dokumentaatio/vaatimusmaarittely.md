@@ -33,10 +33,10 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 ### Peli
 
 -   Käyttäjällä on peli kohtaiset elämät **(tehty)**
-    -   Elämät näkyvät näkymässä
+    -   Elämät näkyvät näkymässä **(tehty)**
     -   Elämät vähenevät robottien päästessä läpi. **(tehty)**
 -   Käyttäjällä on peli kohtainen valuutta **(tehty)**
-    -   Valuutta näkyy näkymässä
+    -   Valuutta näkyy näkymässä **(tehty)**
     -   Valuutta kasvaa tuhotessa robotteja **(tehty)**
 -   Käyttäjä voi laittaa pelin tauolle
     -   Tauko näkymässä pelin voi lopettaa

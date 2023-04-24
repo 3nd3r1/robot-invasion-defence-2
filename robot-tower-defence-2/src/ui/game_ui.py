@@ -22,9 +22,9 @@ class GameUi:
         TowerButton.load_assets()
 
     def __load_tower_buttons(self):
-        self.__tower_buttons.add(TowerButton("turret", (70, 166)))
-        self.__tower_buttons.add(TowerButton("missile_launcher", (70, 285)))
-        self.__tower_buttons.add(TowerButton("cannon", (70, 405)))
+        self.__tower_buttons.add(TowerButton("turret", (65, 150)))
+        self.__tower_buttons.add(TowerButton("missile_launcher", (65, 265)))
+        self.__tower_buttons.add(TowerButton("cannon", (65, 375)))
 
     def draw(self, screen):
         game = self.__game
@@ -41,7 +41,7 @@ class GameUi:
 
         round_num = game.get_round_manager().get_round()
         max_round = game.get_round_manager().get_rounds_amount()
-        self.__draw_text(screen, f"ROUND: {round_num}/{max_round}", (750, 20))
+        self.__draw_text(screen, f"ROUND: {round_num}/{max_round}", (850, 20))
 
     def on_click(self, pos):
         """ Checks if a tower button was clicked """

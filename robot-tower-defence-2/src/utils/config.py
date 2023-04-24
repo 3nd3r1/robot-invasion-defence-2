@@ -1,8 +1,8 @@
 """ src/utils/config.py """
 general = {
     "debug": True,
-    "screen_width": 1220,
-    "screen_height": 774,
+    "screen_width": 1280,
+    "screen_height": 720,
     "fps": 60,
 }
 
