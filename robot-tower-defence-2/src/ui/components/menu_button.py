@@ -3,12 +3,24 @@ from utils.config import fonts, colors
 from utils.file_reader import get_font
 
 
+class MenuButtonGroup(pygame.sprite.Group):
+    def on_click(self, pos):
+        for sprite in self:
+            if sprite.rect.collidepoint(pos):
+                sprite.on_click()
+
+    def draw(self, screen):
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        for sprite in self:
+            sprite.draw(screen)
+
+
 class MenuButton(pygame.sprite.Sprite):
     fonts = {}
 
     def __init__(self, text, pos, on_click, *args):
         super().__init__()
-        self.image = pygame.surface.Surface((300, 50), pygame.constants.SRCALPHA, 32)
+        self.image = pygame.surface.Surface((300, 50))
         self.rect = self.image.get_rect(center=pos)
 
         self.__click_handler = on_click
@@ -16,8 +28,6 @@ class MenuButton(pygame.sprite.Sprite):
 
         self.__text = text
         self.__render_text()
-
-        pygame.draw.rect(self.image, (0, 0, 0), self.rect)
 
     @staticmethod
     def load_assets():
@@ -31,6 +41,13 @@ class MenuButton(pygame.sprite.Sprite):
         font_color = colors["default_font_color"]
 
         text = font.render(self.__text, True, font_color)
+
         text_rect = text.get_rect(center=self.image.get_rect().center)
 
         self.image.blit(text, text_rect)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
+        if self.rect.collidepoint(pygame.mouse.get_pos()):
+            pygame.draw.rect(screen, colors["default_font_color"], self.rect.move(0, 10), 2)
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)

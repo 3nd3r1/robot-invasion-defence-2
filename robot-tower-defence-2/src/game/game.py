@@ -32,6 +32,7 @@ class Game:
 
         self.__clock = pygame.time.Clock()
         self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
         self.__load_images()
 

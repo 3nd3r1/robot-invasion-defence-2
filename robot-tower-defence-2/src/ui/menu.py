@@ -1,6 +1,6 @@
 import pygame
 
-from ui.components.menu_button import MenuButton
+from ui.components.menu_button import MenuButton, MenuButtonGroup
 
 from game.game import Game
 
@@ -25,7 +25,7 @@ class Menu:
         MenuButton.load_assets()
 
     def __load_main_menu(self):
-        self.__main_menu = pygame.sprite.Group()
+        self.__main_menu = MenuButtonGroup()
 
         start_pos = (self.__screen.get_width() / 2, self.__screen.get_height() / 2 - 100)
         quit_pos = (start_pos[0], start_pos[1] + 100)
@@ -49,9 +49,7 @@ class Menu:
             self.draw()
 
     def __on_click(self, pos, button):
-        for sprite in self.__main_menu:
-            if sprite.rect.collidepoint(pos):
-                sprite.on_click()
+        self.__main_menu.on_click(pos)
         logger.debug(f"Clicked on {pos} with {button}")
 
     def __draw_text(self, text, pos):
