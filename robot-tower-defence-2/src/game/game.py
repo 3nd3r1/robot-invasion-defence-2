@@ -22,8 +22,9 @@ class Game:
     """" This class represents the game itself and contains all other classes. """
 
     def __init__(self, arena) -> None:
-        self.__loading = True
         self.__running = True
+
+        self.__state = "loading"
 
         starting_money = arenas[arena]["starting_money"]
 
@@ -51,7 +52,7 @@ class Game:
         self.__projectiles = pygame.sprite.Group()
         self.__particles = pygame.sprite.Group()
 
-        self.__loading = False
+        self.__state = "game"
 
     def __load_images(self) -> None:
         """ Load all images """
@@ -108,7 +109,7 @@ class Game:
 
     def update(self) -> None:
         """ Update all game objects """
-        if self.__loading:
+        if self.__state != "game":
             return
 
         if self.__new_tower:
@@ -124,14 +125,16 @@ class Game:
     def draw(self, screen) -> None:
         """ Draw all game objects """
         screen.fill((0, 0, 0))
+
         self.__map.draw(screen)
         self.__projectiles.draw(screen)
         self.__towers.draw(screen)
         self.__robots.draw(screen)
         self.__particles.draw(screen)
+
         self.__game_ui.draw(screen)
 
-        if self.__new_tower:
+        if self.__new_tower and self.__state == "game":
             self.__new_tower.draw(screen)
 
     def __on_click(self, pos, button) -> None:
@@ -151,9 +154,23 @@ class Game:
             if tower.rect.collidepoint(pos):
                 tower.on_click()
 
-    def win_game(self) -> None:
+    def win_game(self):
         logger.debug("Game won!")
+        self.__state = "won"
         self.kill()
+
+    def lose_game(self):
+        logger.debug("Game lost!")
+        self.__state = "lost"
+        self.kill()
+
+    def pause_game(self):
+        logger.debug("Game paused!")
+        self.__state = "pause"
+
+    def unpause_game(self):
+        logger.debug("Game unpaused!")
+        self.__state = "game"
 
     def run(self):
         while self.__running:
@@ -218,6 +235,9 @@ class Game:
 
     def get_round_manager(self) -> RoundManager:
         return self.__round_manager
+
+    def get_state(self) -> str:
+        return self.__state
 
     def is_running(self) -> bool:
         return self.__running

@@ -7,6 +7,7 @@ from utils.file_reader import get_font
 
 
 class MainMenu:
+    """ Static class for the main menu """
     buttons = MenuButtonGroup()
     fonts = {}
 

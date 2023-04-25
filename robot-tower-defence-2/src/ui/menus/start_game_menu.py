@@ -8,6 +8,7 @@ from utils.file_reader import get_font
 
 
 class StartGameMenu:
+    """ Static class for the start game menu """
     buttons = StartGameButtonGroup()
     fonts = {}
 

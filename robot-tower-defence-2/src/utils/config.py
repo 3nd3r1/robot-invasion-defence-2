@@ -111,6 +111,12 @@ robots = {
 images = {
     "ui": {
         "game_background": "ui/game_background.png",
+        "ui_background": "ui/ui_background.png",
+        "tower_button_background": "ui/tower_button_background.png",
+        "arrow_up_button": "ui/arrow_up_button.png",
+        "arrow_down_button": "ui/arrow_down_button.png",
+        "pause_button": "ui/pause_button.png",  # (2x1 sheet)
+        "continue_button": "ui/continue_button.png",  # (2x1 sheet)
     },
     "particles": {
         "explosion": {
@@ -162,6 +168,7 @@ fonts = {
 }
 
 colors = {
+    "menu_background": (0, 0, 0),
     "invalid_tower_range": (255, 0, 0, 100),
     "valid_tower_range": (50, 50, 50, 50),
     "default_font_color": (192, 235, 248),

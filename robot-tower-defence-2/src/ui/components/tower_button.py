@@ -1,18 +1,19 @@
 """ src/game/ui_components/tower_button.py """
 import pygame
 from game.towers import Turret, MissileLauncher, Cannon
-from utils.config import fonts, colors, towers
-from utils.file_reader import get_font
+from utils.config import fonts, colors, towers, images
+from utils.file_reader import get_font, get_image
 
 
 class TowerButton(pygame.sprite.Sprite):
     """ Tower button class """
     fonts = {}
+    images = {}
 
     def __init__(self, tower, pos):
         super().__init__()
         self.image = pygame.Surface((100, 100), pygame.constants.SRCALPHA, 32)
-        self.rect = self.image.get_rect(center=pos)
+        self.rect = self.image.get_rect(center=pos).move(7, 0)
 
         self.tower_name = tower
         self.__cost = towers[tower]["cost"]
@@ -23,6 +24,8 @@ class TowerButton(pygame.sprite.Sprite):
     @staticmethod
     def load_assets():
         TowerButton.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 30)
+        TowerButton.images["background"] = pygame.image.load(
+            get_image(images["ui"]["tower_button_background"]))
 
     def __render_icon(self):
         """ Render the towers icon """
@@ -34,12 +37,14 @@ class TowerButton(pygame.sprite.Sprite):
             icon_image = Cannon.render_tower(90)
 
         icon_image = pygame.transform.scale_by(icon_image, 0.90)
-        icon_rect = icon_image.get_rect(center=(40, 40))
+        icon_rect = icon_image.get_rect(center=(35, 40))
+
+        self.image = TowerButton.images["background"].copy()
         self.image.blit(icon_image, icon_rect)
 
     def __render_price(self):
         """ Render the towers name and price"""
-        self.__draw_text(self.image, f"${self.__cost}", (50, 77))
+        self.__draw_text(self.image, f"${self.__cost}", (45, 77))
 
     def __draw_text(self, screen, text, pos):
         font = TowerButton.fonts["default"]
