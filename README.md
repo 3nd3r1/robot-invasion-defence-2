@@ -23,3 +23,11 @@ Pelin uusin release: [viikko 5](https://github.com/3nd3r1/ot-harjoitustyo/releas
 ### Testit
 
 `poetry run invoke test`
+
+### Testikattavuusraportti
+
+`poetry run invoke coverage-report`
+
+### Pylint-tarkastus
+
+`poetry run invoke lint`
