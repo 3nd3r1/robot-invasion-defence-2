@@ -2,14 +2,16 @@
 import pygame
 
 from ui.components.start_game_button import StartGameButtonGroup, StartGameButton
+from ui.components.icon_button import IconButtonGroup, IconButton
 
-from utils.config import fonts, colors
+from utils.config import fonts, colors, images
 from utils.file_reader import get_font
 
 
 class StartGameMenu:
     """ Static class for the start game menu """
-    buttons = StartGameButtonGroup()
+    select_buttons = StartGameButtonGroup()
+    icon_buttons = IconButtonGroup()
     fonts = {}
 
     @staticmethod
@@ -18,20 +20,26 @@ class StartGameMenu:
         StartGameButton.load_assets()
 
     @staticmethod
-    def load_menu(screen, start_game):
-        start_pos = (screen.get_width() / 2, screen.get_height() / 2 - 100)
+    def load_menu(screen, set_state, start_game):
+        start_pos = (screen.get_width() / 2 + 50, screen.get_height() / 2 - 50)
 
-        StartGameMenu.buttons.add(StartGameButton(
+        StartGameMenu.select_buttons.add(StartGameButton(
             "Grass Fields", start_pos, start_game, "grass_fields"))
+
+        StartGameMenu.icon_buttons.add(IconButton(
+            images["ui"]["back_button"], (67, 100), set_state, "main_menu"))
 
     @staticmethod
     def draw(screen):
-        StartGameMenu.draw_text(screen, "Select Arena", (screen.get_width() / 2, 100))
-        StartGameMenu.buttons.draw(screen)
+        title_pos = (screen.get_width() / 2 + 50, 180)
+        StartGameMenu.draw_text(screen, "Select Arena", title_pos)
+        StartGameMenu.select_buttons.draw(screen)
+        StartGameMenu.icon_buttons.draw(screen)
 
     @staticmethod
     def on_click(pos):
-        StartGameMenu.buttons.on_click(pos)
+        StartGameMenu.select_buttons.on_click(pos)
+        StartGameMenu.icon_buttons.on_click(pos)
 
     @staticmethod
     def draw_text(screen, text, pos):

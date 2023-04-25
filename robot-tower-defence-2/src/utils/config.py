@@ -116,7 +116,7 @@ images = {
         "arrow_up_button": "ui/arrow_up_button.png",
         "arrow_down_button": "ui/arrow_down_button.png",
         "pause_button": "ui/pause_button.png",  # (2x1 sheet)
-        "continue_button": "ui/continue_button.png",  # (2x1 sheet)
+        "back_button": "ui/continue_button.png",  # (2x1 sheet)
     },
     "particles": {
         "explosion": {

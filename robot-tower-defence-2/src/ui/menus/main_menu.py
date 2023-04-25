@@ -18,7 +18,7 @@ class MainMenu:
 
     @staticmethod
     def load_menu(screen, set_state, quit_game):
-        start_pos = (screen.get_width() / 2, screen.get_height() / 2 - 100)
+        start_pos = (screen.get_width() / 2 + 50, screen.get_height() / 2 - 50)
         quit_pos = (start_pos[0], start_pos[1] + 100)
 
         MainMenu.buttons.add(MenuButton("Start Game", start_pos, set_state, "start_game_menu"))
@@ -26,7 +26,9 @@ class MainMenu:
 
     @staticmethod
     def draw(screen):
-        MainMenu.draw_text(screen, "Robot Invasion Defence II", (screen.get_width() / 2, 100))
+        title_pos = (screen.get_width()/2+50, 180)
+
+        MainMenu.draw_text(screen, "Robot Invasion Defence II", title_pos)
         MainMenu.buttons.draw(screen)
 
     @staticmethod

@@ -5,11 +5,13 @@ from ui.menus import StartGameMenu, MainMenu
 from game.game import Game
 
 from utils.logger import logger
-from utils.config import general
+from utils.file_reader import get_image
+from utils.config import general, images, colors
 
 
 class Menu:
     fonts = {}
+    images = {}
 
     def __init__(self):
         pygame.init()
@@ -22,17 +24,21 @@ class Menu:
         self.__load_menus()
 
     def __load_assets(self):
+        Menu.images["background"] = pygame.image.load(get_image(images["ui"]["ui_background"]))
         MainMenu.load_assets()
         StartGameMenu.load_assets()
 
     def __load_menus(self):
         MainMenu.load_menu(self.__screen, self.set_state, self.quit_game)
-        StartGameMenu.load_menu(self.__screen, self.start_game)
+        StartGameMenu.load_menu(self.__screen, self.set_state, self.start_game)
 
     def draw(self):
 
         screen = self.__screen
-        screen.fill((0, 0, 0))
+
+        # Draw background
+        screen.fill(colors["menu_background"])
+        screen.blit(Menu.images["background"], (0, 0))
 
         if self.__state == "main_menu":
             MainMenu.draw(screen)

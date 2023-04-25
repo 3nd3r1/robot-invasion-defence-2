@@ -24,7 +24,7 @@ class PauseMenu:
         continue_pos = (67, 100)
         restart_pos = (screen.get_width() / 2, screen.get_height() / 2 - 100)
         PauseMenu.icon_buttons.add(IconButton(
-            images["ui"]["continue_button"], continue_pos, unpause_game))
+            images["ui"]["back_button"], continue_pos, unpause_game))
         PauseMenu.menu_buttons.add(MenuButton("restart", restart_pos, unpause_game))
 
     @staticmethod
