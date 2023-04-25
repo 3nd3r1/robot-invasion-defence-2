@@ -28,7 +28,7 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 -   Menu näkymästä pääsee asetuksiin
     -   Asetuksissa voi vaihtaa äänenvoimakkuutta.
     -   Asetuksissa voi poistaa tallennus tiedoston.
--   Menu näkymästä voi valita tason jossa aloittaa pelin.
+-   Menu näkymästä voi valita tason jossa aloittaa pelin. **(tehty)**
 
 ### Peli
 
@@ -38,7 +38,7 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 -   Käyttäjällä on peli kohtainen valuutta **(tehty)**
     -   Valuutta näkyy näkymässä **(tehty)**
     -   Valuutta kasvaa tuhotessa robotteja **(tehty)**
--   Käyttäjä voi laittaa pelin tauolle
+-   Käyttäjä voi laittaa pelin tauolle **(tehty)**
     -   Tauko näkymässä pelin voi lopettaa
 -   Käyttäjä voi voittaa ja hävitä pelin
     -   Käyttäjä häviää, kun elämät tippuvat nollaan **(tehty)**

@@ -40,4 +40,14 @@
 | 18.04. | 1    | Configin muokkaamista                                                                                 |
 | 18.04. | 2    | MissileLauncher-tornin koodaamista ja Particle-luokan koodaamista                                     |
 | 18.04. | 1    | Pylint virheiden korjaamista                                                                          |
-| yht    | 59   |                                                                                                       |
+| 19.04  | 1    | MissileLaucher-tornin muokkaamista                                                                    |
+| 19.04  | 2    | Käyttöliittymän parantamista                                                                          |
+| 21.04  | 2    | Menun tekoa ja configien muokkaamista                                                                 |
+| 24.04  | 1    | Menun tekoa                                                                                           |
+| 24.04  | 1    | Menun parantamista (hoverit)                                                                          |
+| 24.04. | 1    | Resoluution muuttaminen 1280x720                                                                      |
+| 24.04  | 2    | StartGameMenu tekeminen                                                                               |
+| 25.04  | 2    | GameUi:n parantamista ja tauko menun lisääminen                                                       |
+| 25.04  | 1    | Menujena hienontelua                                                                                  |
+| 25.05  | 1    | Pylint virheiden korjaamista. Sekvenssikaavion tekeminen. Changelogin päivittäminen.                  |
+| yht    | 73   |                                                                                                       |
