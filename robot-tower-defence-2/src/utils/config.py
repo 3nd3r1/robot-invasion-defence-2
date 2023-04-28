@@ -8,7 +8,7 @@ general = {
 
 arenas = {
     "grass_fields": {
-        "num_rounds": 100,
+        "num_rounds": 60,
         "starting_money": 250,
         "map_file": "grass_fields.tmx",
         # The following rates are calculated with the formula: (final/base)**(1/num_rounds)
@@ -59,9 +59,9 @@ towers = {
         "shoot_interval": 2000,
         "projectile_start_offset": (0, -20),
         "projectile_speed": 20,
-        "projectile_damage": 5,
-        "projectile_explosion_radius": 160,
-        "projectile_explosion_damage": 10,
+        "projectile_damage": 2,
+        "projectile_explosion_radius": 110,
+        "projectile_explosion_damage": 1,
         "can_be_in_water": False,
     },
     "cannon": {
@@ -71,7 +71,7 @@ towers = {
         "shoot_interval": 3000,
         "projectile_start_offset": (0, -20),
         "projectile_speed": 20,
-        "projectile_damage": 10,
+        "projectile_damage": 30,
         "projectile_explosion_radius": 0,
         "projectile_explosion_damage": 0,
         "can_be_in_water": False,

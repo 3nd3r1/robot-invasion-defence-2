@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 import pygame
 
 from utils.logger import logger
+from utils.config import images
+from utils.sheet_reader import get_sheet_images
 from utils.math import get_angle
 
 
@@ -11,6 +13,8 @@ class Robot(pygame.sprite.Sprite, ABC):
     It has properties such as speed, health, and type,
     and methods for moving and being damaged.
     """
+
+    images = {}
 
     def __init__(self, game, health: int) -> None:
         super().__init__()
@@ -28,6 +32,29 @@ class Robot(pygame.sprite.Sprite, ABC):
         self.rect.center = self.__current_waypoint
 
         logger.debug(f"Robot ({id(self)}) created with {self.get_health()} HP")
+
+    @staticmethod
+    def load_images():
+        minx_sheet = images["robots"]["minx"]["walk_sheet"]
+        minx_sheet_size = images["robots"]["minx"]["walk_sheet_size"]
+        nathan_sheet = images["robots"]["nathan"]["walk_sheet"]
+        nathan_sheet_size = images["robots"]["nathan"]["walk_sheet_size"]
+        archie_sheet = images["robots"]["archie"]["walk_sheet"]
+        archie_sheet_size = images["robots"]["archie"]["walk_sheet_size"]
+
+        Robot.images["minx"] = get_sheet_images(minx_sheet, minx_sheet_size)
+        Robot.images["nathan"] = get_sheet_images(nathan_sheet, nathan_sheet_size)
+        Robot.images["archie"] = get_sheet_images(archie_sheet, archie_sheet_size)
+
+    @staticmethod
+    def render(robot_type: str, frame: int) -> pygame.Surface:
+        if robot_type == "minx":
+            return Robot.images["minx"][frame].copy()
+        if robot_type == "nathan":
+            return Robot.images["nathan"][frame].copy()
+        if robot_type == "archie":
+            return Robot.images["archie"][frame].copy()
+        return None
 
     def __get_waypoints(self) -> list:
         waypoints = self.__game.get_map().get_waypoints()

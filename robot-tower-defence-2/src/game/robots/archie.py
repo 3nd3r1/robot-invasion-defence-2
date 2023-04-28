@@ -33,8 +33,7 @@ class Archie(Robot):
     def render_robot(frame: int) -> pygame.Surface:
         return Archie.images["walking"][frame].copy()
 
-    def _draw_robot(self) -> None:
-
+    def draw(self) -> None:
         velocity = self.get_velocity()
         offset = 0
 

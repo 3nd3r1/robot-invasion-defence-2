@@ -11,15 +11,11 @@ class RoundManager:
 
         self.__rounds = []
 
-        self.__state = "spawning"
-
         self.__round = 1
         self.__wave = 1
         self.__robot = 1
 
-        self.__last_round_started = 0
-        self.__last_wave_started = 0
-        self.__last_robot_spawned = 0
+        self.__next_event = (0, "spawn")
 
         self.__initialize_rounds()
 
@@ -28,32 +24,51 @@ class RoundManager:
 
     def update(self) -> None:
         time_now = pygame.time.get_ticks()
+        if self.__next_event[0] - time_now > 0:
+            return
 
-        current_round = self.__rounds[self.__round-1]
-        if self.__state == "round_delay":
-            if time_now-self.__last_round_started >= current_round["delay"]:
-                self.__last_round_started = time_now
-                self.__round += 1
-                self.__wave = 1
-                self.__state = "wave_delay"
+        evt = self.__next_event[1]
 
-        current_wave = current_round["waves"][self.__wave-1]
+        if evt == "spawn":
+            self.__spawn_robot()
+        elif evt == "wave":
+            self.__next_wave()
+        elif evt == "round":
+            self.__next_round()
 
-        if self.__state == "wave_delay":
-            if time_now-self.__last_wave_started >= current_wave["delay"]:
-                self.__last_wave_started = time_now
-                self.__wave += 1
-                self.__robot = 1
-                self.__state = "spawning"
+    def __next_round(self):
+        logger.debug(f"Round {self.__round+1} started")
+        self.__round += 1
+        self.__wave = 1
+        self.__robot = 1
 
-        current_robot = current_wave["robots"][self.__robot-1]
+        if self.__round >= len(self.__rounds):
+            self.__game.win_game()
+        else:
+            self.__next_event = (pygame.time.get_ticks(), "spawn")
 
-        if self.__state == "spawning":
-            if time_now-self.__last_robot_spawned >= current_robot["delay"]:
-                self.__last_robot_spawned = time_now
-                self.__robot += 1
-                if self.__robot > len(current_wave["robots"]):
-                    self.__state = "wave_delay"
+    def __next_wave(self):
+        current_round = self.__rounds[self.__round - 1]
+
+        self.__wave += 1
+        self.__robot = 1
+
+        if self.__wave >= len(current_round["waves"]):
+            self.__next_event = (pygame.time.get_ticks() + current_round["delay"], "round")
+        else:
+            self.__next_event = (pygame.time.get_ticks(), "spawn")
+
+    def __spawn_robot(self):
+        current_wave = self.__rounds[self.__round - 1]["waves"][self.__wave - 1]
+        current_robot = current_wave["robots"][self.__robot - 1]
+
+        self.__game.create_robot(current_robot["type"])
+        self.__robot += 1
+
+        if self.__robot >= len(current_wave["robots"]):
+            self.__next_event = (pygame.time.get_ticks() + current_wave["delay"], "wave")
+        else:
+            self.__next_event = (pygame.time.get_ticks() + current_robot["delay"], "spawn")
 
     def get_round(self) -> int:
         return self.__round

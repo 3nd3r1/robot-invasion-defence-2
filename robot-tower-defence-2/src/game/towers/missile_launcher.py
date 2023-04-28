@@ -9,7 +9,6 @@ from utils.config import towers, images
 from utils.math import distance_between_points
 from utils.file_reader import get_image
 from utils.sheet_reader import get_sheet_images
-from utils.logger import logger
 
 
 class MissileLauncher(Tower):
@@ -178,7 +177,7 @@ class MissileLauncherParticle(Particle):
         MissileLauncherParticle.images["animation"] = []
 
         for image in get_sheet_images(sheet_file, sheet_size):
-            resized_image = pygame.transform.scale_by(image, 2.5)
+            resized_image = pygame.transform.scale_by(image, 2)
             MissileLauncherParticle.images["animation"].append(resized_image)
 
     @staticmethod
