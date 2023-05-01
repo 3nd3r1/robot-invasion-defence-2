@@ -1,3 +1,4 @@
+import inspect
 from utils.config import general
 
 
@@ -6,8 +7,9 @@ class Logger:
         self.__debug = debug
 
     def debug(self, message: str) -> None:
+        filename = inspect.stack()[1].filename.split("\\")[-1]
         if self.__debug:
-            print(f"[DEBUG]: {message}")
+            print(f"[DEBUG] ({filename}): {message}")
 
     def error(self, message: str) -> None:
         print(f"[ERROR]: {message}")

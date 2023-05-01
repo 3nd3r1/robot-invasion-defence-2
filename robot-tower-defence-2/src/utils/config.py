@@ -95,7 +95,7 @@ robots = {
         "base_damage": 1,
         "base_bounty": 5,
         "path_offset": (0, 0),
-        "animation_interval": 10,
+        "animation_interval": 100,
     },
     "archie": {
         "name": "ARCHIE",
@@ -119,9 +119,10 @@ images = {
         "back_button": "ui/continue_button.png",  # (2x1 sheet)
     },
     "particles": {
+        # Image contains tuple with sheet path, sheet size and tile scale
         "explosion": {
-            "sheet": "particles/explosion.png",
-            "sheet_size": (4, 5),  # (columns, rows)
+            "sheet": ("particles/explosion.png", (4, 5), 2),
+            "animation_interval": 20,
         }
     },
     "robots": {
@@ -139,27 +140,28 @@ images = {
         }
     },
     "towers": {
-        "base": "towers/base.png",
+        # Images contain tuple with image path, scale and offset
+        "base": ("towers/base.png", 0.25),
         "turret": {
-            "model_1": "towers/turret/1.png",
-            "model_2": "towers/turret/2.png",
-            "model_3": "towers/turret/3.png",
+            "model_1": ("towers/turret/1.png", 0.4, (-10, -15)),
+            "model_2": ("towers/turret/2.png", 0.4, (-10, -15)),
+            "model_3": ("towers/turret/3.png", 0.4, (-10, -15)),
         },
         "missile_launcher": {
-            "model_1": "towers/missile_launcher/1.png",
-            "model_2": "towers/missile_launcher/2.png",
-            "model_3": "towers/missile_launcher/3.png",
+            "model_1": ("towers/missile_launcher/1.png", 0.35, (0, -15)),
+            "model_2": ("towers/missile_launcher/2.png", 0.35, (0, -15)),
+            "model_3": ("towers/missile_launcher/3.png", 0.35, (0, -15)),
         },
         "cannon": {
-            "model_1": "towers/cannon/1.png",
-            "model_2": "towers/cannon/2.png",
-            "model_3": "towers/cannon/3.png",
+            "model_1": ("towers/cannon/1.png", 0.3, (0, -16)),
+            "model_2": ("towers/cannon/2.png", 0.3, (0, -16)),
+            "model_3": ("towers/cannon/3.png", 0.3, (0, -16)),
         }
     },
     "projectiles": {
-        "bullet": "projectiles/bullet.png",
-        "missile": "projectiles/missile.png",
-        "shell": "projectiles/shell.png"
+        "turret": ("projectiles/bullet.png", 0.5),
+        "missile_launcher": ("projectiles/missile.png", 0.5),
+        "cannon": ("projectiles/shell.png", 0.5),
     }
 }
 

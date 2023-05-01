@@ -1,4 +1,5 @@
 """ src/game/game.py """
+import dataclasses
 import pygame
 
 from utils.config import general, arenas
@@ -11,20 +12,55 @@ from game.map import Map
 from game.round_manager import RoundManager
 
 from game.player import Player
-from game.tower import Tower
-from game.robot import Robot
+
+from game.tower import Tower, TowerGroup
+from game.robot import Robot, RobotGroup
+from game.particle import Particle, ParticleGroup
+from game.projectile import Projectile, ProjectileGroup
 
 from game.towers import Turret, MissileLauncher, Cannon
 from game.robots import Minx, Nathan, Archie
+
+
+@dataclasses.dataclass
+class GameState:
+    state: str = "loading"
+    running: bool = True
+
+
+@dataclasses.dataclass
+class GameSprites:
+    new_tower: Tower
+    towers: pygame.sprite.Group
+    robots: pygame.sprite.Group
+    projectiles: pygame.sprite.Group
+    particles: pygame.sprite.Group
+
+    def update(self):
+        self.towers.update()
+        self.robots.update()
+        self.projectiles.update()
+        self.particles.update()
+
+    def draw(self, screen):
+        self.projectiles.draw(screen)
+        self.towers.draw(screen)
+        self.robots.draw(screen)
+        self.particles.draw(screen)
+
+    def empty(self):
+        self.new_tower = None
+        self.towers.empty()
+        self.robots.empty()
+        self.projectiles.empty()
+        self.particles.empty()
 
 
 class Game:
     """" This class represents the game itself and contains all other classes. """
 
     def __init__(self, arena) -> None:
-        self.__running = True
-
-        self.__state = "loading"
+        self.__state = GameState()
 
         starting_money = arenas[arena]["starting_money"]
 
@@ -35,40 +71,34 @@ class Game:
         self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
-        self.__load_images()
+        self.__load_assets()
 
         self.__game_ui = GameUi(self)
-
-        self.__arena = arena
         self.__map = Map(arena, (188, 120))
         self.__player = Player(starting_money)
-
         self.__round_manager = RoundManager(self)
 
-        self.__new_tower = None
+        self.__sprites = GameSprites(
+            new_tower=None,
+            towers=TowerGroup(),
+            robots=RobotGroup(),
+            projectiles=ProjectileGroup(),
+            particles=ParticleGroup()
+        )
 
-        self.__towers = pygame.sprite.Group()
-        self.__robots = pygame.sprite.Group()
-        self.__projectiles = pygame.sprite.Group()
-        self.__particles = pygame.sprite.Group()
+        self.__state.state = "game"
 
-        self.__state = "game"
-
-    def __load_images(self) -> None:
-        """ Load all images """
+    def __load_assets(self) -> None:
+        """ Load all assets """
 
         # Load ui
         GameUi.load_assets()
 
-        # Load towers
-        Turret.load_images()
-        MissileLauncher.load_images()
-        Cannon.load_images()
-
-        # Load robots
-        Minx.load_images()
-        Nathan.load_images()
-        Archie.load_images()
+        # Load sprite assets
+        Tower.load_assets()
+        Robot.load_assets()
+        Particle.load_assets()
+        Projectile.load_assets()
 
     def create_robot(self, robot_name) -> Robot:
         """ Create a new robot """
@@ -83,97 +113,89 @@ class Game:
             new_robot = Archie(self)
 
         if new_robot:
-            self.__robots.add(new_robot)
+            self.sprites.robots.add(new_robot)
 
         return new_robot
 
     def create_tower(self, tower_name) -> Tower:
         """ Create a new tower """
         if tower_name == "turret":
-            self.__new_tower = Turret(self)
+            self.sprites.new_tower = Turret(self)
         elif tower_name == "missile_launcher":
-            self.__new_tower = MissileLauncher(self)
+            self.sprites.new_tower = MissileLauncher(self)
         elif tower_name == "cannon":
-            self.__new_tower = Cannon(self)
+            self.sprites.new_tower = Cannon(self)
 
-        return self.__new_tower
-
-    def add_particle(self, particle):
-        self.__particles.add(particle)
-
-    def add_projectile(self, projectile):
-        self.__projectiles.add(projectile)
-
-    def add_tower(self, tower):
-        self.__towers.add(tower)
+        return self.sprites.new_tower
 
     def update(self) -> None:
         """ Update all game objects """
-        if self.__state != "game":
+        if self.state.state != "game":
             return
 
-        if self.__new_tower:
-            self.__new_tower.update()
+        if self.sprites.new_tower:
+            self.sprites.new_tower.update()
 
-        self.__round_manager.update()
-
-        self.__projectiles.update()
-        self.__particles.update()
-        self.__towers.update()
-        self.__robots.update()
+        self.round_manager.update()
+        self.sprites.update()
 
     def draw(self, screen) -> None:
         """ Draw all game objects """
         screen.fill((0, 0, 0))
 
-        self.__map.draw(screen)
-        self.__projectiles.draw(screen)
-        self.__towers.draw(screen)
-        self.__robots.draw(screen)
-        self.__particles.draw(screen)
-
+        self.map.draw(screen)
+        self.sprites.draw(screen)
         self.__game_ui.draw(screen)
 
-        if self.__new_tower and self.__state == "game":
-            self.__new_tower.draw(screen)
+        if self.sprites.new_tower and self.state.state == "game":
+            self.sprites.new_tower.draw(screen)
 
     def __on_click(self, pos, button) -> None:
         """ Handle click events """
         logger.debug(f"Click at {pos}")
 
-        if self.__new_tower and button == 1:
+        if self.sprites.new_tower and button == 1:
             self.__place_tower(pos)
             return
 
-        if self.__new_tower and button == 3:
-            self.__new_tower = None
+        if self.sprites.new_tower and button == 3:
+            self.sprites.new_tower = None
 
         self.__game_ui.on_click(pos)
+        self.sprites.towers.on_click(pos)
 
-        for tower in self.__towers:
-            if tower.rect.collidepoint(pos):
-                tower.on_click()
+    def __place_tower(self, pos):
+        """ Places the new tower at the given position """
+        if not self.sprites.new_tower:
+            return
+
+        if self.player.money < self.sprites.new_tower.cost:
+            return
+
+        if self.sprites.new_tower.place(pos):
+            self.player.spend_money(self.sprites.new_tower.cost)
+            self.sprites.new_tower = None
 
     def win_game(self):
         logger.debug("Game won!")
-        self.__state = "won"
+        self.state.state = "won"
         self.kill()
 
     def lose_game(self):
         logger.debug("Game lost!")
-        self.__state = "lost"
+        self.state.state = "lost"
         self.kill()
 
     def pause_game(self):
         logger.debug("Game paused!")
-        self.__state = "pause"
+        self.state.state = "pause"
 
     def unpause_game(self):
         logger.debug("Game unpaused!")
-        self.__state = "game"
+        self.state.state = "game"
 
     def run(self):
-        while self.__running:
+        while self.state.running:
             for evt in pygame.event.get():
                 if evt.type == pygame.constants.QUIT:
                     pygame.quit()
@@ -185,59 +207,40 @@ class Game:
             self.__clock.tick(general["fps"])
 
     def kill(self) -> None:
-        self.__running = False
-        self.__towers.empty()
-        self.__projectiles.empty()
-        self.__particles.empty()
-        self.__robots.empty()
+        self.state.state = "dead"
+        self.state.running = False
+
+        self.sprites.empty()
 
     def get_closest_robot_in_range(self, tower):
         """ Get the closest robot to the tower """
         closest_robot = None
-        for robot in self.__robots:
+        for robot in self.sprites.robots:
             new_distance = distance_between_points(
                 robot.rect.center, tower.rect.center)
             old_distance = distance_between_points(
                 closest_robot.rect.center, tower.rect.center) if closest_robot else 999999
-            if new_distance <= tower.get_range() and new_distance < old_distance:
+            if new_distance <= tower.range and new_distance < old_distance:
                 closest_robot = robot
 
         return closest_robot
 
-    def __place_tower(self, pos):
-        if not self.__new_tower:
-            return
-
-        if self.get_player().get_money() < self.__new_tower.get_cost():
-            return
-
-        if self.__new_tower.place(pos):
-            self.get_player().spend_money(self.__new_tower.get_cost())
-            self.__new_tower = None
-
-    def get_map(self) -> Map:
+    @property
+    def map(self) -> Map:
         return self.__map
 
-    def get_arena(self) -> str:
-        return self.__arena
-
-    def get_player(self) -> Player:
+    @property
+    def player(self) -> Player:
         return self.__player
 
-    def get_towers(self) -> list:
-        return self.__towers.sprites()
-
-    def get_projectiles(self) -> list:
-        return self.__projectiles.sprites()
-
-    def get_robots(self) -> list:
-        return self.__robots.sprites()
-
-    def get_round_manager(self) -> RoundManager:
+    @property
+    def round_manager(self) -> RoundManager:
         return self.__round_manager
 
-    def get_state(self) -> str:
-        return self.__state
+    @property
+    def sprites(self) -> GameSprites:
+        return self.__sprites
 
-    def is_running(self) -> bool:
-        return self.__running
+    @property
+    def state(self) -> str:
+        return self.__state

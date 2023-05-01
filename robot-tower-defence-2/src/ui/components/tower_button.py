@@ -1,6 +1,6 @@
 """ src/game/ui_components/tower_button.py """
 import pygame
-from game.towers import Turret, MissileLauncher, Cannon
+from game.tower import Tower
 from utils.config import fonts, colors, towers, images
 from utils.file_reader import get_font, get_image
 
@@ -29,13 +29,7 @@ class TowerButton(pygame.sprite.Sprite):
 
     def __render_icon(self):
         """ Render the towers icon """
-        if self.tower_name == "turret":
-            icon_image = Turret.render_tower(90)
-        elif self.tower_name == "missile_launcher":
-            icon_image = MissileLauncher.render_tower(90)
-        elif self.tower_name == "cannon":
-            icon_image = Cannon.render_tower(90)
-
+        icon_image = Tower.render(self.tower_name, "model_1", 90)
         icon_image = pygame.transform.scale_by(icon_image, 0.90)
         icon_rect = icon_image.get_rect(center=(35, 40))
 

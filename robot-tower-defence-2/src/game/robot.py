@@ -1,10 +1,28 @@
 from abc import ABC, abstractmethod
+import dataclasses
 import pygame
 
 from utils.logger import logger
 from utils.config import images
 from utils.sheet_reader import get_sheet_images
 from utils.math import get_angle
+
+
+class RobotGroup(pygame.sprite.Group):
+    """ A group of robots. """
+
+    def draw(self, screen):
+        for robot in self.sprites():
+            robot.draw(screen)
+
+
+@dataclasses.dataclass
+class Waypoints:
+    waypoints: iter
+    current: pygame.math.Vector2
+
+    def next(self):
+        self.current = next(self.waypoints, None)
 
 
 class Robot(pygame.sprite.Sprite, ABC):
@@ -26,15 +44,33 @@ class Robot(pygame.sprite.Sprite, ABC):
 
         self.__game = game
 
-        self.__waypoints = iter(self.__get_waypoints())
-        self.__current_waypoint = next(self.__waypoints)
+        self.__waypoints = Waypoints(iter(self.__get_waypoints()), None)
+        self.__waypoints.next()
 
-        self.rect.center = self.__current_waypoint
+        self.__last_animation = 0
+        self.__animation_frame = 0
 
-        logger.debug(f"Robot ({id(self)}) created with {self.get_health()} HP")
+        self.rect.center = self.__waypoints.current
+
+        logger.debug(f"Robot ({id(self)}) created with {self.health} HP")
+
+    def __get_waypoints(self) -> list:
+        waypoints = self.__game.map.waypoints
+        offset_waypoints = []
+
+        for i, waypoint in enumerate(waypoints[:-1]):
+            difference_x = waypoints[i+1][0] - waypoint[0]
+            difference_y = waypoints[i+1][1] - waypoint[1]
+
+            path_offset = self._path_offset.rotate(get_angle(difference_x, difference_y))
+            offset_waypoints.append((round(waypoint[0]+path_offset[0]),
+                                    round(waypoint[1]+path_offset[1])))
+        offset_waypoints.append(waypoints[-1])
+
+        return offset_waypoints
 
     @staticmethod
-    def load_images():
+    def load_assets():
         minx_sheet = images["robots"]["minx"]["walk_sheet"]
         minx_sheet_size = images["robots"]["minx"]["walk_sheet_size"]
         nathan_sheet = images["robots"]["nathan"]["walk_sheet"]
@@ -56,91 +92,103 @@ class Robot(pygame.sprite.Sprite, ABC):
             return Robot.images["archie"][frame].copy()
         return None
 
-    def __get_waypoints(self) -> list:
-        waypoints = self.__game.get_map().get_waypoints()
-        offset_waypoints = []
-
-        for i, waypoint in enumerate(waypoints[:-1]):
-            difference_x = waypoints[i+1][0] - waypoint[0]
-            difference_y = waypoints[i+1][1] - waypoint[1]
-
-            path_offset = self.get_path_offset().rotate(get_angle(difference_x, difference_y))
-            offset_waypoints.append((round(waypoint[0]+path_offset[0]),
-                                    round(waypoint[1]+path_offset[1])))
-        offset_waypoints.append(waypoints[-1])
-
-        return offset_waypoints
-
     def update(self) -> None:
-        if self.get_health() <= 0:
-            self.__game.get_player().earn_money(self.get_bounty())
+        if self.health <= 0:
+            self.__game.player.earn_money(self.bounty)
             logger.debug(f"Robot ({id(self)}) died")
             self.kill()
             return
 
-        if not self.__current_waypoint:
-            self.__game.get_player().lose_health(self.get_damage())
+        if not self.__waypoints.current:
+            self.__game.player.lose_health(self.damage)
             logger.debug(f"Robot ({id(self)}) reached the end of the map")
             self.kill()
             return
 
         self.__calculate_velocity()
-        self.rect.move_ip(self.get_velocity())
+        self.rect.move_ip(self.__velocity)
 
-        self._draw_robot()
-
-        if self.get_velocity() == (0, 0):
-            self.__current_waypoint = next(self.__waypoints, None)
+        if self.__velocity == (0, 0):
+            self.__waypoints.next()
 
     def __calculate_velocity(self):
-        waypoint_x = self.__current_waypoint[0]
-        waypoint_y = self.__current_waypoint[1]
+        waypoint_x = self.__waypoints.current[0]
+        waypoint_y = self.__waypoints.current[1]
 
         velocity_x = min(max(waypoint_x-self.rect.move(self.rect.width//2 +
-                         self.get_path_offset()[0], 0).left, -self.get_speed()), self.get_speed())
+                         self._path_offset[0], 0).left, -self.speed), self.speed)
         velocity_y = min(max(waypoint_y-self.rect.move(0, self.rect.height +
-                         self.get_path_offset()[1]).top, -self.get_speed()), self.get_speed())
+                         self._path_offset[1]).top, -self.speed), self.speed)
 
         self.__velocity = (velocity_x, velocity_y)
+
+    def draw(self, screen):
+        velocity = self.__velocity
+        sheet_width = self._sheet_size[0]
+        animation_interval = self._animation_interval
+        time_now = pygame.time.get_ticks()
+
+        offset = 0
+
+        if velocity[0] < 0 and velocity[1] == 0:
+            offset = sheet_width * 1
+        elif velocity[0] > 0 and velocity[1] == 0:
+            offset = sheet_width * 3
+        elif velocity[0] == 0 and velocity[1] < 0:
+            offset = sheet_width * 0
+        else:
+            offset = sheet_width * 2
+
+        if time_now - self.__last_animation >= animation_interval:
+            self.__animation_frame = ((
+                self.__animation_frame + 1) % (sheet_width-1))
+            self.__last_animation = time_now
+
+        frame = self.__animation_frame + offset
+
+        self.image = Robot.render(self.type, frame)
+        screen.blit(self.image, self.rect)
+
+    @property
+    def health(self) -> int:
+        """This method returns the robot's health."""
+        return self.__health
 
     def lose_health(self, amount: int) -> None:
         """This method decreases the robot's health by the given amount."""
         self.__health = self.__health - amount
 
-    def get_health(self) -> int:
-        """This method returns the robot's health."""
-        return self.__health
-
-    def get_velocity(self) -> tuple:
-        """This method returns the robot's velocity."""
-        return self.__velocity
-
-    @staticmethod
+    @property
     @abstractmethod
-    def load_images():
+    def type(self) -> str:
         pass
 
-    @staticmethod
+    @property
     @abstractmethod
-    def render_robot(frame: int) -> pygame.Surface:
+    def damage(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def _draw_robot(self) -> None:
+    def bounty(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_damage(self) -> int:
+    def speed(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_bounty(self) -> int:
+    def _animation_interval(self) -> int:
         pass
 
+    @property
     @abstractmethod
-    def get_speed(self) -> int:
+    def _sheet_size(self) -> tuple:
         pass
 
+    @property
     @abstractmethod
-    def get_path_offset(self) -> pygame.math.Vector2:
+    def _path_offset(self) -> pygame.math.Vector2:
         pass

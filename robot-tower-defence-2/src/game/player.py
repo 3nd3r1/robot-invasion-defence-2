@@ -15,9 +15,6 @@ class Player:
         self.__health = 100
         self.lost = False
 
-    def get_money(self) -> int:
-        return self.__money
-
     def spend_money(self, amount) -> None:
         if self.__money >= amount:
             self.__money -= amount
@@ -26,12 +23,17 @@ class Player:
         self.__money += amount
         logger.debug(f"Player ({id(self)}) new money: {self.__money} $")
 
-    def get_health(self) -> int:
-        return self.__health
-
     def lose_health(self, amount) -> None:
         if self.__health >= amount:
             self.__health -= amount
         if self.__health <= 0:
             self.lost = True
         logger.debug(f"Player ({id(self)}) new health: {self.__health} HP")
+
+    @property
+    def health(self):
+        return self.__health
+
+    @property
+    def money(self):
+        return self.__money

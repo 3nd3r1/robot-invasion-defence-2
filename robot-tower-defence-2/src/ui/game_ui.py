@@ -45,7 +45,7 @@ class GameUi:
 
     def draw(self, screen):
         game = self.__game
-        state = game.get_state()
+        state = game.state.state
 
         # Draw background
         if state != "game":
@@ -60,11 +60,11 @@ class GameUi:
             self.__icon_buttons.draw(screen)
 
             # Draw game info
-            self.__draw_text(screen, f"HP {game.get_player().get_health()}", (200, 20))
-            self.__draw_text(screen, f"${game.get_player().get_money()}", (320, 20))
+            self.__draw_text(screen, f"HP {game.player.health}", (200, 20))
+            self.__draw_text(screen, f"${game.player.money}", (320, 20))
 
-            round_num = game.get_round_manager().get_round()
-            max_round = game.get_round_manager().get_rounds_amount()
+            round_num = game.round_manager.round
+            max_round = game.round_manager.rounds_amount
             self.__draw_text(screen, f"ROUND: {round_num}/{max_round}", (850, 20))
         elif state == "pause":
             PauseMenu.draw(screen)
@@ -72,7 +72,7 @@ class GameUi:
     def on_click(self, pos):
         """ Checks if a tower button was clicked """
         game = self.__game
-        state = game.get_state()
+        state = game.state.state
 
         if state == "game":
             for button in self.__tower_buttons:
