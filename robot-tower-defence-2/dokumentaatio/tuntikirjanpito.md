@@ -49,5 +49,14 @@
 | 24.04  | 2    | StartGameMenu tekeminen                                                                               |
 | 25.04  | 2    | GameUi:n parantamista ja tauko menun lisääminen                                                       |
 | 25.04  | 1    | Menujena hienontelua                                                                                  |
-| 25.05  | 1    | Pylint virheiden korjaamista. Sekvenssikaavion tekeminen. Changelogin päivittäminen.                  |
-| yht    | 73   |                                                                                                       |
+| 25.04  | 1    | Pylint virheiden korjaamista. Sekvenssikaavion tekeminen. Changelogin päivittäminen.                  |
+| 28.04  | 1    | Robot-luokan koodirakenteen muuttamista pylint virheiden mukaan.                                      |
+| 28.04  | 2    | RoundManager-luokan koodin muuttamista pylint virheiden mukaan.                                       |
+| 01.05  | 2    | Robot-luokan koodirakenteen muuttamista                                                               |
+| 01.05  | 1    | RoadGeneratorin muuttamista                                                                           |
+| 01.05  | 4    | Korjataan pylint virheet!                                                                             |
+| 02.05. | 1    | Uusien Robot-luokkaa testaavia testejä ja vanhojen testien korjaamista                                |
+| 02.05. | 1    | Käyttöliittymän parantamista                                                                          |
+| 02.05  | 1    | Voiton ja häviämisen kodaaminen                                                                       |
+| 02.05. | 2    | Dokumentaation päivittelyä (käyttöohjeiden tekeminen). Testien korjailua.                             |
+| yht    | 88   |                                                                                                       |

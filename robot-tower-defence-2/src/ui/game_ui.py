@@ -68,12 +68,12 @@ class GameUi:
             # Draw game info
             font = GameUi.fonts["default"]
             color = colors["default_font_color"]
-            draw_text(screen, font, color, f"HP {game.player.health}", (200, 20))
-            draw_text(screen, font, color, f"${game.player.money}", (320, 20))
+            draw_text(screen, font, color, f"HP {game.player.health}", (250, 50))
+            draw_text(screen, font, color, f"${game.player.money}", (400, 50))
 
             round_num = game.round_manager.round
             max_round = game.round_manager.rounds_amount
-            draw_text(screen, font, color, f"ROUND: {round_num}/{max_round}", (850, 20))
+            draw_text(screen, font, color, f"ROUND: {round_num}/{max_round}", (950, 50))
         elif state == "pause":
             PauseMenu.draw(screen)
         elif state == "lose":

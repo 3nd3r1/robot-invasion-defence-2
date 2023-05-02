@@ -37,8 +37,8 @@ class TestRobot(unittest.TestCase):
         # Robot should be dead
         self.assertFalse(self.test_robot.alive())
 
-        # Check that money has increased by 1
-        self.assertEqual(money_before + 1, self.test_game.player.money)
+        # Check that money has increased by 2
+        self.assertEqual(money_before + 2, self.test_game.player.money)
 
     def test_robot_reduces_players_health(self):
         health_before = self.test_game.player.health

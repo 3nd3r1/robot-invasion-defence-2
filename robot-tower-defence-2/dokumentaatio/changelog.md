@@ -4,7 +4,7 @@ Robot Invasion Defence II-pelin changelog.
 
 Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) ohjeiden mukaisesti.
 
-## [Unreleased]
+## [viikko 6]
 
 ### Lisätty
 
