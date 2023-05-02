@@ -4,6 +4,10 @@ Lataa pelin viimeisin release: [Täältä](https://github.com/3nd3r1/ot-harjoitu
 
 ## Käynnistäminen
 
+Navigoi pelin hakemistoon:
+
+`cd robot-tower-defence-2`
+
 Asenna riippuvuudet:
 
 `poetry install`
