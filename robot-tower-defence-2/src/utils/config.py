@@ -117,6 +117,8 @@ images = {
         "arrow_down_button": "ui/arrow_down_button.png",
         "pause_button": "ui/pause_button.png",  # (2x1 sheet)
         "back_button": "ui/continue_button.png",  # (2x1 sheet)
+        "icon": "ui/icon.png",
+
     },
     "particles": {
         # Image contains tuple with sheet path, sheet size and tile scale

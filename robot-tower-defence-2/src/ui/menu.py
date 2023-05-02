@@ -15,7 +15,13 @@ class Menu:
 
     def __init__(self):
         pygame.init()
-        self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
+        self.__screen = pygame.display.set_mode(
+            (general["screen_width"], general["screen_height"]))
+
+        pygame.display.set_caption("Robot Tower Defence 2")
+        icon = pygame.image.load(get_image(images["ui"]["icon"]))
+        pygame.display.set_icon(icon)
+
         self.__running = True
 
         self.__state = "main_menu"
@@ -24,7 +30,8 @@ class Menu:
         self.__load_menus()
 
     def __load_assets(self):
-        Menu.images["background"] = pygame.image.load(get_image(images["ui"]["ui_background"]))
+        Menu.images["background"] = pygame.image.load(
+            get_image(images["ui"]["ui_background"]))
         MainMenu.load_assets()
         StartGameMenu.load_assets()
 
