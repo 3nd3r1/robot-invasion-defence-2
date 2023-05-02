@@ -4,6 +4,25 @@ Robot Invasion Defence II-pelin changelog.
 
 Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) ohjeiden mukaisesti.
 
+## [Unreleased]
+
+### Lisätty
+
+-   Pelin voi voittaa ja hävitä. Molempia tilanteita kuvaa vastaava valikko.
+-   Pause-valikkoon lisätty päävalikkoon paluu näppäin.
+
+### Muutettu
+
+-   Käyttöliittymän parannuksia:
+    -   Jos torniin ei ole varaa sen hinta on punainen.
+    -   Tornia ei voi valita jos siihen ei ole varaa.
+-   Robottien tilastoja muutettu
+
+### Korjattu
+
+-   Tauko valikon teksti keskitetty.
+-   Tauko valikon restart-nappi toimii
+
 ## [viikko 5](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/viikko5) - 2023-04-25
 
 ### Lisätty

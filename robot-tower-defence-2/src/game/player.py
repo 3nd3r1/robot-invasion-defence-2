@@ -8,9 +8,15 @@ class Player:
         It has properties such as money and lives,
         and methods for earning and spending money,
         as well as for losing lives.
+
+        Attributes:
+            money (int): The amount of money the player has.
+            health (int): The amount of health the player has.
+            lost (bool): Whether the player has lost the game or not.
     """
 
-    def __init__(self, money: int) -> None:
+    def __init__(self, money: int = 250) -> None:
+        self.__starting_money = money
         self.__money = money
         self.__health = 100
         self.lost = False
@@ -29,6 +35,11 @@ class Player:
         if self.__health <= 0:
             self.lost = True
         logger.debug(f"Player ({id(self)}) new health: {self.__health} HP")
+
+    def reset(self) -> None:
+        self.__health = 100
+        self.__money = self.__starting_money
+        self.lost = False
 
     @property
     def health(self):

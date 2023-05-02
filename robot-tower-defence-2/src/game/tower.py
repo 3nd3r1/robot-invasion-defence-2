@@ -24,6 +24,15 @@ class Tower(pygame.sprite.Sprite, ABC):
       This class represents a tower that can be placed on the map.
       It has properties such as cost, range, and damage,
       and methods for upgrading and selling the tower. 
+
+        Attributes:
+            cost (int): The cost of the tower.
+            range (int): The range of the tower.
+            damage (int): The amount of damage the tower does to the robot.
+            target (Robot): The robot the tower is targeting.
+            type (str): The type of the tower.
+            shoot_interval (int): The amount of time between shots.
+            hitbox (pygame.Rect): The hitbox of the tower.
     """
 
     images = {}
@@ -195,29 +204,29 @@ class Tower(pygame.sprite.Sprite, ABC):
     @property
     @abstractmethod
     def type(self) -> str:
-        pass
+        """ Returns the type of the tower """
 
     @property
     @abstractmethod
     def range(self) -> int:
-        pass
+        """ Returns the range of the tower """
 
     @property
     @abstractmethod
     def hitbox(self) -> pygame.Rect:
-        pass
+        """ Returns the hitbox of the tower """
 
     @property
     @abstractmethod
     def cost(self) -> int:
-        pass
+        """ Returns the cost of the tower """
 
     @property
     @abstractmethod
     def shoot_interval(self) -> int:
-        pass
+        """ Returns the shoot interval of the tower"""
 
     @property
     @abstractmethod
     def can_be_in_water(self) -> bool:
-        pass
+        """ Returns true if the tower can be placed in water """

@@ -6,6 +6,7 @@ from ui.components.icon_button import IconButtonGroup, IconButton
 
 from utils.config import fonts, colors, images
 from utils.file_reader import get_font
+from utils.text import draw_text
 
 
 class StartGameMenu:
@@ -32,7 +33,9 @@ class StartGameMenu:
     @staticmethod
     def draw(screen):
         title_pos = (screen.get_width() / 2 + 50, 180)
-        StartGameMenu.draw_text(screen, "Select Arena", title_pos)
+        font = StartGameMenu.fonts["default"]
+        color = colors["default_font_color"]
+        draw_text(screen, font, color, "Select Arena", title_pos)
         StartGameMenu.select_buttons.draw(screen)
         StartGameMenu.icon_buttons.draw(screen)
 
@@ -40,12 +43,3 @@ class StartGameMenu:
     def on_click(pos):
         StartGameMenu.select_buttons.on_click(pos)
         StartGameMenu.icon_buttons.on_click(pos)
-
-    @staticmethod
-    def draw_text(screen, text, pos):
-        font = StartGameMenu.fonts["default"]
-        font_color = colors["default_font_color"]
-
-        text = font.render(text, True, font_color)
-        text_rect = text.get_rect(center=pos)
-        screen.blit(text, text_rect)

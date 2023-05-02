@@ -9,15 +9,6 @@ class Archie(Robot):
 
     def __init__(self, game) -> None:
         health = robots["archie"]["health"]
-        self.speed = robots["archie"]["speed"]
-        self.__base_damage = robots["archie"]["base_damage"]
-        self.__base_bounty = robots["archie"]["base_bounty"]
-
-        self.__animation_interval = robots["archie"]["animation_interval"]
-        self.__path_offset = pygame.math.Vector2(
-            robots["archie"]["path_offset"])
-        self.__sheet_size = images["robots"]["archie"]["walk_sheet_size"]
-
         super().__init__(game, health)
 
     @property
@@ -25,25 +16,25 @@ class Archie(Robot):
         return "archie"
 
     @property
-    def bounty(self) -> int:
-        return self.__base_bounty
+    def speed(self) -> int:
+        return robots["archie"]["speed"]
 
     @property
     def damage(self) -> int:
-        return self.__base_damage + self.health
+        return robots["archie"]["base_damage"] + self.health
 
     @property
-    def speed(self) -> int:
-        return self.__speed
+    def bounty(self) -> int:
+        return robots["archie"]["base_bounty"]
 
     @property
     def _animation_interval(self) -> int:
-        return self.__animation_interval
+        return robots["archie"]["animation_interval"]
 
     @property
     def _path_offset(self) -> pygame.math.Vector2:
-        return self.__path_offset
+        return pygame.math.Vector2(robots["archie"]["path_offset"])
 
     @property
     def _sheet_size(self) -> tuple:
-        return self.__sheet_size
+        return images["robots"]["archie"]["walk_sheet_size"]

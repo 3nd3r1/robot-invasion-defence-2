@@ -30,6 +30,13 @@ class Robot(pygame.sprite.Sprite, ABC):
     This class represents a robot that moves along the map.
     It has properties such as speed, health, and type,
     and methods for moving and being damaged.
+
+    Attributes:
+        health (int): The amount of health the robot has.
+        type (str): The type of the robot.
+        speed (int): The speed of the robot.
+        bounty (int): The amount of money the player gets for destroying the robot.
+        damage (int): The amount of damage the robot does to the player.
     """
 
     images = {}
@@ -55,6 +62,7 @@ class Robot(pygame.sprite.Sprite, ABC):
         logger.debug(f"Robot ({id(self)}) created with {self.health} HP")
 
     def __get_waypoints(self) -> list:
+        """This method returns the waypoints for the robot to follow."""
         waypoints = self.__game.map.waypoints
         offset_waypoints = []
 
@@ -84,6 +92,7 @@ class Robot(pygame.sprite.Sprite, ABC):
 
     @staticmethod
     def render(robot_type: str, frame: int) -> pygame.Surface:
+        """This method renders the robot's image."""
         if robot_type == "minx":
             return Robot.images["minx"][frame].copy()
         if robot_type == "nathan":
@@ -93,6 +102,7 @@ class Robot(pygame.sprite.Sprite, ABC):
         return None
 
     def update(self) -> None:
+        """This method updates the robot's position and checks if it is dead."""
         if self.health <= 0:
             self.__game.player.earn_money(self.bounty)
             logger.debug(f"Robot ({id(self)}) died")
@@ -112,6 +122,7 @@ class Robot(pygame.sprite.Sprite, ABC):
             self.__waypoints.next()
 
     def __calculate_velocity(self):
+        """This method calculates the robot's velocity."""
         waypoint_x = self.__waypoints.current[0]
         waypoint_y = self.__waypoints.current[1]
 
@@ -161,34 +172,34 @@ class Robot(pygame.sprite.Sprite, ABC):
     @property
     @abstractmethod
     def type(self) -> str:
-        pass
+        """This method returns the robot's type."""
 
     @property
     @abstractmethod
     def damage(self) -> int:
-        pass
+        """This method returns the robot's damage."""
 
     @property
     @abstractmethod
     def bounty(self) -> int:
-        pass
+        """This method returns the robot's bounty."""
 
     @property
     @abstractmethod
     def speed(self) -> int:
-        pass
+        """This method returns the robot's speed."""
 
     @property
     @abstractmethod
     def _animation_interval(self) -> int:
-        pass
+        """This method returns the robot's animation interval."""
 
     @property
     @abstractmethod
     def _sheet_size(self) -> tuple:
-        pass
+        """This method returns the robot's sheet size."""
 
     @property
     @abstractmethod
     def _path_offset(self) -> pygame.math.Vector2:
-        pass
+        """This method returns the robot's path offset."""

@@ -39,10 +39,10 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
     -   Valuutta näkyy näkymässä **(tehty)**
     -   Valuutta kasvaa tuhotessa robotteja **(tehty)**
 -   Käyttäjä voi laittaa pelin tauolle **(tehty)**
-    -   Tauko näkymässä pelin voi lopettaa
--   Käyttäjä voi voittaa ja hävitä pelin
+    -   Tauko näkymässä pelin voi lopettaa **(tehty)**
+-   Käyttäjä voi voittaa ja hävitä pelin **(tehty)**
     -   Käyttäjä häviää, kun elämät tippuvat nollaan **(tehty)**
-    -   Käyttäjä voittaa, kun pääsee tietylle tasolle
+    -   Käyttäjä voittaa, kun pääsee tietylle tasolle **(tehty)**
 -   Käyttäjä voi asettaa torneja **(tehty)**
     -   Tornit toimivat **(tehty)**
 -   Käyttäjä voi poistaa/myydä torneja

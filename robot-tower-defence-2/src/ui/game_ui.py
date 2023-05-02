@@ -1,12 +1,13 @@
 """ src/ui/game_ui.py """
 import pygame
 
-from ui.components.tower_button import TowerButton
+from ui.components.tower_button import TowerButton, TowerButtonGroup
 from ui.components.icon_button import IconButton, IconButtonGroup
-from ui.menus import PauseMenu
+from ui.menus import PauseMenu, LoseMenu, WinMenu
 
 from utils.config import colors, images, fonts
 from utils.file_reader import get_image, get_font
+from utils.text import draw_text
 
 
 class GameUi:
@@ -17,7 +18,7 @@ class GameUi:
         self.__game = game
         self.__screen = pygame.display.get_surface()
 
-        self.__tower_buttons = pygame.sprite.Group()
+        self.__tower_buttons = TowerButtonGroup(game.create_tower)
         self.__icon_buttons = IconButtonGroup()
 
         self.__load_tower_buttons()
@@ -30,6 +31,8 @@ class GameUi:
         GameUi.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 60)
         TowerButton.load_assets()
         PauseMenu.load_assets()
+        LoseMenu.load_assets()
+        WinMenu.load_assets()
 
     def __load_tower_buttons(self):
         self.__tower_buttons.add(TowerButton("turret", (65, 150)))
@@ -41,7 +44,10 @@ class GameUi:
             images["ui"]["pause_button"], (67, 500), self.__game.pause_game))
 
     def __load_menus(self):
-        PauseMenu.load_menu(self.__screen, self.__game.unpause_game)
+        PauseMenu.load_menu(self.__screen, self.__game.unpause_game,
+                            self.__game.restart_game, self.__game.kill)
+        LoseMenu.load_menu(self.__screen, self.__game.restart_game, self.__game.kill)
+        WinMenu.load_menu(self.__screen, self.__game.kill)
 
     def draw(self, screen):
         game = self.__game
@@ -54,20 +60,26 @@ class GameUi:
 
         if state == "game":
             # Draw tower buttons
-            self.__tower_buttons.draw(screen)
+            self.__tower_buttons.draw(screen, game.player.money)
 
             # Draw icon buttons
             self.__icon_buttons.draw(screen)
 
             # Draw game info
-            self.__draw_text(screen, f"HP {game.player.health}", (200, 20))
-            self.__draw_text(screen, f"${game.player.money}", (320, 20))
+            font = GameUi.fonts["default"]
+            color = colors["default_font_color"]
+            draw_text(screen, font, color, f"HP {game.player.health}", (200, 20))
+            draw_text(screen, font, color, f"${game.player.money}", (320, 20))
 
             round_num = game.round_manager.round
             max_round = game.round_manager.rounds_amount
-            self.__draw_text(screen, f"ROUND: {round_num}/{max_round}", (850, 20))
+            draw_text(screen, font, color, f"ROUND: {round_num}/{max_round}", (850, 20))
         elif state == "pause":
             PauseMenu.draw(screen)
+        elif state == "lose":
+            LoseMenu.draw(screen)
+        elif state == "win":
+            WinMenu.draw(screen)
 
     def on_click(self, pos):
         """ Checks if a tower button was clicked """
@@ -75,18 +87,11 @@ class GameUi:
         state = game.state.state
 
         if state == "game":
-            for button in self.__tower_buttons:
-                if button.rect.collidepoint(pos):
-                    button.on_click()
-                    game.create_tower(button.tower_name)
-
+            self.__tower_buttons.on_click(pos, game.player.money)
             self.__icon_buttons.on_click(pos)
         elif state == "pause":
             PauseMenu.on_click(pos)
-
-    def __draw_text(self, screen, text, pos):
-        font = GameUi.fonts["default"]
-        font_color = colors["default_font_color"]
-
-        text = font.render(text, True, font_color)
-        screen.blit(text, pos)
+        elif state == "lose":
+            LoseMenu.on_click(pos)
+        elif state == "win":
+            WinMenu.on_click(pos)

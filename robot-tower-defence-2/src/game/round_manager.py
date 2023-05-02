@@ -29,6 +29,12 @@ class RoundManager:
     def __initialize_rounds(self) -> None:
         self.__rounds = generate_rounds(self.__game.map.arena)
 
+    def reset(self) -> None:
+        self.__round = 1
+        self.__wave = 1
+        self.__robot = 1
+        self.__next_event = Event(0, "spawn")
+
     def update(self) -> None:
         time_now = pygame.time.get_ticks()
         if self.__next_event.time - time_now > 0:
@@ -42,6 +48,9 @@ class RoundManager:
             self.__next_wave()
         elif evt == "round":
             self.__next_round()
+        elif evt == "wait_for_win":
+            if len(self.__game.sprites.robots) == 0:
+                self.__game.win_game()
 
     def __next_round(self):
         logger.debug(f"Round {self.__round+1} started")
@@ -50,7 +59,7 @@ class RoundManager:
         self.__robot = 1
 
         if self.__round >= len(self.__rounds):
-            self.__game.win_game()
+            self.__next_event = Event(pygame.time.get_ticks(), "wait_for_win")
         else:
             self.__next_event = Event(pygame.time.get_ticks(), "spawn")
 

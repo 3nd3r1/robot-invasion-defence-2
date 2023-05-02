@@ -57,16 +57,24 @@ class GameSprites:
 
 
 class Game:
-    """" This class represents the game itself and contains all other classes. """
+    """" This class represents the game itself and contains all other classes.
+
+     Attributes:
+            state (GameState): The current state of the game.
+            clock (pygame.time.Clock): The game clock.
+            screen (pygame.Surface): The game screen.
+            game_ui (GameUi): The game ui.
+            map (Map): The game map.
+            player (Player): The player.
+            round_manager (RoundManager): The round manager.
+            sprites (GameSprites): The game sprites.
+
+    """
 
     def __init__(self, arena) -> None:
         self.__state = GameState()
 
         starting_money = arenas[arena]["starting_money"]
-
-        if general["debug"]:
-            starting_money = 100000
-
         self.__clock = pygame.time.Clock()
         self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
         pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
@@ -133,6 +141,10 @@ class Game:
         if self.state.state != "game":
             return
 
+        if self.player.lost:
+            self.lose_game()
+            return
+
         if self.sprites.new_tower:
             self.sprites.new_tower.update()
 
@@ -178,13 +190,11 @@ class Game:
 
     def win_game(self):
         logger.debug("Game won!")
-        self.state.state = "won"
-        self.kill()
+        self.state.state = "win"
 
     def lose_game(self):
         logger.debug("Game lost!")
-        self.state.state = "lost"
-        self.kill()
+        self.state.state = "lose"
 
     def pause_game(self):
         logger.debug("Game paused!")
@@ -192,6 +202,17 @@ class Game:
 
     def unpause_game(self):
         logger.debug("Game unpaused!")
+        self.state.state = "game"
+
+    def restart_game(self):
+        logger.debug("Game restarted!")
+        self.state.state = "loading"
+        self.state.running = True
+
+        self.sprites.empty()
+        self.player.reset()
+        self.round_manager.reset()
+
         self.state.state = "game"
 
     def run(self):

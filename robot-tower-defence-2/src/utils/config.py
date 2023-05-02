@@ -84,7 +84,7 @@ robots = {
         "health": 1,
         "speed": 2,
         "base_damage": 1,
-        "base_bounty": 1,
+        "base_bounty": 2,
         "path_offset": (0, 0),
         "animation_interval": 100,
     },
@@ -93,7 +93,7 @@ robots = {
         "health": 5,
         "speed": 1,
         "base_damage": 1,
-        "base_bounty": 5,
+        "base_bounty": 10,
         "path_offset": (0, 0),
         "animation_interval": 100,
     },
@@ -102,7 +102,7 @@ robots = {
         "health": 100,
         "speed": 1,
         "base_damage": 1,
-        "base_bounty": 10,
+        "base_bounty": 200,
         "path_offset": (0, 0),
         "animation_interval": 100,
     }
@@ -174,4 +174,5 @@ colors = {
     "invalid_tower_range": (255, 0, 0, 100),
     "valid_tower_range": (50, 50, 50, 50),
     "default_font_color": (192, 235, 248),
+    "not_affordable_font_color": (225, 0, 0),
 }
