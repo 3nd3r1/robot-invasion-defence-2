@@ -4,7 +4,7 @@
 
 ### Pelin rakennetta kuvaana pakkausrakenne
 
-![Pakkauskaavio](/dokumentaatio/pakkauskaavio.png)
+![Pakkauskaavio](./assets/pakkauskaavio.png)
 
 _ui_ sisältää käyttöliittymä koodia
 _game_ sisältää pelin koodia

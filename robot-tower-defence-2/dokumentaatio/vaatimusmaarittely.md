@@ -12,7 +12,7 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 
 ## Käyttöliittymäluonnos
 
-![Käyttöliittymäluonnos](/robot-tower-defence-2/dokumentaatio/kayttoliittymaluonnos.png)
+![Kayttoliittymaluonnos](./assets/kayttoliittymaluonnos.png)
 
 ## Perusversion toiminnallisuus
 
