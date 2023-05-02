@@ -13,7 +13,7 @@ Robot Invasion Defence II on klassinen tower defence peli, jossa pelaajan täyty
 
 ## Releaset
 
-Pelin uusin release: [viikko 5](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/viikko5)
+Pelin uusin release: [viikko 6](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/viikko6)
 
 ## Taskit
 
