@@ -3,3 +3,6 @@ __pycache__
 .coverage
 htmlcov
 .vscode
+dist
+build
+main.spec
