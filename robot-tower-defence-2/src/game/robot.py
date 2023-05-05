@@ -12,8 +12,18 @@ class RobotGroup(pygame.sprite.Group):
     """ A group of robots. """
 
     def draw(self, screen):
-        for robot in self.sprites():
+        for robot in self.robots("minx"):
             robot.draw(screen)
+        for robot in self.robots("nathan"):
+            robot.draw(screen)
+        for robot in self.robots("archie"):
+            robot.draw(screen)
+
+    def robots(self, robot_type=None):
+        """ Returns a list of robots of the given type. """
+        if robot_type:
+            return [robot for robot in self.sprites() if robot.type == robot_type]
+        return self.sprites()
 
 
 @dataclasses.dataclass

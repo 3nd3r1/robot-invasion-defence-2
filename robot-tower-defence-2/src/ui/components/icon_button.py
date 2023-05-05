@@ -39,7 +39,7 @@ class IconButton(pygame.sprite.Sprite):
         """ Loads the images from the sprite sheet """
         images = []
         for image in get_sheet_images(sheet, (2, 1)):
-            images.append(pygame.transform.scale_by(image, 3))
+            images.append(pygame.transform.scale_by(image, 4))
         return images
 
     def on_click(self):
