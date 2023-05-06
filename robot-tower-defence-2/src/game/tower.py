@@ -17,6 +17,8 @@ class TowerGroup(pygame.sprite.Group):
         for tower in self.sprites():
             if tower.rect.collidepoint(pos):
                 tower.on_click()
+            else:
+                tower.on_unclick()
 
 
 class Tower(pygame.sprite.Sprite, ABC):
@@ -43,7 +45,7 @@ class Tower(pygame.sprite.Sprite, ABC):
         self.rect = self.image.get_rect()
 
         self.__game = game
-        self.__placing = True
+        self.__state = "placing"  # placing, idle, clicked
 
         self.__target = None
         self.__target_angle = 0
@@ -96,12 +98,12 @@ class Tower(pygame.sprite.Sprite, ABC):
 
     def place(self, pos) -> bool:
         """ Place the tower on the map """
-        if not self.__placing:
+        if self.__state != "placing":
             return False
 
         self.rect.center = pos
         if self.is_valid_position():
-            self.__placing = False
+            self.__state = "idle"
             self.game.sprites.towers.add(self)
             logger.debug(f"Placing tower at {pos}")
             return True
@@ -110,7 +112,7 @@ class Tower(pygame.sprite.Sprite, ABC):
 
     def draw(self, screen):
         """ Blits the tower to the screen """
-        if self.__placing:
+        if self.__state in ("placing", "clicked"):
             self.__draw_range_circle(screen)
 
         self.image = Tower.render(self.type, self.model, self.get_target_angle())
@@ -128,7 +130,7 @@ class Tower(pygame.sprite.Sprite, ABC):
         screen.blit(range_circle, (self.rect.centerx-self.range, self.rect.centery-self.range))
 
     def update(self):
-        if self.__placing:
+        if self.__state == "placing":
             self.rect.center = pygame.mouse.get_pos()
             return
 
@@ -141,7 +143,11 @@ class Tower(pygame.sprite.Sprite, ABC):
 
     def on_click(self):
         """ This is called when the tower is clicked """
-        return
+        self.__state = "clicked"
+
+    def on_unclick(self):
+        """ This is called when the tower is unclicked """
+        self.__state = "idle"
 
     def get_target_angle(self) -> float:
         """ Returns the angle to the target """
