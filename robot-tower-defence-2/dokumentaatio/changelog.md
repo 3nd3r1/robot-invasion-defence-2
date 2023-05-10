@@ -6,6 +6,11 @@ Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 
 ## [Unreleased]
 
+### Lisätty
+
+-   Lisätty pysyväistallennus lokaaliin SQL-tietokantaan.
+-   Pelin aloitus-valikkoon lisätty tiedot areenoista.
+
 ### Korjattu
 
 -   Robotit piirretään taso-järjestyksessä (minx,nathan,archie)

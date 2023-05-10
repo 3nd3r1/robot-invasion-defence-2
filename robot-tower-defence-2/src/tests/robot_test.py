@@ -5,7 +5,7 @@ from game.game import Game
 
 
 class TestRobot(unittest.TestCase):
-    """ Tests for the Towers """
+    """ Tests for the Robots """
 
     def setUp(self) -> None:
         pygame.init()

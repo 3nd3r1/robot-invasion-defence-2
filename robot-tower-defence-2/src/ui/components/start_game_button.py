@@ -4,31 +4,39 @@ from utils.file_reader import get_font
 
 
 class StartGameButtonGroup(pygame.sprite.Group):
+    def __init__(self):
+        super().__init__()
+        self.__selected_arena = None
+
     def on_click(self, pos):
         for sprite in self:
-            if sprite.rect.collidepoint(pos):
+            if sprite.rect.collidepoint(pos) and sprite.arena == self.__selected_arena:
                 sprite.on_click()
 
     def draw(self, screen):
-        cursor = pygame.constants.SYSTEM_CURSOR_ARROW
         for sprite in self:
+            if sprite.arena != self.__selected_arena:
+                continue
+
             screen.blit(sprite.image, sprite.rect)
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-                cursor = pygame.constants.SYSTEM_CURSOR_HAND
                 pygame.draw.rect(screen, colors["default_font_color"], sprite.rect.move(0, 10), 2)
-        pygame.mouse.set_cursor(cursor)
+
+    def select_arena(self, arena):
+        self.__selected_arena = arena
 
 
 class StartGameButton(pygame.sprite.Sprite):
     fonts = {}
 
-    def __init__(self, text, pos, on_click, *args):
+    def __init__(self, text, pos, on_click, arena):
         super().__init__()
         self.image = pygame.surface.Surface((300, 50))
         self.rect = self.image.get_rect(center=pos)
 
         self.__click_handler = on_click
-        self.__click_handler_args = args
+
+        self.arena = arena
 
         self.__text = text
         self.__render_text()
@@ -38,7 +46,7 @@ class StartGameButton(pygame.sprite.Sprite):
         StartGameButton.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 50)
 
     def on_click(self):
-        self.__click_handler(*self.__click_handler_args)
+        self.__click_handler(self.arena)
 
     def __render_text(self):
         font = StartGameButton.fonts["default"]

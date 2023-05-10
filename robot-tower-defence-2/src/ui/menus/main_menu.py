@@ -3,6 +3,7 @@ import pygame
 
 from ui.components.menu_button import MenuButton, MenuButtonGroup
 from utils.config import colors, fonts
+from utils.text import draw_text
 from utils.file_reader import get_font
 
 
@@ -13,7 +14,7 @@ class MainMenu:
 
     @staticmethod
     def load_assets():
-        MainMenu.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 100)
+        MainMenu.fonts["title"] = pygame.font.Font(get_font(fonts["default"]), 100)
         MenuButton.load_assets()
 
     @staticmethod
@@ -26,20 +27,15 @@ class MainMenu:
 
     @staticmethod
     def draw(screen):
+        title_font = MainMenu.fonts["title"]
+        font_color = colors["default_font_color"]
+
         title_pos = (screen.get_width()/2+50, 180)
 
-        MainMenu.draw_text(screen, "Robot Invasion Defence II", title_pos)
+        draw_text(screen, title_font, font_color, "Robot Invasion Defence II", title_pos)
+
         MainMenu.buttons.draw(screen)
 
     @staticmethod
     def on_click(pos):
         MainMenu.buttons.on_click(pos)
-
-    @staticmethod
-    def draw_text(screen, text, pos):
-        font = MainMenu.fonts["default"]
-        font_color = colors["default_font_color"]
-
-        text = font.render(text, True, font_color)
-        text_rect = text.get_rect(center=pos)
-        screen.blit(text, text_rect)

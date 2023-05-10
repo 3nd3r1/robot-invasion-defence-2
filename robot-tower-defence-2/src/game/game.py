@@ -1,10 +1,12 @@
 """ src/game/game.py """
+import pickle
 import dataclasses
 import pygame
 
 from utils.config import general, arenas
 from utils.logger import logger
 from utils.math import distance_between_points
+from utils.db import add_player_score, add_player_experience, save_game, get_game_save
 
 from ui.game_ui import GameUi
 
@@ -71,13 +73,12 @@ class Game:
 
     """
 
-    def __init__(self, arena) -> None:
+    def __init__(self, arena, save_id=0) -> None:
         self.__state = GameState()
 
         starting_money = arenas[arena]["starting_money"]
         self.__clock = pygame.time.Clock()
         self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
 
         self.__load_assets()
 
@@ -93,6 +94,9 @@ class Game:
             projectiles=ProjectileGroup(),
             particles=ParticleGroup()
         )
+
+        if save_id:
+            self.load_save(save_id)
 
         self.__state.state = "game"
 
@@ -191,10 +195,13 @@ class Game:
     def win_game(self):
         logger.debug("Game won!")
         self.state.state = "win"
+        add_player_experience(arenas[self.map.arena]["experience_reward"])
+        add_player_score(self.map.arena, self.round_manager.round)
 
     def lose_game(self):
         logger.debug("Game lost!")
         self.state.state = "lose"
+        add_player_score(self.map.arena, self.round_manager.round)
 
     def pause_game(self):
         logger.debug("Game paused!")
@@ -227,7 +234,29 @@ class Game:
             pygame.display.flip()
             self.__clock.tick(general["fps"])
 
+    def save(self):
+        """ Save the game state to the database """
+        sprites_data = pickle.dumps(self.sprites)
+        player_data = pickle.dumps(self.player)
+        rounds_data = pickle.dumps(self.round_manager)
+
+        save_game(self.map.arena, sprites_data, player_data, rounds_data)
+
+    def load_save(self, save_id):
+        """ Load the game state from the database """
+        self.state.state = "loading"
+        save = get_game_save(save_id)
+        if not save:
+            return
+
+        self.__sprites = pickle.loads(save.sprites)
+        self.__player = pickle.loads(save.player)
+        self.__round_manager = pickle.loads(save.rounds)
+
+        self.state.state = "game"
+
     def kill(self) -> None:
+        """ Kill the game instance """
         self.state.state = "dead"
         self.state.running = False
 

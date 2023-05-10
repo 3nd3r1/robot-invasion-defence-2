@@ -4,10 +4,14 @@ general = {
     "screen_width": 1280,
     "screen_height": 720,
     "fps": 60,
+    "db_location": "src/data/database.db"
 }
 
 arenas = {
     "grass_fields": {
+        "title": "Grass Fields",
+        "description": ["A large open field", "with a few trees and rocks."],
+        "experience_reward": 100,
         "num_rounds": 60,
         "starting_money": 250,
         "map_file": "grass_fields.tmx",

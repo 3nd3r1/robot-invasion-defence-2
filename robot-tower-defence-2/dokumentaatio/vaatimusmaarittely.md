@@ -19,12 +19,12 @@ Sovelluksessa on monta areenaa eli pelikenttää, joissa robottien polku on eri.
 ### Tietojen tallennus
 
 -   Käyttäjän tiedot tallennetaan lokaalisti tiedostoon tietokoneella
-    -   Tämä tiedosto sisältää käyttäjän nimen, tason ja valuutat.
+    -   Tämä tiedosto sisältää käyttäjän nimen, tason ja valuutat. **(tehty)**
     -   Jos tiedostoa ei löydy, sovellus kysyy käyttäjältä nimen ja luo tiedoston.
 
 ### Menu
 
--   Menu näkymässä näkyy käyttäjän perustiedot (nimi, valuutat ja taso)
+-   Menu näkymässä näkyy käyttäjän perustiedot (nimi, valuutat ja taso) **(tehty)**
 -   Menu näkymästä pääsee asetuksiin
     -   Asetuksissa voi vaihtaa äänenvoimakkuutta.
     -   Asetuksissa voi poistaa tallennus tiedoston.

@@ -10,13 +10,10 @@ class MenuButtonGroup(pygame.sprite.Group):
                 sprite.on_click()
 
     def draw(self, screen):
-        cursor = pygame.constants.SYSTEM_CURSOR_ARROW
         for sprite in self:
             screen.blit(sprite.image, sprite.rect)
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-                cursor = pygame.constants.SYSTEM_CURSOR_HAND
                 pygame.draw.rect(screen, colors["default_font_color"], sprite.rect.move(0, 10), 2)
-        pygame.mouse.set_cursor(cursor)
 
 
 class MenuButton(pygame.sprite.Sprite):

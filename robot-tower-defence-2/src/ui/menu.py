@@ -5,8 +5,10 @@ from ui.menus import StartGameMenu, MainMenu
 from game.game import Game
 
 from utils.logger import logger
-from utils.file_reader import get_image
-from utils.config import general, images, colors
+from utils.file_reader import get_image, get_font
+from utils.config import general, images, colors, fonts
+from utils.db import get_player_info
+from utils.text import draw_text
 
 
 class Menu:
@@ -23,15 +25,24 @@ class Menu:
         pygame.display.set_icon(icon)
 
         self.__running = True
-
         self.__state = "main_menu"
+
+        self.__player_info = get_player_info()
 
         self.__load_assets()
         self.__load_menus()
 
     def __load_assets(self):
+
+        # Load fonts
+        Menu.fonts["player_info"] = pygame.font.Font(
+            get_font(fonts["default"]), 50)
+
+        # Load images
         Menu.images["background"] = pygame.image.load(
             get_image(images["ui"]["ui_background"]))
+
+        # Load menu assets
         MainMenu.load_assets()
         StartGameMenu.load_assets()
 
@@ -40,6 +51,7 @@ class Menu:
         StartGameMenu.load_menu(self.__screen, self.set_state, self.start_game)
 
     def draw(self):
+        """ Draws the menu that corresponds to the current state"""
 
         screen = self.__screen
 
@@ -47,6 +59,16 @@ class Menu:
         screen.fill(colors["menu_background"])
         screen.blit(Menu.images["background"], (0, 0))
 
+        # Draw player info
+        info_font = Menu.fonts["player_info"]
+        font_color = colors["default_font_color"]
+
+        player_info = self.__player_info
+
+        draw_text(screen, info_font, font_color, f"Money: {player_info['coins']}", (250, 50))
+        draw_text(screen, info_font, font_color, f"XP: {player_info['experience']}", (1000, 50))
+
+        # Draw menu
         if self.__state == "main_menu":
             MainMenu.draw(screen)
         elif self.__state == "start_game_menu":
@@ -74,6 +96,8 @@ class Menu:
     def start_game(self, arena="grass_fields"):
         game = Game(arena)
         game.run()
+        self.__player_info = get_player_info()
+        self.__load_menus()
 
     def quit_game(self):
         self.__running = False
