@@ -31,6 +31,12 @@ class Projectile(pygame.sprite.Sprite, ABC):
         self.rect.move_ip(pygame.math.Vector2(
             start_offset).rotate(self.get_target_angle()))
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_Projectile__g"] = {}
+        state["image"] = None
+        return state
+
     @staticmethod
     def load_assets():
         """ Loads the assets """

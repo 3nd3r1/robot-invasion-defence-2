@@ -53,7 +53,7 @@ class Robot(pygame.sprite.Sprite, ABC):
 
     def __init__(self, game, health: int) -> None:
         super().__init__()
-        self.image = pygame.Surface((64, 64))
+        self.image = pygame.Surface((64, 64), pygame.constants.SRCALPHA, 32)
         self.rect = self.image.get_rect()
 
         self.__velocity = (0, 0)
@@ -70,6 +70,14 @@ class Robot(pygame.sprite.Sprite, ABC):
         self.rect.center = self.__waypoints.current
 
         logger.debug(f"Robot ({id(self)}) created with {self.health} HP")
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_Robot__g"] = {}
+        state["_Robot__game"] = None
+        state["_Robot__last_animation"] = 0
+        state["image"] = None
+        return state
 
     def __get_waypoints(self) -> list:
         """This method returns the waypoints for the robot to follow."""
@@ -144,6 +152,10 @@ class Robot(pygame.sprite.Sprite, ABC):
         self.__velocity = (velocity_x, velocity_y)
 
     def draw(self, screen):
+        self.__animate()
+        screen.blit(self.image, self.rect)
+
+    def __animate(self):
         velocity = self.__velocity
         sheet_width = self._sheet_size[0]
         animation_interval = self._animation_interval
@@ -157,18 +169,19 @@ class Robot(pygame.sprite.Sprite, ABC):
             offset = sheet_width * 3
         elif velocity[0] == 0 and velocity[1] < 0:
             offset = sheet_width * 0
-        else:
+        elif velocity[0] == 0 and velocity[1] > 0:
             offset = sheet_width * 2
+        elif self.image:
+            # If the robot is not moving or moving diagonally, don't animate the image
+            return
 
         if time_now - self.__last_animation >= animation_interval:
             self.__animation_frame = ((
-                self.__animation_frame + 1) % (sheet_width-1))
+                self.__animation_frame + 1) % (sheet_width))
             self.__last_animation = time_now
 
         frame = self.__animation_frame + offset
-
         self.image = Robot.render(self.type, frame)
-        screen.blit(self.image, self.rect)
 
     @property
     def health(self) -> int:

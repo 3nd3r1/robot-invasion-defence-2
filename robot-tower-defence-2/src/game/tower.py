@@ -53,6 +53,18 @@ class Tower(pygame.sprite.Sprite, ABC):
 
         self.__model = "model_1"
 
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_Tower__g"] = {}
+        state["_Tower__game"] = None
+        state["_Tower__last_shot"] -= pygame.time.get_ticks()
+        state["image"] = None
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+        self.__last_shot += pygame.time.get_ticks()
+
     @staticmethod
     def load_assets():
         """ Load the assets for the tower """

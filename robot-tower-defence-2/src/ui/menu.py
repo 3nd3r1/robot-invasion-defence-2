@@ -93,10 +93,16 @@ class Menu:
 
         logger.debug(f"Clicked on {pos} with {button}")
 
-    def start_game(self, arena="grass_fields"):
-        game = Game(arena)
+    def start_game(self, arena="grass_fields", load_save=False):
+        game = Game(arena, load_save)
         game.run()
+
+        if game.state.state == "quit":
+            self.quit_game()
+
+        # Reload menus
         self.__player_info = get_player_info()
+        self.__state = "main_menu"
         self.__load_menus()
 
     def quit_game(self):

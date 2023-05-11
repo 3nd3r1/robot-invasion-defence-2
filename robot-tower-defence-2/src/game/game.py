@@ -6,7 +6,7 @@ import pygame
 from utils.config import general, arenas
 from utils.logger import logger
 from utils.math import distance_between_points
-from utils.db import add_player_score, add_player_experience, save_game, get_game_save
+from utils import db
 
 from ui.game_ui import GameUi
 
@@ -37,6 +37,36 @@ class GameSprites:
     robots: pygame.sprite.Group
     projectiles: pygame.sprite.Group
     particles: pygame.sprite.Group
+
+    def __getstate__(self):
+        """ This is called when the game sprites are being pickled """
+        state = self.__dict__.copy()
+        state["new_tower"] = None
+        state["towers"] = state["towers"].sprites()
+        state["robots"] = state["robots"].sprites()
+        state["projectiles"] = state["projectiles"].sprites()
+        state["particles"] = state["particles"].sprites()
+        return state
+
+    def __setstate__(self, state):
+        """ This is called when the game sprites are being unpickled """
+        self.new_tower = None
+        self.towers = TowerGroup()
+        self.robots = RobotGroup()
+        self.projectiles = ProjectileGroup()
+        self.particles = ParticleGroup()
+
+        for tower in state["towers"]:
+            self.towers.add(tower)
+
+        for robot in state["robots"]:
+            self.robots.add(robot)
+
+        for projectile in state["projectiles"]:
+            self.projectiles.add(projectile)
+
+        for particle in state["particles"]:
+            self.particles.add(particle)
 
     def update(self):
         self.towers.update()
@@ -73,7 +103,7 @@ class Game:
 
     """
 
-    def __init__(self, arena, save_id=0) -> None:
+    def __init__(self, arena, load_save=False) -> None:
         self.__state = GameState()
 
         starting_money = arenas[arena]["starting_money"]
@@ -95,8 +125,8 @@ class Game:
             particles=ParticleGroup()
         )
 
-        if save_id:
-            self.load_save(save_id)
+        if load_save:
+            self.load_save()
 
         self.__state.state = "game"
 
@@ -195,13 +225,13 @@ class Game:
     def win_game(self):
         logger.debug("Game won!")
         self.state.state = "win"
-        add_player_experience(arenas[self.map.arena]["experience_reward"])
-        add_player_score(self.map.arena, self.round_manager.round)
+        db.add_player_experience(arenas[self.map.arena]["experience_reward"])
+        db.add_player_score(self.map.arena, self.round_manager.round)
 
     def lose_game(self):
         logger.debug("Game lost!")
         self.state.state = "lose"
-        add_player_score(self.map.arena, self.round_manager.round)
+        db.add_player_score(self.map.arena, self.round_manager.round)
 
     def pause_game(self):
         logger.debug("Game paused!")
@@ -224,40 +254,73 @@ class Game:
 
     def run(self):
         while self.state.running:
-            for evt in pygame.event.get():
-                if evt.type == pygame.constants.QUIT:
-                    pygame.quit()
-                if evt.type == pygame.constants.MOUSEBUTTONDOWN:
-                    self.__on_click(evt.pos, evt.button)
+            self.__event_loop()
             self.update()
             self.draw(self.__screen)
             pygame.display.flip()
             self.__clock.tick(general["fps"])
 
+    def __event_loop(self):
+        for evt in pygame.event.get():
+            if evt.type == pygame.constants.QUIT:
+                self.kill("quit")
+            if evt.type == pygame.constants.MOUSEBUTTONDOWN:
+                self.__on_click(evt.pos, evt.button)
+            if evt.type == pygame.constants.KEYDOWN:
+                if evt.key == pygame.constants.K_ESCAPE:
+                    self.pause_game()
+
+                # Debug keys
+                if not general["debug"]:
+                    continue
+                if evt.key == pygame.constants.K_F1:
+                    self.round_manager.next_round()
+                if evt.key == pygame.constants.K_F2:
+                    self.player.earn_money(9999999999)
+
     def save(self):
         """ Save the game state to the database """
+
+        logger.debug("Saving game state")
         sprites_data = pickle.dumps(self.sprites)
         player_data = pickle.dumps(self.player)
         rounds_data = pickle.dumps(self.round_manager)
 
-        save_game(self.map.arena, sprites_data, player_data, rounds_data)
+        db.add_game_save(self.map.arena, self.round_manager.round,
+                         sprites_data, player_data, rounds_data)
 
-    def load_save(self, save_id):
+    def load_save(self):
         """ Load the game state from the database """
         self.state.state = "loading"
-        save = get_game_save(save_id)
+        save = db.get_game_save(self.map.arena)
         if not save:
             return
 
-        self.__sprites = pickle.loads(save.sprites)
-        self.__player = pickle.loads(save.player)
-        self.__round_manager = pickle.loads(save.rounds)
+        self.__sprites = pickle.loads(save["sprites_data"])
+        self.__player = pickle.loads(save["player_data"])
+        self.__round_manager = pickle.loads(save["rounds_data"])
+
+        # I have no idea if this is good workaround or a terrible idea
+
+        for tower in self.sprites.towers:
+            tower.__dict__.update({"_Tower__game": self})
+        for robot in self.sprites.robots:
+            robot.__dict__.update({"_Robot__game": self})
+
+        self.round_manager.__dict__.update({"_RoundManager__game": self})
 
         self.state.state = "game"
 
-    def kill(self) -> None:
+    def kill(self, kill_state="dead") -> None:
         """ Kill the game instance """
-        self.state.state = "dead"
+        logger.debug("Killing game instance")
+
+        # Delete old save and save game if the game is not over
+        db.delete_game_save(self.map.arena)
+        if self.state.state not in ("win", "lose"):
+            self.save()
+
+        self.state.state = kill_state
         self.state.running = False
 
         self.sprites.empty()

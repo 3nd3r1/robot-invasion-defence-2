@@ -29,12 +29,13 @@ class StartGameButtonGroup(pygame.sprite.Group):
 class StartGameButton(pygame.sprite.Sprite):
     fonts = {}
 
-    def __init__(self, text, pos, on_click, arena):
+    def __init__(self, text, pos, on_click, arena, load_save=False):
         super().__init__()
         self.image = pygame.surface.Surface((300, 50))
         self.rect = self.image.get_rect(center=pos)
 
         self.__click_handler = on_click
+        self.__load_save = load_save
 
         self.arena = arena
 
@@ -46,7 +47,7 @@ class StartGameButton(pygame.sprite.Sprite):
         StartGameButton.fonts["default"] = pygame.font.Font(get_font(fonts["default"]), 50)
 
     def on_click(self):
-        self.__click_handler(self.arena)
+        self.__click_handler(self.arena, self.__load_save)
 
     def __render_text(self):
         font = StartGameButton.fonts["default"]

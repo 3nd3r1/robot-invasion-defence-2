@@ -10,6 +10,9 @@ Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 
 -   Lisätty pysyväistallennus lokaaliin SQL-tietokantaan.
 -   Pelin aloitus-valikkoon lisätty tiedot areenoista.
+-   Pelaamisen lopettaminen tallentaa pelin tietokantaa, jotta peliä voi myöhemmin jatkaa.
+-   Lisätty käyttäjä-kohtaiset valuutat money ja experience.
+-   Tornin klikkaaminen näyttää sen ampuma-alueen.
 
 ### Korjattu
 

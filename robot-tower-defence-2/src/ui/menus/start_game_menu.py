@@ -30,20 +30,30 @@ class StartGameMenu:
 
     @staticmethod
     def load_menu(screen, set_state, start_game):
+        """ Loads the all buttons and texts for the start game menu """
         select_pos = (350, screen.get_height() / 2 - 50)
         start_pos = (900, 500)
 
         StartGameMenu.player_scores = get_player_scores()
         StartGameMenu.player_saves = get_game_saves()
+        StartGameMenu.selected_arena = None
+        StartGameMenu.select_buttons.empty()
+        StartGameMenu.start_buttons.empty()
+        StartGameMenu.icon_buttons.empty()
 
-        StartGameMenu.select_buttons.add(MenuButton(
-            "Grass Fields", select_pos, StartGameMenu.select_arena, "grass_fields"))
+        for arena_id, arena in arenas.items():
+            StartGameMenu.select_buttons.add(MenuButton(
+                arena["title"], select_pos, StartGameMenu.select_arena, arena_id))
 
-        StartGameMenu.start_buttons.add(StartGameButton(
-            "New Game", start_pos, start_game, "grass_fields"))
-        if StartGameMenu.player_saves.get("grass_fields", False):
             StartGameMenu.start_buttons.add(StartGameButton(
-                "Continue", (start_pos[0], start_pos[1] + 100), start_game, "grass_fields", 1))
+                "New Game", start_pos, start_game, arena_id))
+
+            arena_save = StartGameMenu.player_saves.get(arena_id, None)
+
+            if arena_save:
+                StartGameMenu.start_buttons.add(StartGameButton(
+                    f"Continue ({arena_save}/{arena['num_rounds']})",
+                    (start_pos[0], start_pos[1] + 80), start_game, "grass_fields", True))
 
         StartGameMenu.icon_buttons.add(IconButton(
             images["ui"]["back_button"], (67, 100), set_state, "main_menu"))

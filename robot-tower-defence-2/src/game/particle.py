@@ -14,7 +14,7 @@ class Particle(pygame.sprite.Sprite):
     images = {}
 
     def __init__(self, particle, position):
-        self.image = pygame.Surface((10, 10))
+        self.image = pygame.Surface((10, 10), pygame.constants.SRCALPHA, 32)
         self.rect = self.image.get_rect(center=position)
 
         self.__particle = particle
@@ -24,6 +24,12 @@ class Particle(pygame.sprite.Sprite):
         self.__last_frame = 0
 
         super().__init__()
+
+    def __getstate__(self):
+        state = self.__dict__.copy()
+        state["_Particle__g"] = {}
+        state["image"] = None
+        return state
 
     @staticmethod
     def load_assets():

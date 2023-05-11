@@ -33,16 +33,15 @@ class Database:
                         FOREIGN KEY (player_id) REFERENCES player(id)
                         )""")
         self.execute("""CREATE TABLE IF NOT EXISTS game_save (
-                        id INTEGER PRIMARY KEY,
                         player_id INTEGER,
-                        arena_id TEXT,
+                        arena_id TEXT NOT NULL UNIQUE,
+                        round_num INTEGER,
                         sprites_data TEXT,
                         player_data TEXT,
-                        rounds_data TEXT,
-                        FOREIGN KEY (player_id) REFERENCES player(id)
+                        rounds_data TEXT
                         )""")
         self.commit()
-        self.create_save()
+        self.create_player()
 
     def execute(self, query, params=()):
         return self.__cursor.execute(query, params)
@@ -50,8 +49,8 @@ class Database:
     def commit(self):
         self.__connection.commit()
 
-    def create_save(self):
-        """ Create a new save if there is no previous one"""
+    def create_player(self):
+        """ Create a new player save if there is no previous one"""
         if self.execute("SELECT EXISTS(SELECT 1 FROM player)").fetchone()[0]:
             return
         self.execute("INSERT INTO player (id, experience, coins) VALUES (?, ?, ?)",
@@ -62,26 +61,20 @@ class Database:
 database = Database()
 
 
-def reset_save():
+def reset_player():
     database.execute("DELETE player")
     database.execute("DELETE player_scores")
     database.execute("DELETE game_save")
-    database.create_save()
+    database.create_player()
 
 
-def save_game(arena, sprites, player, rounds):
-    database.execute("""INSERT INTO game_save (player_id, arena_id, sprites_data,
-                        player_data, rounds_data) VALUES (?,?,?,?,?)""",
-                     (1, arena, sprites, player, rounds))
-    database.commit()
-
-
-def get_game_save(save_id):
-    return database.execute("""SELECT * FROM game_save WHERE id=?""", (save_id,)).fetchone()
+def get_game_save(arena):
+    return database.execute("""SELECT * FROM game_save WHERE arena_id=? and player_id = ?""",
+                            (arena, 1)).fetchone()
 
 
 def get_game_saves():
-    saves = database.execute("""SELECT arena_id, id FROM game_save WHERE player_id=?""",
+    saves = database.execute("""SELECT arena_id, round_num FROM game_save WHERE player_id = ?""",
                              (1,)).fetchall()
     return {save[0]: save[1] for save in saves}
 
@@ -106,4 +99,16 @@ def add_player_experience(experience):
 def add_player_score(arena, score):
     database.execute("""INSERT INTO player_scores (player_id, arena_id, score)
                     VALUES (?, ?, ?)""", (1, arena, score))
+    database.commit()
+
+
+def add_game_save(arena, round_num, sprites, player, rounds):
+    database.execute("""INSERT INTO game_save (player_id, arena_id, round_num, sprites_data,
+                        player_data, rounds_data) VALUES (?,?,?,?,?,?)""",
+                     (1, arena, round_num, sprites, player, rounds))
+    database.commit()
+
+
+def delete_game_save(arena):
+    database.execute("DELETE FROM game_save WHERE arena_id=? AND player_id = ?", (arena, 1))
     database.commit()
