@@ -7,3 +7,5 @@ dist
 build
 main.spec
 robot-tower-defence-2/src/data/database.db
+.env
+**.spec

@@ -1,10 +1,15 @@
 """ src/utils/config.py """
+import os
+import sys
+from dotenv import load_dotenv
+load_dotenv()
+
 general = {
-    "debug": True,
+    "debug": (os.getenv("DEBUG") == "True" or sys.argv[-1] == "debug"),
     "screen_width": 1280,
     "screen_height": 720,
     "fps": 60,
-    "db_location": "src/data/database.db"
+    "db_location": os.getenv("DATABASE_FILENAME", "database.db"),
 }
 
 arenas = {

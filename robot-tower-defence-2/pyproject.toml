@@ -10,6 +10,7 @@ python = ">=3.8,<3.12"
 pygame = "^2.3.0"
 pytmx = "^3.31"
 invoke = "^2.0.0"
+python-dotenv = "^1.0.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -7,6 +7,11 @@ def start(ctx):
 
 
 @task
+def debug(ctx):
+    ctx.run("python src/main.py debug")
+
+
+@task
 def test(ctx):
     ctx.run("pytest src")
 
@@ -28,4 +33,7 @@ def lint(ctx):
 
 @task
 def build(ctx):
-    ctx.run("pyinstaller src/main.py")
+    ctx.run("rm -rf dist/robot_invasion_defence_2")
+    ctx.run("pyinstaller src/main.py -n robot_invasion_defence_2 -w")
+    ctx.run("cp -r src/resources dist/robot_invasion_defence_2/")
+    ctx.run("cd dist/robot_invasion_defence_2 & mkdir data")
