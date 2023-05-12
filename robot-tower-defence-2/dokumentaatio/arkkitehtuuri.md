@@ -93,6 +93,19 @@ _Map_-luokka huolehtii pelikentän rakentamisesta ja piirtämisestä. _Map_-luok
 
 _GameUi_-luokka huolehtii pelin aikaisesta käyttöliittymästä.
 
+## Käyttöliittymä
+
+Käyttöliittymä koostuu erilaisista valikoista ja itse pelinäkymästä.
+Käyttöliittymä on jaettu kahteen pääluokkaan:
+
+### 1. _Menu_-luokka
+
+Tämä luokka vastaa kaikista valikoista, jotka näytetään ennen pelin aloittamista. _Menu_-luokka näyttää pelaajan tason ja rahat, ja se sisältää myös useita staattisia luokkia, jotka kuvastavat eri valikkonäkymiä, kuten päävalikkoa (_MainMenu_) ja pelin aloitusvalikkoa (_StartGameMenu_).
+
+### 2. _GameUi_-luokka
+
+Tämä luokka vastaa pelin aikaisesta käyttöliittymästä. _GameUi_-luokka näyttää pelaajan elämät, rahat ja kierroksen, ja se sisältää myös käyttöliittymän tornien asettamista varten. Lisäksi _GameUi_-luokka sisältää useita staattisia luokkia, jotka kuvastavat eri pelinäkymiä, kuten häviönäkymää (_LoseMenu_), voitto-näkymää (_WinMenu_) ja taukovalikkoa (_PauseMenu_).
+
 ## Päätoiminnallisuudet
 
 ### Tornin asettaminen kentälle
@@ -110,21 +123,21 @@ sequenceDiagram
 
     User ->> Game: click on the "Turret"-tower on the sidebar
     Game ->> GameUi: on_click(pos)
-    GameUi ->> Game: get_state()
+    GameUi ->> Game: state.state
     Game -->> GameUi: "game"
     GameUi ->>+ Game: create_tower("turret")
     Game ->> __new_tower: Turret(self)
     Game -->>- GameUi: __new_tower
 
     User ->> Game: click somewhere on the map
-    Game ->> Player: get_money()
+    Game ->> Player: money
     Player -->> Game: 300
-    Game ->>  __new_tower: get_cost()
+    Game ->>  __new_tower: cost
     __new_tower -->> Game: 250
     Game ->>+ __new_tower: place(pos)
-    __new_tower ->> Game: get_towers()
+    __new_tower ->> Game: sprites.towers
     Game -->> __new_tower: []
-    __new_tower ->> Game: get_map()
+    __new_tower ->> Game: map
     Game -->> __new_tower: Map
     __new_tower ->> Map: is_in_obstacle(hitbox)
     Map -->> __new_tower: False
@@ -147,5 +160,3 @@ Toisessa vaiheessa käyttäjä klikkaa kartalla paikkaa, johon uusi torni haluta
 ## Ohjelman heikkoudet
 
 ### Käyttöliittymä
-
-Staattiset Menu-luokat eivät ole mieleiset. Ne saisi toteuttaa yhdessä tiedostossa.
