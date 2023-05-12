@@ -2,7 +2,13 @@
 import os
 import sys
 from dotenv import load_dotenv
-load_dotenv()
+from utils.file_reader import get_env
+
+try:
+    load_dotenv(dotenv_path=get_env(".env"))
+    load_dotenv(dotenv_path=get_env(".env.local"))
+except FileNotFoundError:
+    pass
 
 general = {
     "debug": (os.getenv("DEBUG") == "True" or sys.argv[-1] == "debug"),
@@ -101,7 +107,7 @@ robots = {
         "name": "NATHAN",
         "health": 5,
         "speed": 1,
-        "base_damage": 1,
+        "base_damage": 5,
         "base_bounty": 10,
         "path_offset": (0, 0),
         "animation_interval": 100,
@@ -110,7 +116,7 @@ robots = {
         "name": "ARCHIE",
         "health": 100,
         "speed": 1,
-        "base_damage": 1,
+        "base_damage": 30,
         "base_bounty": 200,
         "path_offset": (0, 0),
         "animation_interval": 100,

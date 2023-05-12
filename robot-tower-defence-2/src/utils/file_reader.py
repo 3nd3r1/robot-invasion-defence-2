@@ -24,3 +24,7 @@ def get_font(file: str) -> str:
 
 def get_database(file: str) -> str:
     return os.path.join(data_dir, file)
+
+
+def get_env(file: str) -> str:
+    return os.path.join(main_dir, file)

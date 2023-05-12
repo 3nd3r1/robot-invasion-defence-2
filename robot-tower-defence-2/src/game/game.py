@@ -175,7 +175,7 @@ class Game:
         if self.state.state != "game":
             return
 
-        if self.player.lost:
+        if not self.player.alive:
             self.lose_game()
             return
 

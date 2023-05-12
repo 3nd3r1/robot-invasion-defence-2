@@ -19,7 +19,7 @@ class Player:
         self.__starting_money = money
         self.__money = money
         self.__health = 100
-        self.lost = False
+        self.__alive = True
 
     def spend_money(self, amount) -> None:
         if self.__money >= amount:
@@ -33,13 +33,13 @@ class Player:
         if self.__health >= amount:
             self.__health -= amount
         if self.__health <= 0:
-            self.lost = True
+            self.__alive = False
         logger.debug(f"Player ({id(self)}) new health: {self.__health} HP")
 
     def reset(self) -> None:
         self.__health = 100
         self.__money = self.__starting_money
-        self.lost = False
+        self.__alive = True
 
     @property
     def health(self):
@@ -48,3 +48,7 @@ class Player:
     @property
     def money(self):
         return self.__money
+
+    @property
+    def alive(self):
+        return self.__alive

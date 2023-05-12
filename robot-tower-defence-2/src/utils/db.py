@@ -63,9 +63,9 @@ database = Database()
 
 
 def reset_player():
-    database.execute("DELETE player")
-    database.execute("DELETE player_scores")
-    database.execute("DELETE game_save")
+    database.execute("DELETE FROM player")
+    database.execute("DELETE FROM player_scores")
+    database.execute("DELETE FROM game_save")
     database.create_player()
 
 
