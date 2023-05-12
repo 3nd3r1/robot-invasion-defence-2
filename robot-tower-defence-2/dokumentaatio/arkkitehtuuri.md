@@ -2,22 +2,26 @@
 
 ## Rakenne
 
-### Pelin rakennetta kuvaana pakkausrakenne
+### Pelin kansio-rakennetta kuvaava pakkauskaavio
 
 ![Pakkauskaavio](./assets/pakkauskaavio.png)
 
-_ui_ sisältää käyttöliittymä koodia
-_game_ sisältää pelin koodia
-_towers_ sisältää eri tyyppisten tornien koodia
-_robots_ sisältää eri typpisten robottien koodia
+-   _ui_-kansio sisältää käyttöliittymäkoodin, joka sisältää kaikki eri valikot ja _GameUi_-luokan, joka vastaa pelin aikaisesta käyttöliittymästä.
+
+-   _game_-kansio sisältää kaiken peliin liittyvän koodin, joka sisältää spritet eli kaikki eri pelihahmot, pelikentän sekä kierroksista huolehtivan _RoundManager_-luokan.
+
+-   _towers_-kansio sisältää eri tyyppisten tornien luokat. Jokaisella eri tyypisellä tornilla on oma luokkansa, joka perii abstraktin _Tower_-luokan.
+
+-   _robots_-kansio sisältää eri typpisten robottien luokat. Jokaisella eri tyypisellä robotilla on oma luokkansa, joka perii abstraktin _Robot_-luokan.
+
+-   _utils_-kansio sisältää staattista koodia, jota voidaan käyttää missä tahansa ohjelman koodissa. _utils_-kansio sisältää esimerkiksi yhteyden tietokantaan ja metodeja tiedostojen lukemiseen.
 
 ### Pelin rakennetta kuvaava luokka-diagrammi:
 
 ```mermaid
 classDiagram
-    Game ..> Util
     Game "*" -- "1" Map
-    Game "*" -- "1" Ui
+    Game "*" -- "1" GameUi
     Game "*" -- "1" RoundManager
     Game "*" -- "1" Player
     Game "*" -- "*" Sprite
@@ -35,14 +39,16 @@ classDiagram
     Projectile <-- CannonProjectile
     Projectile <-- MissileLauncherProjectile
     Particle <-- MissileLauncherParticle
-    Ui "*" -- "1" Sidebar
-    class Util {
-    }
     class Game {
+        Group sprites
+        Map map
+        RoundManager round_manager
+        -GameUi game_ui
     }
     class Player {
         int money
         int health
+        bool alive
 
     }
     class Map {
@@ -69,14 +75,23 @@ classDiagram
     class Particle {
 
     }
-    class Ui {
-    }
-    class Sidebar {
+    class GameUi {
     }
     class RoundManager {
         int round
     }
 ```
+
+Tässä _Game_-luokka sisältää kaikki itse peliä koskevat luokat.
+_Tower_, _Robot_, _Projectile_ ja _Particle_ ovat abstrakteja luokkia, jotka huolehtivat kaikista spriteistä eli esineistä, jotka muodostavat pelikokonaisuuden.
+
+_Player_-luokka huolehtii kaikesta pelaajaan koskevasta, esimerkiksi elämät ja raha.
+
+_RoundManager_-luokka huolehtii kierroksilla syntyvistä roboteista.
+
+_Map_-luokka huolehtii pelikentän rakentamisesta ja piirtämisestä. _Map_-luokka ottaa parametrikseen areenan ja luo pelikentän sen mukaan.
+
+_GameUi_-luokka huolehtii pelin aikaisesta käyttöliittymästä.
 
 ## Päätoiminnallisuudet
 
