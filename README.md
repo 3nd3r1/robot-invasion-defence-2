@@ -19,7 +19,7 @@ Kaikki moduulit eivät toimi liian uusilla tai vanhoilla Python-versiolla.
 
 ## Releaset
 
-Pelin uusin release: [viikko 6](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/viikko6)
+Pelin uusin release: [1.0.0 - loppupalautus](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/1.0.0)
 
 ## Screenshot
 
