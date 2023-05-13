@@ -34,6 +34,6 @@ def lint(ctx):
 @task
 def build(ctx):
     ctx.run("rm -rf dist/robot_invasion_defence_2")
-    ctx.run("pyinstaller src/main.py -n robot_invasion_defence_2 -w")
+    ctx.run("pyinstaller src/main.py -n robot_invasion_defence_2 -w --icon=src/resources/images/ui/icon.ico")
     ctx.run("cp -r src/resources dist/robot_invasion_defence_2/")
     ctx.run("cd dist/robot_invasion_defence_2 & mkdir data")
