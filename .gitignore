@@ -6,6 +6,6 @@ htmlcov
 dist
 build
 main.spec
-robot-tower-defence-2/src/data/database.db
+robot-tower-defence-2/src/data/**
 .env.local
 **.spec
