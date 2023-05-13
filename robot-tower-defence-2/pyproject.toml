@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "robot-tower-defence-2"
+version = "0.0.6"
+description = "Awesome Tower Defence game!"
+authors = ["3nd3r1 <ender.spam.guru@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+pygame = "^2.3.0"
+pytmx = "^3.31"
+invoke = "^2.0.0"
+python-dotenv = "^1.0.0"
+
+[tool.pytest.ini_options]
+env_files = [
+    ".env.test",
+]
+filterwarnings = [
+    'ignore::DeprecationWarning',
+]
+
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.17.1"
+autopep8 = "^2.0.2"
+pytest = "^7.2.2"
+coverage = "^7.2.2"
+pyinstaller = "^5.10.1"
+pytest-dotenv = "^0.5.2"
+
+[tool.autopep8]
+max_line_length = 100
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
