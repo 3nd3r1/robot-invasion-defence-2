@@ -59,4 +59,18 @@
 | 02.05. | 1    | Käyttöliittymän parantamista                                                                          |
 | 02.05  | 1    | Voiton ja häviämisen kodaaminen                                                                       |
 | 02.05. | 2    | Dokumentaation päivittelyä (käyttöohjeiden tekeminen). Testien korjailua.                             |
-| yht    | 88   |                                                                                                       |
+| 05.05  | 1    | Build taskin lisääminen ja pieniä parannuksia                                                         |
+| 06.05  | 1    | Tornin klikkaamisen toiminnallisuuden aloittaminen                                                    |
+| 10.05  | 1    | Pysyväistalennuksen aloittaminen: Tietokannan tekoa ja http://db.py koodaamista                       |
+| 10.05  | 1    | Parannetaan StartGameMenu valikkoa.                                                                   |
+| 10.05. | 1    | GameSave pysyväistallennuksen koodaamista                                                             |
+| 11.05  | 2    | Pickleen ja class stateihin tutustumista.                                                             |
+| 11.05  | 3    | GameSave pysyväistallennuksen koodaamista                                                             |
+| 11.05. | 1    | Korjaamassa GameSaven lataamisesta aiheutuvia bugeja                                                  |
+| 12.05. | 1    | Dokumentaation parantelua.                                                                            |
+| 12.05. | 1    | Pieniä paranteluja                                                                                    |
+| 12.05. | 1    | Kahden uuden testin koodaamista. .env käyttöönotto                                                    |
+| 12.05. | 1    | Arkkitehtuurikuvauksen parantamista ja täydentämistä.                                                 |
+| 13.05. | 3    | Dokumentaation ja koodin viimeistelyä                                                                 |
+| 13.05. | 1    | Robot Invasion Defence II 1.0.0 julkaiseminen                                                         |
+| yht    | 107  |                                                                                                       |
