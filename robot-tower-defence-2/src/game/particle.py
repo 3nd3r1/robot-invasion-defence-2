@@ -52,19 +52,22 @@ class Particle(pygame.sprite.Sprite):
         return Particle.images[particle][frame].copy()
 
     def draw(self, screen):
+        self.__animate()
         screen.blit(self.image, self.rect)
 
-    def update(self):
+    def __animate(self):
         time_now = pygame.time.get_ticks()
+
+        if time_now-self.__last_frame >= self.__animation_interval:
+            self.__animation_frame += 1
+            self.__last_frame = time_now
 
         if self.__animation_frame >= len(Particle.images[self.__particle]):
             self.kill()
             return
 
-        if time_now-self.__last_frame < self.__animation_interval:
-            return
-
         self.image = Particle.render(self.__particle, self.__animation_frame)
         self.rect = self.image.get_rect(center=self.rect.center)
-        self.__animation_frame += 1
-        self.__last_frame = time_now
+
+    def update(self):
+        return
