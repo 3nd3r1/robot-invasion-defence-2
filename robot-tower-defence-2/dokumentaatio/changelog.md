@@ -4,11 +4,11 @@ Robot Invasion Defence II-pelin changelog.
 
 Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) ohjeiden mukaisesti.
 
-## [1.0.0]
+## [1.0.0] - 2023-05-13
 
 ### Lisätty
 
--   Lisätty pysyväistallennus lokaaliin SQL-tietokantaan.
+-   Lisätty pysyväistallennus lokaaliin SQLite-tietokantaan.
 -   Pelin aloitus-valikkoon lisätty tiedot areenoista.
 -   Pelaamisen lopettaminen tallentaa pelin tietokantaa, jotta peliä voi myöhemmin jatkaa.
 -   Lisätty käyttäjä-kohtaiset valuutat money ja experience.
@@ -21,6 +21,7 @@ Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0
 ### Korjattu
 
 -   Robotit piirretään taso-järjestyksessä (minx,nathan,archie)
+-   Tornin asettaminen perutaan, jos peli asetetaan tauolle.
 
 ## [viikko 6](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/viikko6) - 2023-05-02
 
