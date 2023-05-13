@@ -15,7 +15,7 @@ class TowerGroup(pygame.sprite.Group):
     def on_click(self, pos):
         """ This is called when the tower is clicked """
         for tower in self.sprites():
-            if tower.rect.collidepoint(pos):
+            if tower.hitbox.collidepoint(pos):
                 tower.on_click()
             else:
                 tower.on_unclick()
@@ -78,13 +78,19 @@ class Tower(pygame.sprite.Sprite, ABC):
 
     @staticmethod
     def load_tower_assets(tower):
-        model_1 = pygame.image.load(get_image(images["towers"][tower]["model_1"][0]))
-        model_2 = pygame.image.load(get_image(images["towers"][tower]["model_2"][0]))
-        model_3 = pygame.image.load(get_image(images["towers"][tower]["model_3"][0]))
+        model_1 = pygame.image.load(
+            get_image(images["towers"][tower]["model_1"][0]))
+        model_2 = pygame.image.load(
+            get_image(images["towers"][tower]["model_2"][0]))
+        model_3 = pygame.image.load(
+            get_image(images["towers"][tower]["model_3"][0]))
 
-        model_1 = pygame.transform.scale_by(model_1, images["towers"][tower]["model_1"][1])
-        model_2 = pygame.transform.scale_by(model_2, images["towers"][tower]["model_2"][1])
-        model_3 = pygame.transform.scale_by(model_3, images["towers"][tower]["model_3"][1])
+        model_1 = pygame.transform.scale_by(
+            model_1, images["towers"][tower]["model_1"][1])
+        model_2 = pygame.transform.scale_by(
+            model_2, images["towers"][tower]["model_2"][1])
+        model_3 = pygame.transform.scale_by(
+            model_3, images["towers"][tower]["model_3"][1])
 
         Tower.images[tower] = {}
         Tower.images[tower]["model_1"] = model_1
@@ -99,10 +105,12 @@ class Tower(pygame.sprite.Sprite, ABC):
         tower_image = Tower.images[tower][model]
         tower_image = pygame.transform.rotate(tower_image, -angle)
 
-        tower_offset = pygame.math.Vector2(images["towers"][tower][model][2]).rotate(angle)
+        tower_offset = pygame.math.Vector2(
+            images["towers"][tower][model][2]).rotate(angle)
 
         base_rect = base.get_rect(center=surface.get_rect().center)
-        tower_rect = tower_image.get_rect(center=base_rect.center).move(tower_offset)
+        tower_rect = tower_image.get_rect(
+            center=base_rect.center).move(tower_offset)
 
         surface.blit(base, base_rect)
         surface.blit(tower_image, tower_rect)
@@ -127,19 +135,23 @@ class Tower(pygame.sprite.Sprite, ABC):
         if self.__state in ("placing", "clicked"):
             self.__draw_range_circle(screen)
 
-        self.image = Tower.render(self.type, self.model, self.get_target_angle())
+        self.image = Tower.render(
+            self.type, self.model, self.get_target_angle())
         self._animate_tower()
         screen.blit(self.image, self.rect)
 
     def __draw_range_circle(self, screen):
         """ Draws the range circle """
         range_color = colors["valid_tower_range"]
-        if not self.is_valid_position():
+        if self.__state == "placing" and not self.is_valid_position():
             range_color = colors["invalid_tower_range"]
 
-        range_circle = pygame.Surface((self.range*2, self.range*2), pygame.constants.SRCALPHA, 32)
-        pygame.draw.circle(range_circle, range_color, (self.range, self.range), self.range)
-        screen.blit(range_circle, (self.rect.centerx-self.range, self.rect.centery-self.range))
+        range_circle = pygame.Surface(
+            (self.range*2, self.range*2), pygame.constants.SRCALPHA, 32)
+        pygame.draw.circle(range_circle, range_color,
+                           (self.range, self.range), self.range)
+        screen.blit(range_circle, (self.rect.centerx -
+                    self.range, self.rect.centery-self.range))
 
     def update(self):
         if self.__state == "placing":
