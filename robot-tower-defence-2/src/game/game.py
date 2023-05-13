@@ -108,7 +108,8 @@ class Game:
 
         starting_money = arenas[arena]["starting_money"]
         self.__clock = pygame.time.Clock()
-        self.__screen = pygame.display.set_mode((general["screen_width"], general["screen_height"]))
+        self.__screen = pygame.display.set_mode(
+            (general["screen_width"], general["screen_height"]))
 
         self.__load_assets()
 
@@ -235,6 +236,7 @@ class Game:
 
     def pause_game(self):
         logger.debug("Game paused!")
+        self.sprites.new_tower = None
         self.state.state = "pause"
 
     def unpause_game(self):
