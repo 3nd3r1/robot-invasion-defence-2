@@ -32,6 +32,9 @@ class Player:
     def lose_health(self, amount) -> None:
         if self.__health >= amount:
             self.__health -= amount
+        else:
+            self.__health = 0
+
         if self.__health <= 0:
             self.__alive = False
         logger.debug(f"Player ({id(self)}) new health: {self.__health} HP")

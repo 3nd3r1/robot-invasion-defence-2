@@ -13,6 +13,11 @@ class MapObjects:
     water: list
     waypoints: list
 
+@dataclasses.dataclass
+class Waypoint:
+    position: tuple
+    hidden: bool
+
 
 class Map():
     """
@@ -46,8 +51,8 @@ class Map():
             # Load waypoints
             if layer.name == "waypoints":
                 for waypoint in layer:
-                    self.__objects.waypoints.append(
-                        self.__to_screen_coords((waypoint.x, waypoint.y)))
+                    self.__objects.waypoints.append(Waypoint(
+                        self.__to_screen_coords((waypoint.x, waypoint.y)), waypoint.hidden))
                 continue
 
             # Load obstacles, water and path and draw them to the map

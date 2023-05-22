@@ -158,24 +158,45 @@
  </layer>
  <objectgroup id="22" name="waypoints">
   <object id="18" name="7" x="206" y="572">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="16" name="6" x="207" y="148">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="15" name="5" x="588" y="152">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="14" name="4" x="593" y="498">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="13" name="3" x="753" y="498">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="12" name="2" x="753" y="154">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
   <object id="11" name="1" x="1015" y="148">
+   <properties>
+    <property name="hidden" type="bool" value="false"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

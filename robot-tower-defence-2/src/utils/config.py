@@ -50,6 +50,38 @@ arenas = {
         "round_delay_base": 10000,
         # The rate at which the round delay increases
         "round_delay_rate": 0.977237,
+    },
+    "peaky_mountains": {
+        "title": "Peaky Mountains",
+        "description": ["A dangerous field of mountains", "with tunnels and changing altitudes."],
+        "experience_reward": 200,
+        "num_rounds": 70,
+        "starting_money": 250,
+        "map_file": "peaky_mountains.tmx",
+        # The following rates are calculated with the formula: (final/base)**(1/num_rounds)
+
+        # The base number of robots in a wave
+        "robot_num_base": 10,
+        # The rate at which the number of robots in a wave increases
+        "robot_num_rate":  1.071519,
+        # The base number of waves in a round
+        "wave_num_base": 2,
+        # The rate at which the number of waves in a round increases
+        "wave_num_rate": 1.02035,
+        # The base spawn interval of a wave
+        "spawn_delay_base": 1000,
+        # The minimum value of the spawn interval
+        "spawn_delay_min": 100,
+        # The rate at which the spawn interval of a wave increases
+        "spawn_delay_rate": 0.63095,
+        # The base wave interval of a round
+        "wave_delay_base": 1000,
+        # The rate at which the wave interval of a round increases
+        "wave_delay_rate": 0.977237,
+        # The base round delay
+        "round_delay_base": 10000,
+        # The rate at which the round delay increases
+        "round_delay_rate": 0.977237,
     }
 }
 
@@ -188,6 +220,7 @@ fonts = {
 
 colors = {
     "menu_background": (0, 0, 0),
+    "game_background": (0, 0, 0),
     "invalid_tower_range": (255, 0, 0, 100),
     "valid_tower_range": (50, 50, 50, 50),
     "default_font_color": (192, 235, 248),
