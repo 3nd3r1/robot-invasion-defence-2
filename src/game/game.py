@@ -3,7 +3,7 @@ import pickle
 import dataclasses
 import pygame
 
-from utils.config import general, arenas
+from utils.config import general, arenas, colors
 from utils.logger import logger
 from utils.math import distance_between_points
 from utils import db
@@ -37,6 +37,7 @@ class GameSprites:
     robots: pygame.sprite.Group
     projectiles: pygame.sprite.Group
     particles: pygame.sprite.Group
+    hidden: pygame.sprite.Group
 
     def __getstate__(self):
         """ This is called when the game sprites are being pickled """
@@ -46,6 +47,7 @@ class GameSprites:
         state["robots"] = state["robots"].sprites()
         state["projectiles"] = state["projectiles"].sprites()
         state["particles"] = state["particles"].sprites()
+        state["hidden"] = state["hidden"].sprites()
         return state
 
     def __setstate__(self, state):
@@ -55,6 +57,7 @@ class GameSprites:
         self.robots = RobotGroup()
         self.projectiles = ProjectileGroup()
         self.particles = ParticleGroup()
+        self.hidden = pygame.sprite.Group()
 
         for tower in state["towers"]:
             self.towers.add(tower)
@@ -67,6 +70,9 @@ class GameSprites:
 
         for particle in state["particles"]:
             self.particles.add(particle)
+
+        for hidden in state["hidden"]:
+            self.hidden.add(hidden)
 
     def update(self):
         self.towers.update()
@@ -114,7 +120,7 @@ class Game:
         self.__load_assets()
 
         self.__game_ui = GameUi(self)
-        self.__map = Map(arena, (188, 120))
+        self.__map = Map(arena, (180, 105))
         self.__player = Player(starting_money)
         self.__round_manager = RoundManager(self)
 
@@ -123,7 +129,8 @@ class Game:
             towers=TowerGroup(),
             robots=RobotGroup(),
             projectiles=ProjectileGroup(),
-            particles=ParticleGroup()
+            particles=ParticleGroup(),
+            hidden=pygame.sprite.Group()
         )
 
         if load_save:
@@ -188,7 +195,7 @@ class Game:
 
     def draw(self, screen) -> None:
         """ Draw all game objects """
-        screen.fill((0, 0, 0))
+        screen.fill(colors["game_background"])
 
         self.map.draw(screen)
         self.sprites.draw(screen)
@@ -331,6 +338,8 @@ class Game:
         """ Get the closest robot to the tower """
         closest_robot = None
         for robot in self.sprites.robots:
+            if self.sprites.hidden.has(robot):
+                continue
             new_distance = distance_between_points(
                 robot.rect.center, tower.rect.center)
             old_distance = distance_between_points(

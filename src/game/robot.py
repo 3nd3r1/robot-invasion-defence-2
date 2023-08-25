@@ -26,13 +26,12 @@ class RobotGroup(pygame.sprite.Group):
         return self.sprites()
 
 
+# Linked list of waypoints
 @dataclasses.dataclass
-class Waypoints:
-    waypoints: iter
-    current: pygame.math.Vector2
-
-    def next(self):
-        self.current = next(self.waypoints, None)
+class Waypoint:
+    position: tuple
+    hidden: bool
+    next: "Waypoint" = None
 
 
 class Robot(pygame.sprite.Sprite, ABC):
@@ -61,13 +60,12 @@ class Robot(pygame.sprite.Sprite, ABC):
 
         self.__game = game
 
-        self.__waypoints = Waypoints(iter(self.__get_waypoints()), None)
-        self.__waypoints.next()
+        self.__waypoint = self.__get_waypoints()
 
         self.__last_animation = 0
         self.__animation_frame = 0
 
-        self.rect.center = self.__waypoints.current
+        self.rect.center = self.__waypoint.position
 
         logger.debug(f"Robot ({id(self)}) created with {self.health} HP")
 
@@ -79,21 +77,32 @@ class Robot(pygame.sprite.Sprite, ABC):
         state["image"] = None
         return state
 
-    def __get_waypoints(self) -> list:
-        """This method returns the waypoints for the robot to follow."""
+    def __get_waypoints(self) -> Waypoint:
+        """This method returns the first waypoint in a linked list for the robot to follow. """
         waypoints = self.__game.map.waypoints
-        offset_waypoints = []
+        last_waypoint = None
 
         for i, waypoint in enumerate(waypoints[:-1]):
-            difference_x = waypoints[i+1][0] - waypoint[0]
-            difference_y = waypoints[i+1][1] - waypoint[1]
+            difference_x = waypoints[i+1].position[0] - waypoint.position[0]
+            difference_y = waypoints[i+1].position[1] - waypoint.position[1]
 
             path_offset = self._path_offset.rotate(get_angle(difference_x, difference_y))
-            offset_waypoints.append((round(waypoint[0]+path_offset[0]),
-                                    round(waypoint[1]+path_offset[1])))
-        offset_waypoints.append(waypoints[-1])
+            offseted_waypoint = Waypoint((round(waypoint.position[0]+path_offset[0]),
+                                          round(waypoint.position[1]+path_offset[1])),
+                                          waypoint.hidden)
 
-        return offset_waypoints
+            if last_waypoint:
+                last_waypoint.next = offseted_waypoint
+                last_waypoint = last_waypoint.next
+            else:
+                first_waypoint = offseted_waypoint
+                last_waypoint = first_waypoint
+
+        last_waypoint.next = Waypoint((round(waypoints[-1].position[0]),
+                                       round(waypoints[-1].position[1])), waypoints[-1].hidden)
+        last_waypoint = last_waypoint.next
+
+        return first_waypoint
 
     @staticmethod
     def load_assets():
@@ -127,7 +136,7 @@ class Robot(pygame.sprite.Sprite, ABC):
             self.kill()
             return
 
-        if not self.__waypoints.current:
+        if not self.__waypoint:
             self.__game.player.lose_health(self.damage)
             logger.debug(f"Robot ({id(self)}) reached the end of the map")
             self.kill()
@@ -137,12 +146,17 @@ class Robot(pygame.sprite.Sprite, ABC):
         self.rect.move_ip(self.__velocity)
 
         if self.__velocity == (0, 0):
-            self.__waypoints.next()
+            self.__waypoint = self.__waypoint.next
+            # Hide robot if waypoint is hidden
+            if self.__waypoint and self.__waypoint.hidden:
+                self.__game.sprites.hidden.add(self)
+            elif self.__game.sprites.hidden.has(self):
+                self.__game.sprites.hidden.remove(self)
 
     def __calculate_velocity(self):
         """This method calculates the robot's velocity."""
-        waypoint_x = self.__waypoints.current[0]
-        waypoint_y = self.__waypoints.current[1]
+        waypoint_x = self.__waypoint.position[0]
+        waypoint_y = self.__waypoint.position[1]
 
         velocity_x = min(max(waypoint_x-self.rect.move(self.rect.width//2 +
                          self._path_offset[0], 0).left, -self.speed), self.speed)
@@ -152,6 +166,8 @@ class Robot(pygame.sprite.Sprite, ABC):
         self.__velocity = (velocity_x, velocity_y)
 
     def draw(self, screen):
+        if self.__waypoint and self.__waypoint.hidden:
+            return
         self.__animate()
         screen.blit(self.image, self.rect)
 

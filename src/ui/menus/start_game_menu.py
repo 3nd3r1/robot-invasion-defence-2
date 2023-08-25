@@ -44,6 +44,7 @@ class StartGameMenu:
         for arena_id, arena in arenas.items():
             StartGameMenu.select_buttons.add(MenuButton(
                 arena["title"], select_pos, StartGameMenu.select_arena, arena_id))
+            select_pos = (select_pos[0], select_pos[1] + 80)
 
             StartGameMenu.start_buttons.add(StartGameButton(
                 "New Game", start_pos, start_game, arena_id))
@@ -53,7 +54,7 @@ class StartGameMenu:
             if arena_save:
                 StartGameMenu.start_buttons.add(StartGameButton(
                     f"Continue ({arena_save}/{arena['num_rounds']})",
-                    (start_pos[0], start_pos[1] + 80), start_game, "grass_fields", True))
+                    (start_pos[0], start_pos[1] + 80), start_game, arena_id, True))
 
         StartGameMenu.icon_buttons.add(IconButton(
             images["ui"]["back_button"], (67, 100), set_state, "main_menu"))
