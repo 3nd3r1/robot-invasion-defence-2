@@ -1,52 +1,52 @@
 # Robot Invasion Defence II
 
-Robot Invasion Defence II on klassinen tower defence peli, jossa pelaajan täytyy suojautua robottien hyökkäykseltä käytämällä torneja. Pelin ensimmäinen osa: [Robot Invasion Defence](https://github.com/3nd3r1/robot-invasion-defence)
+Robot Invasion Defence II is an action-packed tower defense game where players must strategically place towers to fend off waves of invading robots. With engaging gameplay, challenging levels, and the option to upgrade towers and unlock new abilities, it offers an immersive experience for both casual and avid gamers.
 
-## Python versio
+Also check out: [Robot Invasion Defence I](https://github.com/3nd3r1/robot-invasion-defence)
 
-Pelin suorittaminen lähdekoodista on parasta tehdä Python-versiolla `3.8`.
-Kaikki moduulit eivät toimi liian uusilla tai vanhoilla Python-versiolla.
+## Python version
 
-## Dokumentaatio
+For the best execution of the game from the source code, it is recommended to use Python version `3.8`. Some modules may not work properly with either too recent or too outdated versions of Python.
 
--   [Käyttöohje](./robot-tower-defence-2/dokumentaatio/kayttoohje.md)
--   [Vaatimusmäärittely](./robot-tower-defence-2/dokumentaatio/vaatimusmaarittely.md)
--   [Tuntikirjanpito](./robot-tower-defence-2/dokumentaatio/tuntikirjanpito.md)
--   [Changelog](./robot-tower-defence-2/dokumentaatio/changelog.md)
--   [Arkkitehtuuri](./robot-tower-defence-2/dokumentaatio/arkkitehtuuri.md)
--   [Testausdokumentti](./robot-tower-defence-2/dokumentaatio/testaus.md)
--   [Credits](./robot-tower-defence-2/dokumentaatio/credits.md)
+## Documentation
 
-## Releaset
+-   [User Guide](./docs/user_guide.md)
+-   [Specifications](./docs/specs.md)
+-   [Changelog](./docs/changelog.md)
+-   [Structure](./docs/structure.md)
+-   [Testing](./docs/testing.md)
+-   [Credits](./docs/credits.md)
 
-Pelin uusin release: [1.0.0 - loppupalautus](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/1.0.0)
+## Releases
+
+Latest release: [1.0.0](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/1.0.0)
 
 ## Screenshot
 
-![robot-invasion-defence-2](./robot-tower-defence-2/dokumentaatio/assets/robot-invasion-defence-2.png)
+![robot-invasion-defence-2](./dokumentaatio/assets/robot-invasion-defence-2.png)
 
-## Taskit
+## Tasks
 
-### Pelinsuoritus
+### Starting the game
 
 `poetry run invoke start`
 
-### Pelin debuggaus
+### Debugging the game
 
 `poetry run invoke debug`
 
-### Windows tuotantoympäristön luominen
+### Building windows production
 
 `poetry run invoke build`
 
-### Testit
+### Running tests
 
 `poetry run invoke test`
 
-### Testikattavuusraportti
+### Creating a coverage report
 
 `poetry run invoke coverage-report`
 
-### Pylint-tarkastus
+### Pylint check
 
 `poetry run invoke lint`

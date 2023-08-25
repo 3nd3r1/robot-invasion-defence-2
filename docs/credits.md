@@ -2,7 +2,7 @@
 
 ## Assets
 
-Kaikki nämä assetit ovat sivusta [opengameart.org](https://opengameart.org).
+All assets are from [opengameart.org](https://opengameart.org).
 
 -   [Sci-fi User Interface Elements](https://opengameart.org/content/sci-fi-user-interface-elements) by [Buch](https://opengameart.org/users/buch) licensed CC0
 
