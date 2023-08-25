@@ -9,6 +9,9 @@ images_dir = os.path.join(resources_dir, "images")
 fonts_dir = os.path.join(resources_dir, "fonts")
 data_dir = os.path.join(main_dir, "data")
 
+if not os.path.exists(data_dir):
+    os.makedirs(data_dir)
+
 
 def get_image(file: str) -> str:
     return os.path.join(images_dir, file)

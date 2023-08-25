@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from utils.config import general
 from utils.file_reader import get_database
@@ -10,6 +11,7 @@ class Database:
     """
 
     def __init__(self):
+
         self.__connection = sqlite3.connect(get_database(general["db_location"]))
         self.__connection.row_factory = sqlite3.Row
         self.__cursor = self.__connection.cursor()
