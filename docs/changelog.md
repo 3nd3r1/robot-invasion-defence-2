@@ -4,7 +4,7 @@ Changelog for Robot Invasion Defence II game.
 
 This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) guidelines.
 
-## [1.1.0]() - 2023-08-25
+## [1.1.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.1.0) - 2023-08-25
 
 ### Added
 - Added new arena Peaky Mountains

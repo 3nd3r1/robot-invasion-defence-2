@@ -4,7 +4,7 @@ Robot Invasion Defence II-pelin changelog.
 
 Tämä changelog on tehty [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) ohjeiden mukaisesti.
 
-## [1.1.0]() - 2023-08-25
+## [1.1.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.1.0) - 2023-08-25
 
 ### Lisätty
 - Lisätty uusi areena Peaky Mountains

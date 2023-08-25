@@ -23,7 +23,7 @@ For the best execution of the game from the source code, it is recommended to us
 
 ## Releases
 
-Latest release: [1.0.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.0.0)
+Latest release: [1.1.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.1.0)
 
 ## Screenshot
 

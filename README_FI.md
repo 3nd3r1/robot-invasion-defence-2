@@ -23,7 +23,7 @@ Kaikki moduulit eivät toimi liian uusilla tai vanhoilla Python-versiolla.
 
 ## Releaset
 
-Pelin uusin release: [1.0.0 - loppupalautus](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.0.0)
+Pelin uusin release: [1.1.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.1.0)
 
 ## Screenshot
 
