@@ -6,7 +6,7 @@ htmlcov
 dist
 build
 main.spec
-./src/data
-./src/data/**
+src/data
+src/data/**
 .env.local
 **.spec
