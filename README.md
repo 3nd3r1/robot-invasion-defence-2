@@ -4,6 +4,10 @@ Robot Invasion Defence II is an action-packed tower defense game where players m
 
 Also check out: [Robot Invasion Defence I](https://github.com/3nd3r1/robot-invasion-defence)
 
+## Language
+
+These README.md is also available in Finnish [here](./README_FI.md).
+
 ## Python version
 
 For the best execution of the game from the source code, it is recommended to use Python version `3.8`. Some modules may not work properly with either too recent or too outdated versions of Python.
@@ -19,11 +23,11 @@ For the best execution of the game from the source code, it is recommended to us
 
 ## Releases
 
-Latest release: [1.0.0](https://github.com/3nd3r1/ot-harjoitustyo/releases/tag/1.0.0)
+Latest release: [1.0.0](https://github.com/3nd3r1/robot-invasion-defence-2/releases/tag/1.0.0)
 
 ## Screenshot
 
-![robot-invasion-defence-2](./dokumentaatio/assets/robot-invasion-defence-2.png)
+![robot-invasion-defence-2](./docs/assets/robot-invasion-defence-2.png)
 
 ## Tasks
 
